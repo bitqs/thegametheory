@@ -74,16 +74,13 @@ export function startPick(n, rig){
     if(F.score){ const add=hit?80:15; S.score+=add; bumpScore(add); }
     S.actCount++; S.doneActions++; updateGoal();
     const last = S.actCount>=needOf(BEATS[S.beatIdx]);
-    if(last && rig){                                          // near-miss 牌留台上：让你盯着隔壁的金卡听揭穿
-      setTimeout(()=>{ touchEl().style.pointerEvents=""; enterOutro(); }, 2200);
+    if(last){                                                 // 最后一轮牌留台上陪洞见（空屏听揭穿=没画面感）
+      setTimeout(()=>{ touchEl().style.pointerEvents=""; enterOutro(); }, rig?2200:1800);
       return;                                                 // wrap 不删，下一拍 applyBeat 清场
     }
     setTimeout(()=>{
       wrap.style.transition="opacity .5s"; wrap.style.opacity="0";
-      setTimeout(()=>{ wrap.remove();
-        if(last){ touchEl().style.pointerEvents=""; enterOutro(); }
-        else startPick(n, rig);
-      },500);
+      setTimeout(()=>{ wrap.remove(); startPick(n, rig); },500);
     }, 2000);
   }
 }
