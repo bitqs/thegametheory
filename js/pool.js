@@ -5,7 +5,8 @@ import { getLang } from "./i18n.js";
 export async function loadPool(){ try{
   const ms=["met","artic","cleveland","vam"];
   const all=await Promise.all(ms.map(m=>fetch("/data/museums/"+m+".json").then(r=>r.json()).catch(()=>null)));
-  for(const d of all){ if(d&&d.items) for(const x of d.items){ if(x.img) S.POOL.push(x); } }
+  // img 只收安全相对路径（后续会内插进 CSS url()，单点校验防注入）
+  for(const d of all){ if(d&&d.items) for(const x of d.items){ if(x.img && /^[\w./-]+$/.test(x.img)) S.POOL.push(x); } }
 }catch{} }
 
 export function pickArt(rar){ if(!S.POOL.length) return null;
