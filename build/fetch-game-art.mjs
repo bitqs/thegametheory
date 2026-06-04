@@ -56,7 +56,9 @@ for (const g of GAMES) {
   if (!src) { misses.push(g.wiki); continue; }
   const id = slug(g.en);
   const ext = (src.match(/\.(jpe?g|png|webp|gif)/i)?.[1] || "jpg").toLowerCase().replace("jpeg", "jpg");
-  const file = `${id}.${ext}`, dest = new URL(file, OUT);
+  let file = `${id}.${ext}`, dest = new URL(file, OUT);
+  try { await access(new URL(id + ".jpg", OUT)); file = id + ".jpg"; dest = new URL(file, OUT); }  // 本地已规整成 jpg → 视为已抓
+  catch { /* fallthrough */ }
   try { await access(dest); }                           // 已抓过 → 跳过下载
   catch {
     try {

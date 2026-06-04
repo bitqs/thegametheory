@@ -3,7 +3,7 @@ import { S, F } from "./state.js";
 import { BEATS, TUNE, RC, RSTARS, RANK } from "./config.js";
 import { T } from "./i18n.js";
 import { rollRarity } from "./rarity.js";
-import { pickArt, artMeta, artLine } from "./pool.js";
+import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { land, chord, tick, riser, lvlSnd } from "./audio.js";
 import { els, sparkle, flashGo, dangerOn, dangerOff } from "./dom.js";
 import { bumpScore, renderLevel, renderEnergy, updateGoal } from "./hud.js";
@@ -36,16 +36,16 @@ export function spawnBack(){
   if(F.rarity){ rar=rollRarity(); isHit = rar!=="N"; }
   else if(F.random){ isHit = Math.random()<0.30; }
   c.__rar=rar; c.__isHit=isHit;
-  c.__art=pickArt(rar);                                 // 出牌时即定画面并预加载，翻开零白图
-  if(c.__art){ const im=new Image(); im.src=c.__art.img; }
+  c.__art=pickArt(rar);                                 // 出牌时即定画面并预解码，翻开零白图
+  c.__ready=warm(c.__art);
   const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
   if(rar) c.style.setProperty("--rc",RC[rar]);
   const uphint=c.querySelector(".back .uphint");
   uphint.textContent = wait ? hintWord("tap") : "";
   if(wait){ c.classList.add(rar==="SSR"?"wait-ssr":"wait-sr"); if(rar==="SSR"&&F.sound) riser(700); }
   requestAnimationFrame(()=>c.classList.add("in"));
-  // 低档自动翻；SR/SSR 留背等手翻
-  if(!wait) c.__auto=setTimeout(()=>flipCard("auto"), 520);
+  // 低档自动翻（等图解码完成才翻，慢网不闪白图）；SR/SSR 留背等手翻
+  if(!wait) c.__auto=setTimeout(()=>{ c.__ready.then(()=>{ if(S.card===c) flipCard("auto"); }); }, 520);
 }
 
 // 上滑换牌（主交互）：仅翻开的牌可换——面朝下的先翻（自动或手翻）

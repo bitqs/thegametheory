@@ -3,7 +3,7 @@ import { S, F } from "./state.js";
 import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
 import { makeCard, needOf } from "./cards.js";
-import { pickArt, artMeta, artLine } from "./pool.js";
+import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { els, sparkle, flashGo } from "./dom.js";
 import { land, chord, tick } from "./audio.js";
 import { bumpScore, updateGoal } from "./hud.js";
@@ -53,7 +53,8 @@ export function startPick(n, rig){
     h.onclick=()=>choose(i);
     wrap.appendChild(h); cards.push(c);
   }
-  els.stage.appendChild(wrap);
+  // 整轮图先解码完再上桌（避免翻开白图）
+  Promise.all(cards.map(c=>warm(c.__art))).then(()=>els.stage.appendChild(wrap));
   let done=false;
   function choose(i){
     if(done) return; done=true; tick();

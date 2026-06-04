@@ -2,6 +2,7 @@
 // item: { crown, stars(1-4), title, sub, serial, art, rarity }
 import { RC } from "./config.js";
 import { makeCard } from "./cards.js";
+import { warm } from "./pool.js";
 import { chord } from "./audio.js";
 import { sparkle, flashGo } from "./dom.js";
 
@@ -60,6 +61,6 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
     };
     wrap.appendChild(h);
   });
-  mount.appendChild(wrap);
+  Promise.all(items.map(it=>warm(it.art))).then(()=>mount.appendChild(wrap));  // 图齐再上桌
   return wrap;
 }

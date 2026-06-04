@@ -5,17 +5,26 @@ import { getLang } from "./i18n.js";
 const POOLS = { art: [], games: [] };
 const okImg = x => x.img && /^[\w./-]+$/.test(x.img);   // img 内插 CSS url()，入池单点校验
 
-export async function loadPool(){ try{
+export async function loadPool(onStep){ try{
   const ms=["met","artic","cleveland","vam"];
+  const step=r=>{ onStep&&onStep(); return r; };
   const all=await Promise.all([
-    ...ms.map(m=>fetch("/data/museums/"+m+".json").then(r=>r.json()).catch(()=>null)),
-    fetch("/data/games.json").then(r=>r.json()).catch(()=>null),
+    ...ms.map(m=>fetch("/data/museums/"+m+".json").then(r=>r.json()).then(step).catch(()=>step(null))),
+    fetch("/data/games.json").then(r=>r.json()).then(step).catch(()=>step(null)),
   ]);
   const games=all.pop();
   for(const d of all){ if(d&&d.items) for(const x of d.items){ if(okImg(x)) POOLS.art.push(x); } }
   if(games&&games.items) for(const x of games.items){ if(okImg(x)) POOLS.games.push(x); }
   S.POOL=POOLS.art;
 }catch{} }
+
+// 预载并解码一张卡面图；失败/超时不挡流程
+export function warm(art, timeout=2500){
+  if(!art) return Promise.resolve();
+  const im=new Image(); im.src=art.img;
+  const dec=im.decode ? im.decode().catch(()=>{}) : Promise.resolve();
+  return Promise.race([dec, new Promise(r=>setTimeout(r,timeout))]);
+}
 
 // 切卡组（games 池为空时静默回退画作池，缺 data 也能玩）
 export function setDeck(d){ S.deck = POOLS[d]?.length ? d : "art"; S.POOL = POOLS[S.deck]; }

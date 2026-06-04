@@ -193,6 +193,15 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 @keyframes popup{from{opacity:0;transform:translate(-50%,10px)}
   20%{opacity:1}to{opacity:0;transform:translate(-50%,-46px)}}
 
+/* ── 启动加载 ── */
+#boot{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;gap:18px;background:var(--bg,#0b0a12);transition:opacity .5s}
+#boot.off{opacity:0;pointer-events:none}
+#boot .bttl{font-family:"Cinzel",serif;font-size:13px;letter-spacing:.3em;color:var(--gold)}
+#boot .bb{width:min(52vw,210px);height:2px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden}
+#boot #bootFill{display:block;height:100%;width:0;background:var(--gold);
+  box-shadow:0 0 8px var(--gold);transition:width .25s ease}
+
 /* ── 设计师旁白 ── */
 #say{position:fixed;left:0;right:0;bottom:calc(env(safe-area-inset-bottom) + 44px);
   z-index:25;text-align:center;padding:0 28px;pointer-events:none}

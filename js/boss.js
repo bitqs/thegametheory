@@ -6,7 +6,7 @@ import { S, F } from "./state.js";
 import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
 import { makeCard, needOf, exitUp } from "./cards.js";
-import { pickArt, artMeta, artLine } from "./pool.js";
+import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { els, sparkle, flashGo, rand } from "./dom.js";
 import { riser, land, chord, tick } from "./audio.js";
 import { bumpScore, updateGoal } from "./hud.js";
@@ -72,8 +72,10 @@ export function startBoss(){
       },240);
     }
   }
+  // 奖励先掷先解码：破牌瞬间零白图
+  const rwRar=Math.random()<0.4?"SSR":"SR", rwArt=pickArt(rwRar); warm(rwArt);
   function breakOpen(){                                          // Boss 破牌：翻成 SR/SSR 奖励
-    const rar=Math.random()<0.4?"SSR":"SR", art=pickArt(rar);
+    const rar=rwRar, art=rwArt;
     bossC.dataset.r=rar; bossC.style.setProperty("--rc",RC[rar]);
     bossC.classList.remove("staggered");
     bossC.classList.add("r-on","s-frame","s-corners","s-foil");
