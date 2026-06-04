@@ -39,7 +39,7 @@ function chooseLang(code){ if(S.phase!=="lang") return; S.phase="langpick"; setL
 const DECKS=["games","art"];
 function buildDeckPick(){ S.phase="deckpick"; const t=T();
   $("lang").querySelector(".langsub").textContent=t.deckQ;
-  $("lang").querySelector(".langttl").textContent="THE GAME THEORY · №2";
+  $("lang").querySelector(".langttl").textContent="THE GAME THEORY · 游戏论";
   const wrap=$("langcards"); wrap.innerHTML="";
   const cw=pickCards({
     items: DECKS.map(d=>({ crown:t.decks[d].crown, stars:4, title:t.decks[d].t,

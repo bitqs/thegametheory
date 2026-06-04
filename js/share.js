@@ -29,7 +29,7 @@ export function buildInviteCanvas(){
   x.fillStyle=bg; x.fillRect(0,0,W,H);
   x.strokeStyle=accent+"66"; x.lineWidth=2; roundRect(x,26,26,W-52,H-52,18); x.stroke();
   x.textAlign="center";
-  x.fillStyle=accent; x.font="700 18px 'Cinzel',serif"; x.fillText("THE GAME THEORY · №2", W/2, 96);
+  x.fillStyle=accent; x.font="700 18px 'Cinzel',serif"; x.fillText("THE GAME THEORY", W/2, 96);
   x.fillStyle="#ece8f4"; x.font="500 40px 'Noto Serif SC',serif"; x.fillText(E.title, W/2, H*.27);
   const qs=300; drawQR(x, (W-qs)/2, H*.34, qs);
   x.fillStyle="#cfc8e0"; x.font="italic 26px 'Noto Serif SC',serif"; x.fillText(E.scan, W/2, H*.74);
