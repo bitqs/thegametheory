@@ -12,6 +12,10 @@ export function flashGo(big){
   const f=$("flash"); f.style.setProperty("--bc",big?"#ffd34d":"#ffffff");
   f.style.setProperty("--int",big?.55:.28); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
 }
+export function flashWhite(){                              // 全屏闪白（开场转场用，比 flashGo 强）
+  const f=$("flash"); f.style.setProperty("--bc","#ffffff");
+  f.style.setProperty("--int",.95); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
+}
 export function sparkle(n=14){
   for(let i=0;i<n;i++){ const s=document.createElement("i"); s.className="burstdot";
     const a=(i/n)*Math.PI*2+Math.random()*.4, d=110+Math.random()*180;

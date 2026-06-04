@@ -52,9 +52,12 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
   const first=cw.querySelector(".ccard");                         // 引导首选游戏卡（在返回的 wrap 上查，挂载是异步的）
   first.classList.add("nudge-pick");
   const fh=first.querySelector(".chint"); if(fh) fh.textContent+=" ✦"; }
-function openingHook(){ const h=T().openHook;            // 使命交付：片头字幕式，屏幕正中逐行
+function openingHook(){ const h=T().openHook;            // 命运宣告：片头字幕屏幕正中逐行 → 闪白开局
   const ins=document.getElementById("insight"); ins.classList.add("cinema");
-  h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2300));
-  setTimeout(()=>{ hideInsight(); ins.classList.remove("cinema"); S.beatIdx=0; applyBeat(); }, h.length*2300);
+  h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2100));
+  setTimeout(()=>{ hideInsight(); ins.classList.remove("cinema");
+    import("./dom.js").then(d=>d.flashWhite());
+    setTimeout(()=>{ S.beatIdx=0; applyBeat(); }, 320);
+  }, h.length*2100);
   // 趁开场白预热前几张卡面，开局零白图
   import("./pool.js").then(m=>{ for(let i=0;i<6;i++){ const a=m.pickArt(null); if(a){ const im=new Image(); im.src=a.img; } } }); }
