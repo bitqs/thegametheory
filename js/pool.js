@@ -26,5 +26,10 @@ export function pickArt(rar){ if(!S.POOL.length) return null;
   const want = rar ? S.POOL.filter(x=>x.rarity===rar) : null;
   const list = (want&&want.length)?want:S.POOL; return list[(Math.random()*list.length)|0]; }
 
-export function artMeta(a){ if(!a) return ""; const ti=getLang()==="en"?(a.title||""):(a.title_zh||a.title||"");
-  return ti + (a.year?(" · "+a.year):""); }
+export function artMeta(a){ if(!a) return ""; const en=getLang()==="en";
+  const ti=en?(a.title||""):(a.title_zh||a.title||"");
+  const ge=en?(a.genre||""):(a.genre_zh||a.genre||"");
+  return ti + (a.year?(" · "+a.year):"") + (ge?(" · "+ge):""); }
+// 一句话简介：游戏卡组用 line，画作卡组复用 AI 题词 cardline
+export function artLine(a){ if(!a) return ""; const en=getLang()==="en";
+  return en?(a.line||a.cardline||""):(a.line_zh||a.cardline_zh||""); }

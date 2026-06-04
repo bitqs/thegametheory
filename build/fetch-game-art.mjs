@@ -68,7 +68,8 @@ for (const g of GAMES) {
     } catch (e) { misses.push(g.wiki + " (" + e.message + ")"); continue; }
   }
   items.push({ img: "/art-games/" + file, title: g.en, title_zh: g.zh,
-    artist: g.by, year: g.y, rarity: g.r });
+    artist: g.by, year: g.y, rarity: g.r,
+    genre: g.ge||"", genre_zh: g.g||"", line: g.le||"", line_zh: g.l||"" });
 }
 await writeFile(new URL("../data/games.json", import.meta.url),
   JSON.stringify({ items }, null, 0));

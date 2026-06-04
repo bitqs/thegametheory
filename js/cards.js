@@ -3,7 +3,7 @@ import { S, F } from "./state.js";
 import { BEATS, TUNE, RC, RSTARS, RANK } from "./config.js";
 import { T } from "./i18n.js";
 import { rollRarity } from "./rarity.js";
-import { pickArt, artMeta } from "./pool.js";
+import { pickArt, artMeta, artLine } from "./pool.js";
 import { land, chord, tick, riser, lvlSnd } from "./audio.js";
 import { els, sparkle, flashGo, dangerOn, dangerOff } from "./dom.js";
 import { bumpScore, renderLevel, renderEnergy, updateGoal } from "./hud.js";
@@ -21,7 +21,7 @@ export function makeCard(){
       <div class="artwin"><div class="artbg"></div><div class="artfg"></div><div class="artgrad"></div></div>
       <div class="frame"></div>
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <div class="plate"><div class="crown"><span class="rt"></span><span class="stars"></span></div><div class="big"></div><div class="divider"></div><div class="meta"></div><div class="poem"></div></div>
+      <div class="plate"><div class="crown"><span class="rt"></span><span class="stars"></span></div><div class="meta"></div><div class="tagline"></div><div class="divider"></div><div class="big"></div><div class="poem"></div></div>
       <div class="serial"><span class="sn"></span><span class="ed">MMXXVI</span></div><div class="foil"></div><div class="ring"></div><div class="holo"></div>
     </div>
   </div>`;
@@ -103,7 +103,8 @@ export function flipCard(type){
     setTimeout(()=>{ const b=cur.querySelector(".back"); if(b) b.style.visibility="hidden"; },150);
     // 卡面装饰翻面后才显（错峰升起）：精致度随机制累积
     front.classList.add("art-on");
-    if(cur.__art) cur.querySelector(".meta").textContent=artMeta(cur.__art);
+    if(cur.__art){ cur.querySelector(".meta").textContent=artMeta(cur.__art);
+      cur.querySelector(".tagline").textContent=artLine(cur.__art); }
     if(rar) cur.classList.add("r-on");
     if(F.score) cur.classList.add("s-frame");
     if(F.story){ cur.classList.add("s-divider","s-backorn"); front.classList.add("story"); }
