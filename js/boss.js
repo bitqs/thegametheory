@@ -28,20 +28,25 @@ export function startBoss(){
   const me=makeCard(); me.classList.add("boss","chargeCard");    // 蓄力牌：下方变小待命
   me.style.setProperty("--rc","#ffd34d");
   me.querySelector(".back .uphint").textContent=T().bossHint;
-  const fill=document.createElement("div"); fill.className="cfill";
-  const z1=document.createElement("i"); z1.className="zoneline"; z1.style.bottom=LO+"%";
-  const z2=document.createElement("i"); z2.className="zoneline"; z2.style.bottom=HI+"%";
-  const back=me.querySelector(".back"); back.appendChild(fill); back.appendChild(z1); back.appendChild(z2);
+  // 蓄力表独立放卡右侧：绿带=安全区，与卡背图案零重叠
+  const row=document.createElement("div"); row.className="chargeRow";
+  const gauge=document.createElement("div"); gauge.className="cgauge";
+  const zone=document.createElement("i"); zone.className="gzone";
+  zone.style.bottom=LO+"%"; zone.style.height=(HI-LO)+"%";
+  const fill=document.createElement("i"); fill.className="gfill";
+  gauge.appendChild(zone); gauge.appendChild(fill);
+  row.appendChild(me); row.appendChild(gauge);
 
-  arena.appendChild(bossC); arena.appendChild(me);
+  arena.appendChild(bossC); arena.appendChild(row);
   els.stage.appendChild(arena);
   requestAnimationFrame(()=>{ bossC.classList.add("in"); me.classList.add("in"); });
 
   let t0=0, raf=0, busy=false;
   const pct=()=>Math.min(100,(Date.now()-t0)/FULL*100);
   function loop(){ const p=pct(); fill.style.height=p+"%";
-    me.classList.toggle("inzone", p>=LO&&p<=HI);                 // 蓄到绿区：整体变绿提示
-    me.classList.toggle("overheat", p>HI);
+    const inz=p>=LO&&p<=HI;
+    me.classList.toggle("inzone", inz); gauge.classList.toggle("inzone", inz);   // 进绿区：表+卡辉光同变绿
+    me.classList.toggle("overheat", p>HI); gauge.classList.toggle("overheat", p>HI);
     raf=requestAnimationFrame(loop); }
   function down(e){ if(busy||t0) return; t0=Date.now(); riser(FULL); loop(); e.preventDefault(); }
   function up(){ if(!t0||busy) return; cancelAnimationFrame(raf);
@@ -91,10 +96,19 @@ export function startBoss(){
     setTimeout(()=>{ const b=bossC.querySelector(".back"); if(b) b.style.visibility="hidden"; },160);
     sparkle(12);
     cleanup();
+    setTimeout(()=>{                                            // 战利品时刻：Boss 牌移到屏中央放大，完整鉴赏
+      row.style.transition="opacity .5s,transform .5s"; row.style.opacity="0"; row.style.transform="scale(.92)";
+      const r=bossC.getBoundingClientRect();
+      const s=Math.min(innerWidth*0.74/r.width, innerHeight*0.62/r.height);
+      const dx=innerWidth/2-(r.left+r.width/2), dy=innerHeight/2-(r.top+r.height/2);
+      bossC.style.transition="transform .65s cubic-bezier(.2,.8,.2,1)";
+      bossC.style.transform=`translate(${dx}px,${dy}px) scale(${s})`;
+      bossC.style.zIndex="6";
+    },700);
     setTimeout(()=>{ exitUp(arena, ()=>{
       if(S.actCount>=needOf(BEATS[S.beatIdx])){ touchEl().style.pointerEvents=""; enterOutro(); }
       else startBoss();
-    }); },2000);
+    }); },3400);
   }
   function cleanup(){ window.removeEventListener("pointerdown",down); window.removeEventListener("pointerup",up); }
   window.addEventListener("pointerdown",down);
