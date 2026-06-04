@@ -117,14 +117,14 @@ export async function drawShare(mode){
   x.strokeStyle=accent+"88"; x.lineWidth=1; roundRect(x,(W-bw)/2,H*.705,bw,34,17); x.stroke();
   x.fillStyle=accent; x.fillText(bt, W/2, H*.705+23);
   // 进度：细条 + 端点标记
-  const py=H*.775, pw=W-200;
+  const py=H*.755, pw=W-200;
   x.fillStyle="rgba(255,255,255,.08)"; roundRect(x,100,py,pw,6,3); x.fill();
   x.fillStyle=accent; roundRect(x,100,py,pw,6,3); x.fill();
-  x.font="700 12px 'Cinzel',serif"; x.fillStyle=accent; x.fillText(SH.goalDone, W/2, py+30);
+  x.font="700 12px 'Cinzel',serif"; x.fillStyle=accent; x.fillText(SH.goalDone, W/2, py+26);
   // 底部：QR + 扫码语 + 域名
-  const qs=118; drawQR(x,(W-qs)/2,H*.815,qs);
-  x.fillStyle=dim; x.font="500 13px 'Cinzel','Noto Serif SC',serif"; x.fillText(SH.scan, W/2, H*.815+qs+26);
-  x.fillStyle=faint; x.font="500 12px 'Cinzel',serif"; spaced(x,"thegametheory.pages.dev",W/2,H-46,2);
+  const qs=110; drawQR(x,(W-qs)/2,H*.805,qs);
+  x.fillStyle=dim; x.font="500 13px 'Cinzel','Noto Serif SC',serif"; x.fillText(SH.scan, W/2, H*.805+qs+24);
+  x.fillStyle=faint; x.font="500 12px 'Cinzel',serif"; spaced(x,"thegametheory.pages.dev",W/2,H-34,2);
   $("srowMain").hidden=false; $("srowEnergy").hidden=true;
   $("share").classList.add("show");
 }
