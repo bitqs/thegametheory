@@ -14,11 +14,16 @@ function synthTick(){ synth(660,.07,"triangle",.12); }
 function synthLand(big){ synth(big?880:560,.15,"triangle",.15); if(big) setTimeout(()=>synth(1320,.18,"sine",.12),55); }
 function synthChord(){ [784,988,1175,1568].forEach((f,i)=>setTimeout(()=>synth(f,.22,"sine",.14),i*70)); }
 function synthLvl(){ [523,659,784].forEach((f,i)=>setTimeout(()=>synth(f,.16,"sine",.13),i*55)); }
-function synthRiser(ms){ const c=actx(); if(!c) return; const o=c.createOscillator(),g=c.createGain();
-  o.type="sawtooth"; const t0=c.currentTime,t1=t0+ms/1000;
-  o.frequency.setValueAtTime(160,t0); o.frequency.exponentialRampToValueAtTime(720,t1);
-  g.gain.setValueAtTime(.001,t0); g.gain.exponentialRampToValueAtTime(.06,t1);
-  o.connect(g); g.connect(c.destination); o.start(t0); o.stop(t1+.05); }
+function synthRiser(ms){ const c=actx(); if(!c) return;          // 五声琶音上行：音乐感蓄力（替换刺耳锯齿扫频）
+  const SCALE=[220,261.6,293.7,329.6,392,440,523.3,587.3];
+  const n=Math.max(4, Math.min(8, Math.round(ms/280)));
+  for(let i=0;i<n;i++){ const f=SCALE[Math.min(i,SCALE.length-1)];
+    const at=(ms/1000)*(i/n);
+    const o=c.createOscillator(), g=c.createGain(); o.type="sine"; o.frequency.value=f;
+    const t=c.currentTime+at, v=.05+.05*(i/n);                    // 越升越亮
+    g.gain.setValueAtTime(.0001,t); g.gain.linearRampToValueAtTime(v,t+.03);
+    g.gain.exponentialRampToValueAtTime(.0006,t+.5);
+    o.connect(g); g.connect(c.destination); o.start(t); o.stop(t+.55); } }
 
 /* ── 采样播放（有就用，没有回退合成）── */
 const FILES = { tap:"tap", reveal:"reveal", revealBig:"reveal_big", jackpot:"jackpot", levelup:"levelup", charge:"charge" };

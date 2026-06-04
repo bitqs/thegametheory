@@ -50,7 +50,7 @@ export const I18N = {
     locked:["那个动作，我还没给你呢。","急什么，慢慢解锁。","这个手势，还没到时候。"],
     deckQ:"这局，用什么做牌面？",
     decks:{ art:{t:"画",sub:"PAINTINGS · 890 真迹",crown:"DECK"}, games:{t:"游戏",sub:"GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["命运之神选中了你！","接下来，你将经历一段神奇的旅程——","你将不再是普通玩家！","最后，我会揭示一个巨大的秘密：","关于游戏，关于世界，关于你。","准备好了么？","命运已至。迈出第一步。"],
+    openHook:["命运之神选中了你！","接下来，你将经历一段神奇的旅程——","你将不再是普通玩家！","一个巨大的秘密在等你揭晓：","关于游戏，关于世界，关于你。","准备好了么？","命运已至。迈出第一步。"],
     beats:[
       { say:["勇者的第一张牌！","……好吧，其实是张白牌。上滑，换一张。"], done:"其实第一张牌，开场就打过了——“使命感”。命运选中你？我编的。但你因此走到了这里。" },
       { say:["听！我为你加上了圣音！","再滑一张——听见了吗？","你的大脑刚刚奖励了你。不客气。"], done:"即时反馈。第一个钩子，钉进去了。" },
@@ -142,7 +142,7 @@ export const I18N = {
     locked:["I haven't given you that move yet.","Patience. Unlocks come.","That gesture isn't ready yet."],
     deckQ:"Pick your deck for this run.",
     decks:{ art:{t:"ART",sub:"PAINTINGS · 890 MASTERWORKS",crown:"DECK"}, games:{t:"GAMES",sub:"VIDEO GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["The God of Fate has chosen YOU!","Ahead lies a wondrous journey —","and at its end, you will be ordinary no more!","At the very last, I shall reveal a great secret:","About games. About the world. About you.","Ready?","Fate has arrived. Take the first step."],
+    openHook:["The God of Fate has chosen YOU!","Ahead lies a wondrous journey —","and at its end, you will be ordinary no more!","A great secret awaits your unveiling:","About games. About the world. About you.","Ready?","Fate has arrived. Take the first step."],
     beats:[
       { say:["The hero's first card!","…Okay, it's a blank. Swipe up for the next."], done:"Truth is, I played the first card at the title screen — 'a sense of destiny'. Chosen by fate? I made that up. But it carried you here." },
       { say:["Hark! I grant you holy sound!","Swipe again — hear it?","Your brain just rewarded you. You're welcome."], done:"Instant feedback. The first hook, set." },
