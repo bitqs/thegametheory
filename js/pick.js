@@ -2,7 +2,7 @@
 import { S, F } from "./state.js";
 import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
-import { makeCard, needOf } from "./cards.js";
+import { makeCard, needOf, drawPrinciple } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { els, sparkle, flashGo } from "./dom.js";
 import { land, chord, tick } from "./audio.js";
@@ -21,8 +21,7 @@ function fillFront(c, rar, art){
     c.querySelector(".artfg").style.backgroundImage=u;
     c.querySelector(".meta").textContent=artMeta(art);
     c.querySelector(".tagline").textContent=artLine(art); }
-  const pool = (rar==="SR"||rar==="SSR") ? T().wordsRare : T().words;
-  const ch = pool[(Math.random()*pool.length)|0];
+  const ch = drawPrinciple(rar==="SR"||rar==="SSR");
   const big=c.querySelector(".big"); big.textContent=ch.t;
   c.querySelector(".pline").textContent=ch.s;
 }

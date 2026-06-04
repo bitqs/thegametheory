@@ -33,7 +33,10 @@ export function hasDeck(d){ return POOLS[d].length>0; }
 
 export function pickArt(rar){ if(!S.POOL.length) return null;
   const want = rar ? S.POOL.filter(x=>x.rarity===rar) : null;
-  const list = (want&&want.length)?want:S.POOL; return list[(Math.random()*list.length)|0]; }
+  let list = (want&&want.length)?want:S.POOL;
+  const fresh = list.filter(x=>!S.usedArt.has(x.img));            // 同局画作不重复，耗尽重洗
+  if(fresh.length) list=fresh; else list.forEach(x=>S.usedArt.delete(x.img));
+  const a = list[(Math.random()*list.length)|0]; S.usedArt.add(a.img); return a; }
 
 export function artMeta(a){ if(!a) return ""; const en=getLang()==="en";
   const ti=en?(a.title||""):(a.title_zh||a.title||"");

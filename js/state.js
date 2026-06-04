@@ -16,5 +16,6 @@ export const S = {
   muted:false, ac:null,
   philoStep:0, philoLines:null,
   POOL:[], deck:"art", goalMarks:new Set(), firstSSR:false, t0:Date.now(),
+  usedW:new Set(), usedWR:new Set(), usedArt:new Set(),   // 去重：原则词/深层原则/画作（耗尽重洗）
 
 };

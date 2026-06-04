@@ -5,7 +5,7 @@
 import { S, F } from "./state.js";
 import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
-import { makeCard, needOf, exitUp } from "./cards.js";
+import { makeCard, needOf, exitUp, drawPrinciple } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { els, sparkle, flashGo, flashWhite, rand } from "./dom.js";
 import { riser, land, chord, tick } from "./audio.js";
@@ -87,7 +87,7 @@ export function startBoss(){
       bossC.querySelector(".artfg").style.backgroundImage=u;
       bossC.querySelector(".meta").textContent=artMeta(art);
       bossC.querySelector(".tagline").textContent=artLine(art); }
-    const pool=T().wordsRare, ch=pool[(Math.random()*pool.length)|0];
+    const ch=drawPrinciple(true);
     const big=bossC.querySelector(".big"); big.textContent=ch.t;
     bossC.querySelector(".pline").textContent=ch.s;
     big.style.fontSize="15px";                                  // Boss 牌小，字号跟着锁

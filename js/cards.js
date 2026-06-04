@@ -13,6 +13,34 @@ import { openShareEnergy } from "./share.js";
 
 export function needOf(b){ return b.need; }
 
+// beat → 优先掉落的原则（牌面与正在装的机制呼应）；中英 t 名都列
+const BEATMATCH = {
+  sound:["音效","即时反馈","SOUND","FEEDBACK"],
+  random:["可变奖励","开箱","VARIABLE REWARD","LOOT BOX"],
+  rarity:["稀有度","稀缺","RARITY","SCARCITY"],
+  bar:["进度条","禀赋进度","PROGRESS BAR","ENDOWED PROGRESS"],
+  score:["分数","暴击","POINTS","CRIT"],
+  level:["升级","里程碑","LEVELS","MILESTONE"],
+  collect:["收集欲","成就","彩蛋","COLLECTION","ACHIEVEMENT","EASTER EGG"],
+  energy:["体力","每日任务","签到","ENERGY","DAILY QUEST","CHECK-IN"],
+  pick3:["保底","新手运","PITY TIMER","BEGINNER'S LUCK"],
+  story:["好奇缺口","彩蛋","CURIOSITY GAP","EASTER EGG"],
+  juice:["音效","暴击","皮肤","SOUND","CRIT","SKINS"],
+  boss:["技能幻觉","心流","SKILL ILLUSION","FLOW"],
+  pick4:["差一点","损失厌恶","NEAR-MISS","LOSS AVERSION"],
+  goalreveal:["沉没成本","峰终定律","进度条","SUNK COST","PEAK-END RULE","PROGRESS BAR"],
+};
+// 抽设计原则：先掉当前 beat 呼应的（未用过的），否则全池去重；耗尽重洗
+export function drawPrinciple(big2){
+  const pool = big2 ? T().wordsRare : T().words;
+  const used = big2 ? S.usedWR : S.usedW;
+  const match = BEATMATCH[BEATS[S.beatIdx]?.on[0]] || [];
+  let avail = pool.filter(x=>!used.has(x.t) && match.includes(x.t));
+  if(!avail.length) avail = pool.filter(x=>!used.has(x.t));
+  if(!avail.length){ used.clear(); avail=pool; }
+  const ch = avail[(Math.random()*avail.length)|0]; used.add(ch.t); return ch;
+}
+
 export function makeCard(){
   const c=document.createElement("div"); c.className="card";
   c.innerHTML=`<div class="flip">
@@ -88,9 +116,8 @@ export function flipCard(type){
   const art=cur.__art||pickArt(rar); cur.__art=art;
   if(art){ const u="url('"+art.img+"')"; cur.querySelector(".artbg").style.backgroundImage=u; cur.querySelector(".artfg").style.backgroundImage=u;
     if(rar && rar===S.bestR) S.bestArt=art; }   // 记最高档画作，给战绩卡当主视觉
-  // 牌面=游戏设计原则+一句招供；稀有牌掉深层原则。收藏=集齐设计原则
-  const pool = big2 ? T().wordsRare : T().words;
-  const ch = pool[(Math.random()*pool.length)|0]; big.textContent=ch.t; S.collected.push(ch.t);
+  // 牌面=游戏设计原则+一句招供；稀有牌掉深层原则。收藏=集齐设计原则（同局不重复）
+  const ch = drawPrinciple(big2); big.textContent=ch.t; S.collected.push(ch.t);
   cur.querySelector(".pline").textContent=ch.s;
   big.style.fontSize = ch.t.length<=5 ? "30px" : ch.t.length<=8 ? "24px" : "19px";
   const fresh=!S.collSet.has(ch.t); S.collSet.add(ch.t);
