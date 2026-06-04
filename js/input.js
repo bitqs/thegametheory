@@ -14,14 +14,9 @@ export function handleGesture(type){
     const b=BEATS[S.beatIdx];
     if(b.g==="share"){ if(type==="tap"){ S.pendingPhilo=true; drawShare("progress"); } return; }
     if(!G[type]){ quipLocked(); return; }
-    if(type==="tap"){                                   // 点击=翻牌（charge beat 要求下滑蓄力）
-      if(!S.card) return;
-      if(b.g==="down"){ quipWrong(); return; }
-      flipCard("tap");
-    } else if(type==="up"){ swapCard(); }               // 上滑=换牌（未翻开 swapCard 内部拒绝并提示）
-    else if(type==="down"){                             // 下滑=蓄力翻（charge 解锁后）
-      if(S.card) flipCard("down"); else quipWrong();
-    }
+    if(type==="tap"){ if(S.card) flipCard("tap"); }     // 点击=翻牌
+    else if(type==="up"){ swapCard(); }                 // 上滑=换牌（未翻开 swapCard 内部拒绝并提示）
+    else if(type==="down"){ quipWrong(); }
   } else if(S.phase==="outro"){
     if(type==="up"||type==="tap") nextBeat();
   } else if(S.phase==="philo"){ philoNext(); }

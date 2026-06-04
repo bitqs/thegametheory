@@ -1,6 +1,6 @@
 // ★ 所有可调数值/结构集中在此（改平衡只动这里，不碰逻辑）
 // Beat 结构：on=开启的机制 / g=期望手势 / need=动作数（文案在 i18n.js 的 beats，按序号对应）
-// 主交互=上滑换牌；牌自动翻（SR/SSR 留背等手翻 tap）；charge beat 用下滑蓄力翻
+// 主交互=上滑换牌；牌自动翻（SR/SSR 留背等手翻 tap）；pick beat=选牌（真随机/near-miss）
 export const BEATS = [
   { on:[],          g:"up",  need:1 },
   { on:["sound"],   g:"up",  need:3 },
@@ -11,9 +11,10 @@ export const BEATS = [
   { on:["level"],   g:"up",  need:7 },
   { on:["collect"], g:"up",  need:6 },
   { on:["energy"],  g:"up",  need:5 },
-  { on:["charge"],  g:"down",need:3 },
+  { on:["pick3"],   g:"pick",need:2 },
   { on:["story"],   g:"up",  need:5 },
   { on:["juice"],   g:"up",  need:5 },
+  { on:["pick4"],   g:"pick",need:1 },
   { on:["goalreveal"], g:"up", need:5 },
   { on:["share"],   g:"tap", need:1 },
 ];

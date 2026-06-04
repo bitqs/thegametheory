@@ -2,8 +2,8 @@ import test from "node:test";
 import assert from "node:assert";
 import { BEATS, TARGET, TUNE } from "../js/config.js";
 
-test("14 beats, every need positive", () => {
-  assert.equal(BEATS.length, 14);
+test("15 beats, every need positive", () => {
+  assert.equal(BEATS.length, 15);
   for (const b of BEATS) assert.ok(b.need > 0, "need>0");
 });
 
@@ -13,7 +13,7 @@ test("mechanic flags are unique across beats", () => {
 });
 
 test("every beat gesture is valid", () => {
-  for (const b of BEATS) assert.ok(["tap","up","down"].includes(b.g), "valid gesture");
+  for (const b of BEATS) assert.ok(["tap","up","pick"].includes(b.g), "valid gesture");
 });
 
 test("TARGET = Σ need up to & incl goalreveal beat", () => {

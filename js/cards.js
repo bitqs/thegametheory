@@ -38,20 +38,18 @@ export function spawnBack(){
   c.__rar=rar; c.__isHit=isHit;
   const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
   if(rar) c.style.setProperty("--rc",RC[rar]);
-  const g = S.phase==="play" ? BEATS[S.beatIdx].g : "up";
   const uphint=c.querySelector(".back .uphint");
-  uphint.textContent = g==="down" ? hintWord("down") : wait ? hintWord("tap") : "";
+  uphint.textContent = wait ? hintWord("tap") : "";
   if(wait){ c.classList.add(rar==="SSR"?"wait-ssr":"wait-sr"); if(rar==="SSR"&&F.sound) riser(700); }
   requestAnimationFrame(()=>c.classList.add("in"));
-  // 低档自动翻；charge beat(下滑蓄力)与 share beat 不自动，等指定手势
-  if(!wait && g==="up") c.__auto=setTimeout(()=>flipCard("auto"), 520);
+  // 低档自动翻；SR/SSR 留背等手翻
+  if(!wait) c.__auto=setTimeout(()=>flipCard("auto"), 520);
 }
 
 // 上滑换牌（主交互）：仅翻开的牌可换——面朝下的先翻（自动或手翻）
 export function swapCard(){
   if(S.busy) return false;
-  if(S.card){ const g=S.phase==="play"?BEATS[S.beatIdx].g:"up";          // 未翻不能换，提示该做的动作
-    quip(hintWord(g==="down"?"down":"tap")); return false; }
+  if(S.card){ quip(hintWord("tap")); return false; }                     // 未翻不能换：提示点牌
   if(!S.shown){ spawnBack(); return true; }                              // 台上空了：直接出牌
   if(F.energy){ if(S.energy<=0){ openShareEnergy(); return false; }
     S.energy--; renderEnergy();
@@ -63,7 +61,7 @@ export function swapCard(){
   return true;
 }
 
-// 翻开当前面朝下的牌（auto=自动 / tap=手翻 / down=下滑蓄力翻）
+// 翻开当前面朝下的牌（auto=自动 / tap=手翻）
 export function flipCard(type){
   if(S.busy) return false;
   if(!S.card) return false;
@@ -124,13 +122,8 @@ export function flipCard(type){
     if(last) enterOutro();                              // 翻完留场上，上滑进下一拍/换牌
   };
 
-  if(type==="down" && F.charge){
-    const ms=1100; cur.classList.add("charging"); riser(ms);
-    setTimeout(()=>{ cur.classList.remove("charging"); doReveal(); }, ms);
-  } else {
-    if(F.sound && type!=="auto") tick();
-    requestAnimationFrame(()=>requestAnimationFrame(doReveal));
-  }
+  if(F.sound && type!=="auto") tick();
+  requestAnimationFrame(()=>requestAnimationFrame(doReveal));
   return true;
 }
 // 所有牌统一：向上滑动隐去，移除后再回调出下一张（避免两张同时占位导致居中跳动）

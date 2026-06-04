@@ -18,11 +18,15 @@ export function applyBeat(){ const b=BEATS[S.beatIdx];
     if(f==="energy"){ S.energy=3; renderEnergy(); showChip($("cEnergy")); }
     if(f==="goalreveal"){ els.top.classList.add("reveal"); $("goalName").textContent=T().goalFinal; }
   });
-  if(b.g==="up") G.up=1; if(b.g==="down") G.down=1;     // 解锁手势
   S.phase="play"; S.actCount=0; clearSay();
-  const bi=S.beatIdx; setTimeout(()=>{ if(S.phase==="play"&&S.beatIdx===bi) speak(T().beats[bi].say); },300);
+  const bi=S.beatIdx; setTimeout(()=>{ if((S.phase==="play"||S.phase==="pick")&&S.beatIdx===bi) speak(T().beats[bi].say); },300);
   S.card=null;
   const prev=S.shown; S.shown=null;
+  if(b.g==="pick"){                                                    // 选牌 beat：三/四选一
+    [...els.stage.children].forEach(c=>c.remove());
+    import("./pick.js").then(m=>m.startPick(b.on.includes("pick4")?4:3, b.on.includes("pick4")?"nearmiss":null));
+    setHint("pick"); return;
+  }
   [...els.stage.children].forEach(c=>{ if(c!==prev) c.remove(); });    // 清掉残留，防累积
   if(prev) exitUp(prev, spawnBack);                                    // 上一张上滑隐去 → 再出现下一张
   else spawnBack();

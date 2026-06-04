@@ -253,6 +253,13 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chooseWrap .ccard-out{transition:opacity .5s,transform .5s;opacity:0;transform:scale(.9);pointer-events:none}
 .chooseWrap .chint{margin-top:14px;text-align:center;font-size:13px;letter-spacing:.3em;
   color:var(--dim);transition:opacity .4s}                            /* 牌背题注（翻面即淡出） */
+/* 选牌 beat：选后揭示全部——错过的高级牌发光，其余压暗（near-miss 视觉核心） */
+.pickWrap{padding:0 10px}
+.pickWrap .ccard{cursor:pointer}
+.pickWrap .missed{filter:grayscale(.7) brightness(.5);transition:filter .6s}
+.pickWrap .missed-hot{animation:misshot 1.6s ease-in-out infinite}
+@keyframes misshot{0%,100%{filter:brightness(1.05) drop-shadow(0 0 18px var(--rc))}
+  50%{filter:brightness(1.25) drop-shadow(0 0 34px var(--rc))}}
 #lang .langtip{margin-top:34px;font-family:"Cinzel",serif;font-size:11px;letter-spacing:.18em;color:var(--faint);opacity:0;animation:langfade 1s 1.1s forwards}
 @keyframes langfade{to{opacity:.65}}
 /* 选择 */
