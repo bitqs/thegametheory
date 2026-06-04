@@ -89,11 +89,13 @@ export async function drawShare(mode){
   const cy=H*.335, R=118;
   x.strokeStyle=accent+"77"; x.lineWidth=1; x.beginPath(); x.arc(W/2,cy,R,0,7); x.stroke();
   x.strokeStyle=accent+"33"; x.beginPath(); x.arc(W/2,cy,R+8,0,7); x.stroke();
-  const hero = isYou ? T().finale.youChar : (e?e.char : (S.collected.slice(-1)[0]||"—"));
+  const hero = isYou ? "?" : (e?e.char : (S.collected.slice(-1)[0]||"—"));   // 分享图主字=问号（台上那张仍是"你"）
   const heroLong = [...String(hero)].length>4;
-  x.fillStyle=accent; x.font=(getLang()==="en"?"600 ":"400 ")+(heroLong?44:96)+"px "+(getLang()==="en"?"'Playfair Display',serif":"'Noto Serif SC',serif");
+  x.fillStyle=accent;
+  if(isYou) x.font="600 112px 'Playfair Display','Cormorant Garamond',serif";  // 正体衬线问号，不歪
+  else x.font=(getLang()==="en"?"600 ":"400 ")+(heroLong?44:96)+"px "+(getLang()==="en"?"'Playfair Display',serif":"'Noto Serif SC',serif");
   x.shadowColor=accent; x.shadowBlur=34;
-  if(heroLong) wrap(x,hero,W/2,cy-10,R*1.5,52); else x.fillText(hero,W/2,cy+34);
+  if(heroLong) wrap(x,hero,W/2,cy-10,R*1.5,52); else x.fillText(hero,W/2,cy+(isYou?38:34));
   x.shadowBlur=0;
   // 引言（you 模式：SSS·《你》·限量 1/1 + 一句）
   x.fillStyle=ink; x.font="italic 25px "+(getLang()==="en"?"'Cormorant Garamond',serif":"'Noto Serif SC',serif");

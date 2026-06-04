@@ -88,7 +88,7 @@ export const I18N = {
     dead:{ t:"你 死 了", sub:"开玩笑的。只是心力用完了——分享一下，立刻复活。" },
     finale:{
       mirror:["最后一张牌。全黑的。","盯着它，看仔细——里面什么都没有。","……不对。把手机稍微压低一点。","看见黑色里那个反光的人影了吗？","这局真正的奖励——从头到尾，都是那个人。"],
-      youChar:"?", youRank:"人生", youMeta:"《你》 · 至今 · 开放世界 · 永久运营",
+      youChar:"你", youRank:"人生", youMeta:"《你》 · 至今 · 开放世界 · 永久运营",
       youLine:"更好的你自己。", youSerial:"限量 1 / 1",
       youQuip:"开个玩笑。但评级是认真的——SSS。",
     },
@@ -180,7 +180,7 @@ export const I18N = {
     dead:{ t:"YOU DIED", sub:"Kidding. You're just out of hearts — share once, instant respawn." },
     finale:{
       mirror:["The last card. Pure black.","Look closely — there's nothing inside.","…wait. Tilt your phone down, just a little.","See that reflection in the dark?","The real reward, start to finish — is that person."],
-      youChar:"?", youRank:"LIFE", youMeta:"“YOU” · ongoing · OPEN WORLD · live service",
+      youChar:"YOU", youRank:"LIFE", youMeta:"“YOU” · ongoing · OPEN WORLD · live service",
       youLine:"A better you.", youSerial:"LIMITED 1 / 1",
       youQuip:"Half a joke. The rating, though, is serious — SSS.",
     },
