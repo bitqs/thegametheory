@@ -128,3 +128,13 @@ export const I18N = {
     energyShare:{title:"Play with me?",scan:"Scan to join · you'll get hooked",plus:"＋3 LIFE",gain:"Share　＋3 LIFE",skip:"Skip, continue",tip:"Scan to play with friends · life granted anyway",gainMsg:"(You didn't really share. Life granted anyway — I need you to continue.)",skipMsg:"(Skipping's fine. I only wanted you to hesitate.)"},
   },
 };
+
+// 后台微调（/admin.html 存 localStorage）：beats 文案 / openHook 覆盖
+try{ const ov=JSON.parse(localStorage.getItem("gt.overrides")||"null");
+  if(ov?.i18n) for(const L of ["zh","en"]){ const o=ov.i18n[L]; if(!o) continue;
+    if(o.openHook) I18N[L].openHook=o.openHook;
+    if(o.beats) o.beats.forEach((b,i)=>{ if(!b||!I18N[L].beats[i]) return;
+      if(b.say) I18N[L].beats[i].say=b.say;
+      if(typeof b.done==="string") I18N[L].beats[i].done=b.done; });
+  }
+}catch{}

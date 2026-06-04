@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GT №2 · 后台</title>
+<style>
+  :root{--bg:#0b0a12;--ink:#e9e6f2;--dim:#9a93b0;--gold:#ffd34d;--line:rgba(255,255,255,.1)}
+  body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.6 -apple-system,"PingFang SC",sans-serif;padding:24px}
+  h1{font-size:18px;letter-spacing:.2em;color:var(--gold);font-weight:600}
+  .bar{position:sticky;top:0;background:var(--bg);padding:10px 0;display:flex;gap:10px;align-items:center;z-index:5;border-bottom:1px solid var(--line)}
+  button{background:rgba(255,211,77,.12);border:1px solid rgba(255,211,77,.5);color:var(--gold);
+    border-radius:8px;padding:6px 14px;cursor:pointer;font-size:13px}
+  button.ghost{background:transparent;border-color:var(--line);color:var(--dim)}
+  .status{color:var(--dim);font-size:12px;margin-left:auto}
+  .beat{border:1px solid var(--line);border-radius:12px;margin:14px 0;padding:14px 16px;background:rgba(255,255,255,.02)}
+  .bh{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .idx{font-family:ui-monospace,monospace;color:var(--gold);font-size:13px}
+  .flag{font-size:12px;padding:1px 8px;border:1px solid var(--line);border-radius:10px;color:var(--dim)}
+  .g{color:#7dffaa;font-size:12px}
+  label.need{font-size:12px;color:var(--dim)}
+  input.need{width:52px;background:#14121f;border:1px solid var(--line);color:var(--ink);border-radius:6px;padding:3px 6px}
+  .cols{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:10px}
+  @media(max-width:760px){.cols{grid-template-columns:1fr}}
+  .col h4{margin:0 0 6px;font-size:11px;letter-spacing:.15em;color:var(--dim)}
+  textarea{width:100%;box-sizing:border-box;background:#14121f;border:1px solid var(--line);color:var(--ink);
+    border-radius:8px;padding:8px 10px;font:13px/1.6 inherit;resize:vertical}
+  textarea.say{min-height:74px}
+  textarea.done{min-height:44px;border-color:rgba(255,211,77,.25)}
+  .hint{font-size:11px;color:var(--dim);margin:2px 0 4px}
+  .dirty{outline:1px solid var(--gold)}
+  #out{width:100%;min-height:120px;margin-top:10px;display:none}
+  .sec{margin-top:26px}
+</style>
+</head>
+<body>
+<div class="bar">
+  <h1>游戏的诞生 · 流程后台</h1>
+  <button id="save">保存（本机即时生效）</button>
+  <button id="export" class="ghost">导出 JSON</button>
+  <button id="reset" class="ghost">清除微调</button>
+  <span class="status" id="status">—</span>
+</div>
+<p class="hint">say 每行一句（换行分隔）；done=层尾洞见。保存写入本机 localStorage——同一浏览器开
+<a href="/?debug" style="color:var(--gold)">游戏页</a> 刷新即用改后的值。满意后「导出 JSON」发给 Claude 落库。本页不部署。</p>
+
+<div class="sec"><h3>开场白 openHook（片头字幕，每行一句）</h3>
+  <div class="cols">
+    <div class="col"><h4>中文</h4><textarea id="hookzh" class="say"></textarea></div>
+    <div class="col"><h4>EN</h4><textarea id="hooken" class="say"></textarea></div>
+  </div>
+</div>
+
+<div id="list"></div>
+<textarea id="out" readonly></textarea>
+
+<script type="module">
+import { BEATS } from "/js/config.js";
+import { I18N } from "/js/i18n.js";
+const $=id=>document.getElementById(id);
+const KEY="gt.overrides";
+const GNAME={up:"↑上滑换牌",tap:"○点按",pick:"○选牌",hold:"⊙蓄力"};
+
+// 渲染 16 拍列表（config/i18n 已套用现有 override，所见即当前生效值）
+const list=$("list");
+BEATS.forEach((b,i)=>{
+  const zh=I18N.zh.beats[i], en=I18N.en.beats[i];
+  const d=document.createElement("div"); d.className="beat";
+  d.innerHTML=`
+    <div class="bh"><span class="idx">#${String(i).padStart(2,"0")}</span>
+      <span class="flag">${b.on.join("+")||"opening"}</span>
+      <span class="g">${GNAME[b.g]||b.g}</span>
+      <label class="need">need <input class="need" type="number" min="1" value="${b.need}" data-i="${i}"></label></div>
+    <div class="cols">
+      <div class="col"><h4>中文 · say</h4><textarea class="say" data-k="zh.say" data-i="${i}">${zh.say.join("\n")}</textarea>
+        <h4>中文 · done</h4><textarea class="done" data-k="zh.done" data-i="${i}">${zh.done}</textarea></div>
+      <div class="col"><h4>EN · say</h4><textarea class="say" data-k="en.say" data-i="${i}">${en.say.join("\n")}</textarea>
+        <h4>EN · done</h4><textarea class="done" data-k="en.done" data-i="${i}">${en.done}</textarea></div>
+    </div>`;
+  list.appendChild(d);
+});
+$("hookzh").value=I18N.zh.openHook.join("\n");
+$("hooken").value=I18N.en.openHook.join("\n");
+document.addEventListener("input",e=>{ if(e.target.matches("textarea,input.need")) e.target.classList.add("dirty"); });
+
+function collect(){
+  const ov={needs:[], i18n:{zh:{beats:[]},en:{beats:[]}}};
+  document.querySelectorAll("input.need").forEach(inp=>{ ov.needs[+inp.dataset.i]=+inp.value||0; });
+  document.querySelectorAll("textarea[data-k]").forEach(t=>{
+    const [L,f]=t.dataset.k.split("."), i=+t.dataset.i;
+    ov.i18n[L].beats[i]=ov.i18n[L].beats[i]||{};
+    ov.i18n[L].beats[i][f]= f==="say" ? t.value.split("\n").map(s=>s.trim()).filter(Boolean) : t.value.trim();
+  });
+  ov.i18n.zh.openHook=$("hookzh").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  ov.i18n.en.openHook=$("hooken").value.split("\n").map(s=>s.trim()).filter(Boolean);
+  return ov;
+}
+$("save").onclick=()=>{ localStorage.setItem(KEY, JSON.stringify(collect()));
+  document.querySelectorAll(".dirty").forEach(x=>x.classList.remove("dirty"));
+  $("status").textContent="已保存 "+new Date().toLocaleTimeString()+"，游戏页刷新生效"; };
+$("export").onclick=()=>{ const o=$("out"); o.style.display="block";
+  o.value=JSON.stringify(collect(),null,2); o.select(); document.execCommand("copy");
+  $("status").textContent="JSON 已复制到剪贴板"; };
+$("reset").onclick=()=>{ localStorage.removeItem(KEY);
+  $("status").textContent="微调已清除，刷新本页恢复源码值"; };
+$("status").textContent= localStorage.getItem(KEY) ? "本机有微调生效中" : "无微调（源码原值）";
+</script>
+</body>
+</html>

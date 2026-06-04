@@ -35,6 +35,11 @@ export const EG = {
   now:["linear-gradient(160deg,#1a1a1f,#050506)","#e9e6f2"],
 };
 
+// 后台微调（/admin.html 存 localStorage）：need 覆盖须在 TARGET 计算前生效
+try{ const ov=JSON.parse(localStorage.getItem("gt.overrides")||"null");
+  if(ov?.needs) ov.needs.forEach((n,i)=>{ if(n>0 && BEATS[i]) BEATS[i].need=n; });
+}catch{}
+
 // 终极目标主进度条目标值 = 到 goalreveal beat 为止的动作总数
 export const TARGET = BEATS.slice(0, BEATS.findIndex(b=>b.on.includes("goalreveal"))+1)
   .reduce((s,b)=>s+b.need, 0);
