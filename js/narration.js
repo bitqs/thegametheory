@@ -10,8 +10,10 @@ export function pushLine(text, dim){
   if(ls.length>SAYMAX){ const old=ls[0]; old.classList.remove("show"); setTimeout(()=>old.remove(),700); }
   return d;
 }
-export function speak(lines){ lines.forEach((t,i)=> setTimeout(()=>pushLine(t, i===lines.length-1&&lines.length>1), 250+i*700)); }
-export function clearSay(){ [...els.say.children].forEach(d=>{ d.classList.remove("show"); setTimeout(()=>d.remove(),550); }); }
+let speakT=[];                       // 待落地的旁白行计时器：clearSay 一并取消，防晚到的行盖住洞见
+export function speak(lines){ speakT=lines.map((t,i)=> setTimeout(()=>pushLine(t, i===lines.length-1&&lines.length>1), 250+i*700)); }
+export function clearSay(){ speakT.forEach(clearTimeout); speakT=[];
+  [...els.say.children].forEach(d=>{ d.classList.remove("show"); setTimeout(()=>d.remove(),550); }); }
 let quipT=null;
 export function quip(t){ const d=pushLine(t,true); clearTimeout(quipT);
   quipT=setTimeout(()=>{ d.classList.remove("show"); setTimeout(()=>d.remove(),500); },1600); }

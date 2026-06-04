@@ -44,7 +44,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 #energyDots i.spent{opacity:.16;transform:scale(.7);box-shadow:none}
 
 /* ── 卡片 ── */
-#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:10;
+  padding-bottom:16vh}                                  /* 牌上移：给底部旁白/提示让出专属区，互不遮挡 */
+@media(max-height:700px){ #stage .card{width:min(62vw,232px)} }   /* 矮屏缩牌，保住旁白区 */
 .card{width:min(70vw,260px);aspect-ratio:1/1.618;position:relative;perspective:1400px;
   will-change:transform,opacity;scale:1;transition:scale .3s cubic-bezier(.34,1.56,.64,1)}  /* 松手回弹（轻微过冲） */
 .card.pressed{scale:.96;transition:scale .12s ease}                                         /* 按下收缩，即时反馈 */
