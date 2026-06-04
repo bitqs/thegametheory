@@ -277,18 +277,39 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 #top.climax{transform:scale(1.12);transform-origin:center top;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
 #top.climax #goalFill{animation:goalblaze 1.2s ease-in-out infinite}
 @keyframes goalblaze{0%,100%{box-shadow:0 0 10px var(--gold)}50%{box-shadow:0 0 30px var(--gold),0 0 60px rgba(255,211,77,.5)}}
-/* boss beat：怪物牌（红光呼吸）+ 蓄力条三区反馈 */
-.card.boss .back{animation:breathe 1.6s ease-in-out infinite}
-.card.boss .back .glyph{color:#ff5a5a;text-shadow:0 0 28px #ff5a5a;font-size:54px}
-.card.boss .cfill{position:absolute;left:0;right:0;bottom:0;height:0;pointer-events:none;
+/* boss beat：上 Boss 牌探头 / 下蓄力牌变小；绿区指示；冲撞打击感 */
+.bossArena{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+  justify-content:space-between;padding:0 0 13vh}
+#stage .bossArena .card.bossTop{width:min(44vw,175px);margin-top:-7%}        /* Boss 探出一点 */
+#stage .bossArena .card.chargeCard{width:min(54vw,210px)}                    /* 蓄力牌缩小待命 */
+.card.bossTop .back{animation:breathe 1.6s ease-in-out infinite}
+.card.bossTop .back .glyph{color:#ff5a5a;text-shadow:0 0 28px #ff5a5a;font-size:44px}
+.card.chargeCard .back .glyph{color:var(--gold);text-shadow:0 0 18px var(--gold)}
+.card.chargeCard .cfill{position:absolute;left:0;right:0;bottom:0;height:0;pointer-events:none;
   background:linear-gradient(to top,rgba(255,90,90,.32),rgba(255,211,77,.4));transition:height .05s linear}
-.card.boss.overheat .back{box-shadow:0 0 44px -2px #ff2a2a}
-.card.boss.overheat .cfill{background:linear-gradient(to top,#ff2a2a99,#ff6a0066)}
-.card.boss.bounce{animation:bounceoff .55s ease}
-@keyframes bounceoff{0%{transform:none}30%{transform:translateX(-14px) rotate(-3deg)}
-  60%{transform:translateX(10px) rotate(2deg)}100%{transform:none}}
-.card.boss.blast{animation:blastout .85s ease}
-.card.boss.blast .back{filter:brightness(.45) sepia(.6) hue-rotate(-30deg)}
+.card.chargeCard .zoneline{position:absolute;left:0;right:0;height:2px;pointer-events:none;
+  background:rgba(122,255,170,.55);box-shadow:0 0 6px rgba(122,255,170,.5)}  /* 绿区上下界 */
+.card.chargeCard.inzone .cfill{background:linear-gradient(to top,rgba(80,255,150,.3),rgba(160,255,190,.45))}
+.card.chargeCard.inzone .back{box-shadow:0 0 36px -4px #5dff96}
+.card.chargeCard.inzone .back .glyph{color:#7dffaa;text-shadow:0 0 24px #5dff96}
+.card.chargeCard.inzone .back .uphint{color:#9dffbe}
+.card.chargeCard.overheat .back{box-shadow:0 0 44px -2px #ff2a2a}
+.card.chargeCard.overheat .cfill{background:linear-gradient(to top,#ff2a2a99,#ff6a0066)}
+/* 打击感：冲撞-顿帧-震退 */
+.card.chargeCard.lunge-weak{animation:lungeweak .8s cubic-bezier(.3,.7,.4,1)}
+@keyframes lungeweak{0%{transform:none}28%{transform:translateY(-46%)}      /* 冲一半 */
+  45%{transform:translateY(-40%)}100%{transform:none}}                       /* 滑落弹回 */
+.card.bossTop.mock{animation:mock .5s ease}
+@keyframes mock{0%,100%{transform:none}30%{transform:rotate(-4deg)}65%{transform:rotate(3deg)}}
+.card.chargeCard.lunge-hit{animation:lungehit .24s cubic-bezier(.5,0,1,.6) forwards}
+@keyframes lungehit{to{transform:translateY(-88%) scale(.97)}}               /* 全速冲撞 */
+.card.chargeCard.recoil{animation:recoil .5s cubic-bezier(.2,.9,.3,1) .08s forwards}  /* 顿帧 80ms 后回弹 */
+@keyframes recoil{from{transform:translateY(-88%) scale(.97)}to{transform:none}}
+.card.bossTop.staggered{animation:stagger .55s cubic-bezier(.2,.9,.3,1) .08s}
+@keyframes stagger{0%{transform:none}25%{transform:translateY(-26px) scale(1.07) rotate(2deg)}
+  55%{transform:translateY(-8px) scale(1.02) rotate(-1.5deg)}100%{transform:none}}
+.card.chargeCard.blast{animation:blastout .85s ease}
+.card.chargeCard.blast .back{filter:brightness(.45) sepia(.6) hue-rotate(-30deg)}
 @keyframes blastout{0%{transform:scale(1)}15%{transform:scale(1.12)}30%{transform:scale(.94) rotate(2deg)}
   50%{transform:scale(1.04) rotate(-2deg)}100%{transform:scale(1)}}
 /* 选牌 beat：选后揭示全部——错过的高级牌发光，其余压暗（near-miss 视觉核心） */
