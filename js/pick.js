@@ -63,6 +63,8 @@ export function startPick(n, rig){
     }
     cards.forEach(c=>c.classList.remove("waiting"));
     const mine=cards[i];
+    const holder=wrap.children[i]; holder.classList.add("chosen");   // 选中卡：描边+标签，与隔壁金卡区分
+    holder.dataset.label=T().yourPick;
     fillFront(mine, mine.__rar, mine.__art); flipOpen(mine);
     const hit = mine.__rar==="SR"||mine.__rar==="SSR";
     if(hit){ flashGo(true); sparkle(14); chord(); } else land(false);

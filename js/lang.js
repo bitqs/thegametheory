@@ -35,8 +35,8 @@ function chooseLang(code){ if(S.phase!=="lang") return; S.phase="langpick"; setL
   actx(); startBgm(); setUILang();
   if(hasDeck("games")) buildDeckPick();                  // 有游戏卡组才给二选一，否则直进
   else { $("lang").classList.remove("show"); openingHook(); } }
-// 第二道盲选：画 / 游戏（复用 chooser；标题+题注按已选语言）
-const DECKS=["art","games"];
+// 第二道盲选：游戏(左,默认引导) / 画(右)
+const DECKS=["games","art"];
 function buildDeckPick(){ S.phase="deckpick"; const t=T();
   $("lang").querySelector(".langsub").textContent=t.deckQ;
   $("lang").querySelector(".langttl").textContent="THE GAME THEORY · №2";
@@ -48,7 +48,10 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
     mount: wrap,
     onPick: idx=>{ setDeck(DECKS[idx]);
       $("lang").classList.remove("show"); openingHook(); },
-  }); }
+  });
+  const first=wrap.querySelector(".ccard");                       // 引导首选游戏卡：呼吸更亮 + 题注金字
+  first.classList.add("nudge-pick");
+  const fh=first.querySelector(".chint"); if(fh) fh.textContent+=" ✦"; }
 function openingHook(){ const h=T().openHook;            // 使命交付：逐行递进，最后一行许诺"秘密"
   h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2100));
   setTimeout(()=>{ hideInsight(); S.beatIdx=0; applyBeat(); }, h.length*2100);
