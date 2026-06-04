@@ -20,7 +20,7 @@ export const I18N = {
     locked:["那个动作，我还没给你呢。","急什么，慢慢解锁。","这个手势，还没到时候。"],
     deckQ:"这局，用什么做牌面？",
     decks:{ art:{t:"画",sub:"PAINTINGS · 890 真迹",crown:"DECK"}, games:{t:"游戏",sub:"GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["好看吧？记住这张脸。","我要把它拿走——从最朴素的开始。"],
+    openHook:["好看吧？记住这张脸。","我要把它拿走——我们从一无所有开始。","陪我把一个游戏从零造出来。","装好最后一个零件时，我给你看一个秘密。"],
     beats:[
       { say:["这是一张牌。","上滑，换一张。"], done:"你做了一个动作。游戏，开始了。" },
       { say:["我加了个声音。","再滑一张——听见了吗？","你的大脑刚刚奖励了你一下。不客气。"], done:"即时反馈。第一个钩子，钉进去了。" },
@@ -48,6 +48,8 @@ export const I18N = {
     endAgain:"再玩一次", endShare:"生成战绩卡",
     share:{sub:"№2 · 游戏的诞生",scan:"扫码即玩 · SCAN TO PLAY",goalDone:"终极目标 100% · 达成",best:"最高",save:"保存图片",close:"关闭",tip:"长按图片可保存 · thegametheory.pages.dev",myline:"我玩了一个，拆穿自己的游戏。",score:"分数",level:"LV",collected:"收藏",unit:"种"},
     milestone:(n)=>"收藏里程碑 · 集齐 "+n+" 种！",
+    goalMilestone:(m)=>"进度 "+m+"% · 终点更近了",
+    firstSSR:"✦ 首张传世！手气封神 ✦",
     energyShare:{title:"和我一起玩？",scan:"扫码加入 · 你会上头的",plus:"＋3 心力",gain:"分享给朋友　＋3 心力",skip:"不分享，继续",tip:"扫码和朋友一起玩 · 心力照给",gainMsg:"（你没真的分享。心力照给——我要你继续。）",skipMsg:"（不分享也行。我只是想让你犹豫那一下。）"},
   },
   en: {
@@ -65,7 +67,7 @@ export const I18N = {
     locked:["I haven't given you that move yet.","Patience. Unlocks come.","That gesture isn't ready yet."],
     deckQ:"Pick your deck for this run.",
     decks:{ art:{t:"ART",sub:"PAINTINGS · 890 MASTERWORKS",crown:"DECK"}, games:{t:"GAMES",sub:"VIDEO GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["Beautiful, isn't it? Remember this face.","I'm taking it away — we start from the barest thing."],
+    openHook:["Beautiful, isn't it? Remember this face.","I'm taking it away — we start from nothing.","Build a game with me, from zero.","When the last piece clicks in, I'll show you a secret."],
     beats:[
       { say:["This is a card.","Swipe up for the next."], done:"You did something. The game has begun." },
       { say:["I added a sound.","Swipe again — hear it?","Your brain just rewarded you. You're welcome."], done:"Instant feedback. The first hook, set." },
@@ -93,6 +95,8 @@ export const I18N = {
     endAgain:"Play again", endShare:"Share card",
     share:{sub:"№2 · The Birth of a Game",scan:"SCAN TO PLAY",goalDone:"ULTIMATE GOAL 100% · DONE",best:"BEST",save:"Save image",close:"Close",tip:"Long-press to save · thegametheory.pages.dev",myline:"I played a game that exposed itself.",score:"SCORE",level:"LV",collected:"COLLECTED",unit:""},
     milestone:(n)=>"Collection milestone · "+n+" kinds!",
+    goalMilestone:(m)=>"Progress "+m+"% · the end draws closer",
+    firstSSR:"✦ First LEGEND! Blessed hands ✦",
     energyShare:{title:"Play with me?",scan:"Scan to join · you'll get hooked",plus:"＋3 LIFE",gain:"Share　＋3 LIFE",skip:"Skip, continue",tip:"Scan to play with friends · life granted anyway",gainMsg:"(You didn't really share. Life granted anyway — I need you to continue.)",skipMsg:"(Skipping's fine. I only wanted you to hesitate.)"},
   },
 };

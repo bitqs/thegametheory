@@ -1,21 +1,22 @@
 // ★ 所有可调数值/结构集中在此（改平衡只动这里，不碰逻辑）
 // Beat 结构：on=开启的机制 / g=期望手势 / need=动作数（文案在 i18n.js 的 beats，按序号对应）
 // 主交互=上滑换牌；牌自动翻（SR/SSR 留背等手翻 tap）；pick beat=选牌（真随机/near-miss）
+// 前期快节奏：每 1-2 翻就上一个新机制；中后期拉长酝酿
 export const BEATS = [
   { on:[],          g:"up",  need:1 },
-  { on:["sound"],   g:"up",  need:3 },
-  { on:["random"],  g:"up",  need:5 },
-  { on:["rarity"],  g:"up",  need:5 },
-  { on:["bar"],     g:"up",  need:5 },
-  { on:["score"],   g:"up",  need:5 },
-  { on:["level"],   g:"up",  need:7 },
-  { on:["collect"], g:"up",  need:6 },
+  { on:["sound"],   g:"up",  need:2 },
+  { on:["random"],  g:"up",  need:2 },
+  { on:["rarity"],  g:"up",  need:3 },
+  { on:["bar"],     g:"up",  need:2 },
+  { on:["score"],   g:"up",  need:2 },
+  { on:["level"],   g:"up",  need:3 },
+  { on:["collect"], g:"up",  need:4 },
   { on:["energy"],  g:"up",  need:5 },
   { on:["pick3"],   g:"pick",need:2 },
-  { on:["story"],   g:"up",  need:5 },
-  { on:["juice"],   g:"up",  need:5 },
+  { on:["story"],   g:"up",  need:4 },
+  { on:["juice"],   g:"up",  need:4 },
   { on:["pick4"],   g:"pick",need:1 },
-  { on:["goalreveal"], g:"up", need:5 },
+  { on:["goalreveal"], g:"up", need:4 },
   { on:["share"],   g:"tap", need:1 },
 ];
 

@@ -36,6 +36,8 @@ export function spawnBack(){
   if(F.rarity){ rar=rollRarity(); isHit = rar!=="N"; }
   else if(F.random){ isHit = Math.random()<0.30; }
   c.__rar=rar; c.__isHit=isHit;
+  c.__art=pickArt(rar);                                 // 出牌时即定画面并预加载，翻开零白图
+  if(c.__art){ const im=new Image(); im.src=c.__art.img; }
   const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
   if(rar) c.style.setProperty("--rc",RC[rar]);
   const uphint=c.querySelector(".back .uphint");
@@ -79,7 +81,7 @@ export function flipCard(type){
     cur.querySelector(".crown .stars").textContent="✦".repeat(RSTARS[rar]);
     if(RANK[rar]>RANK[S.bestR]) S.bestR=rar;
   } else cur.style.setProperty("--rc","#9aa3b2");
-  const art=pickArt(rar); cur.__art=art;
+  const art=cur.__art||pickArt(rar); cur.__art=art;
   if(art){ const u="url('"+art.img+"')"; cur.querySelector(".artbg").style.backgroundImage=u; cur.querySelector(".artfg").style.backgroundImage=u;
     if(rar && rar===S.bestR) S.bestArt=art; }   // 记最高档画作，给战绩卡当主视觉
   // 牌面文字：稀有牌给完整句子，普通牌给短词；按长度定字号
@@ -112,6 +114,8 @@ export function flipCard(type){
     // 反馈分层：稀有度越高越炸
     if(F.sound) land(big2);
     if(isHit){ flashGo(big2); sparkle(rar==="SSR"?18:rar==="SR"?12:rar==="R"?8:(F.juice?8:6)); if(big2&&F.sound) chord(); }
+    if(rar==="SSR" && !S.firstSSR){ S.firstSSR=true;            // 首张传世：单独的里程碑喜报
+      setTimeout(()=>{ flashGo(true); quip(T().firstSSR); },650); }
     if(F.score){ const add=TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60:0);
       S.score+=add; bumpScore(add); }
     if(F.level){ let gg=TUNE.xpBase + (dt<TUNE.fastMs?TUNE.xpFast:0) + (big2?6:0); S.xp+=gg;

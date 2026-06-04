@@ -49,7 +49,8 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
     onPick: idx=>{ setDeck(DECKS[idx]);
       $("lang").classList.remove("show"); openingHook(); },
   }); }
-function openingHook(){ const h=T().openHook;
-  showInsight(h[0]);
-  setTimeout(()=>showInsight(h[1]),2100);
-  setTimeout(()=>{ hideInsight(); S.beatIdx=0; applyBeat(); },4200); }
+function openingHook(){ const h=T().openHook;            // 使命交付：逐行递进，最后一行许诺"秘密"
+  h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2100));
+  setTimeout(()=>{ hideInsight(); S.beatIdx=0; applyBeat(); }, h.length*2100);
+  // 趁开场白预热前几张卡面，开局零白图
+  import("./pool.js").then(m=>{ for(let i=0;i<6;i++){ const a=m.pickArt(null); if(a){ const im=new Image(); im.src=a.img; } } }); }

@@ -14,4 +14,9 @@ export function scheduleRegen(){ if(S.energyTimer) return; S.energyTimer=setInte
   if(S.energy<TUNE.energyMax){ S.energy++; renderEnergy(); if(S.energy>1) dangerOff(); } },TUNE.energyRegen); }
 export function updateGoal(){ const pct=Math.min(100, Math.round(S.doneActions/TARGET*100));
   $("goalFill").style.width=pct+"%"; $("goalPct").textContent=pct+"%";
-  if(pct>=55) els.app.classList.add("warm"); if(pct>=85) els.app.classList.add("hot"); }
+  if(pct>=55) els.app.classList.add("warm"); if(pct>=85) els.app.classList.add("hot");
+  if(F.bar){ for(const m of [25,50,75]){                       // 进度里程碑：跨线即喜报（空进度条也要庆祝，本身就是讽刺）
+    if(pct>=m && !S.goalMarks.has(m)){ S.goalMarks.add(m);
+      import("./dom.js").then(d=>d.flashGo(false));
+      import("./narration.js").then(n=>n.quip(TXT().goalMilestone(m))); } } } }
+let TXT; import("./i18n.js").then(m=>{ TXT=m.T; });            // 防环：i18n 动态引入
