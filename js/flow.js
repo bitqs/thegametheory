@@ -11,7 +11,7 @@ import { chord } from "./audio.js";
 
 export function applyBeat(){ const b=BEATS[S.beatIdx];
   b.on.forEach(f=>{ F[f]=1;
-    if(f==="bar"){ els.top.classList.add("show"); }
+    if(f==="bar"){ els.top.classList.add("show","newin"); setTimeout(()=>els.top.classList.remove("newin"),2600); }
     if(f==="score") showChip($("cScore"));
     if(f==="level") showChip($("cLevel"));
     if(f==="collect"){ $("cCollect").querySelector("b").textContent=S.collSet.size; showChip($("cCollect")); }

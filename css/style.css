@@ -37,6 +37,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chip{opacity:0;transform:translateY(-6px);transition:opacity .5s,transform .5s;
   color:var(--dim);display:flex;align-items:center;gap:5px}
 .chip.show{opacity:1;transform:none}
+/* 新元素上线提示：三次金光脉冲 + 微弹（一次性，2.6s 后摘除） */
+.newin{animation:newin 1.3s ease-in-out 2}
+@keyframes newin{0%,100%{filter:none;transform:none}
+  35%{filter:drop-shadow(0 0 10px var(--gold)) brightness(1.35);transform:scale(1.07)}
+  55%{filter:drop-shadow(0 0 5px var(--gold)) brightness(1.15);transform:scale(1.02)}}
 .chip b{color:var(--goldL);font-weight:700;font-variant-numeric:tabular-nums}
 #energyDots{display:flex;gap:3px}
 #energyDots i{width:7px;height:7px;border-radius:50%;background:var(--gold);

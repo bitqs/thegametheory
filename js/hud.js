@@ -3,7 +3,8 @@ import { S, F } from "./state.js";
 import { TUNE, TARGET } from "./config.js";
 import { $, els, dangerOff } from "./dom.js";
 
-export function showChip(el){ el.classList.add("show"); }
+export function showChip(el){ el.classList.add("show","newin");        // 新元素上线：金光脉冲提示
+  setTimeout(()=>el.classList.remove("newin"),2600); }
 export function bumpScore(add){ $("cScore").querySelector("b").textContent=S.score;
   const p=document.createElement("div"); p.className="scorepop"; p.textContent="+"+add; document.body.appendChild(p); setTimeout(()=>p.remove(),1000); }
 export function renderLevel(up){ const b=$("cLevel").querySelector("b"); b.textContent=S.level;
