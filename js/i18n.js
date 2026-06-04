@@ -20,7 +20,7 @@ export const I18N = {
     locked:["那个动作，我还没给你呢。","急什么，慢慢解锁。","这个手势，还没到时候。"],
     deckQ:"这局，用什么做牌面？",
     decks:{ art:{t:"画",sub:"PAINTINGS · 890 真迹",crown:"DECK"}, games:{t:"游戏",sub:"GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["好看吧？记住这张脸。","我要把它拿走。空着手，咱俩才好重来。","陪我，从零做一个游戏出来。","等最后一条规则也装上，我给你看样东西。"],
+    openHook:["刚才那张是成品卡：美术、星级、特效，整套排面。","现在，全拆。","做游戏的管这叫灰盒——先不给糖，只留骨架。","接下来我把糖一颗一颗加回去。盯紧了：你会亲眼看到自己上瘾。"],
     beats:[
       { say:["这是一张牌。","上滑，换一张。"], done:"你做了一个动作。游戏，开始了。" },
       { say:["我加了个声音。","再滑一张——听见了吗？","你的大脑刚刚奖励了你一下。不客气。"], done:"即时反馈。第一个钩子，钉进去了。" },
@@ -81,7 +81,7 @@ export const I18N = {
     locked:["I haven't given you that move yet.","Patience. Unlocks come.","That gesture isn't ready yet."],
     deckQ:"Pick your deck for this run.",
     decks:{ art:{t:"ART",sub:"PAINTINGS · 890 MASTERWORKS",crown:"DECK"}, games:{t:"GAMES",sub:"VIDEO GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["Beautiful, isn't it? Remember this face.","I'm taking it away. Empty hands — that's how we start over.","Build a game with me. From zero.","When the last rule clicks in, I'll show you something."],
+    openHook:["That card? Finished product. Art, stars, sparkle — the works.","Now I'm stripping it all out.","Devs call this a graybox — no sugar, just bones.","I'll add the sugar back, piece by piece. Watch closely: you're about to see yourself get hooked."],
     beats:[
       { say:["This is a card.","Swipe up for the next."], done:"You did something. The game has begun." },
       { say:["I added a sound.","Swipe again — hear it?","Your brain just rewarded you. You're welcome."], done:"Instant feedback. The first hook, set." },

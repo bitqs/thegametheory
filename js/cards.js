@@ -18,10 +18,11 @@ export function makeCard(){
   c.innerHTML=`<div class="flip">
     <div class="face back"><div class="bpat"></div><div class="bring"></div><div class="glyph">❖</div><div class="uphint"></div></div>
     <div class="face front">
+      <div class="crown"><span class="rt"></span><span class="stars"></span></div>
       <div class="artwin"><div class="artbg"></div><div class="artfg"></div><div class="artgrad"></div></div>
       <div class="frame"></div>
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <div class="plate"><div class="crown"><span class="rt"></span><span class="stars"></span></div><div class="meta"></div><div class="tagline"></div><div class="divider"></div><div class="big"></div><div class="poem"></div></div>
+      <div class="plate"><div class="meta"></div><div class="tagline"></div><div class="divider"></div><div class="big"></div><div class="poem"></div></div>
       <div class="serial"><span class="sn"></span><span class="ed">MMXXVI</span></div><div class="foil"></div><div class="ring"></div><div class="holo"></div>
     </div>
   </div>`;

@@ -64,11 +64,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   display:flex;align-items:center;justify-content:center}
 .back{background:linear-gradient(160deg,#15182a,#0d0a16);
   border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 50px rgba(0,0,0,.6)}
+.back::before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.06);
+  border-radius:11px;pointer-events:none}                              /* 卡背内细线框（常驻） */
+.back::after{content:"❖";position:absolute;top:12px;left:0;right:0;text-align:center;
+  font-size:9px;color:rgba(255,255,255,.14);pointer-events:none}       /* 上沿小徽记 */
 .back .bpat{position:absolute;inset:0;opacity:0;transition:opacity .6s;pointer-events:none;
   background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 10px,transparent 10px 20px)}
 .back .bring{position:absolute;width:46%;aspect-ratio:1;border:1px solid rgba(255,255,255,.07);
-  border-radius:50%;opacity:0;transition:opacity .6s;pointer-events:none}
-.s-backorn .back .bpat,.s-backorn .back .bring{opacity:1}
+  border-radius:50%;opacity:.45;transition:opacity .6s;pointer-events:none}   /* 中心环常驻淡显 */
+.s-backorn .back .bpat{opacity:1}
+.s-backorn .back .bring{opacity:1}
 .back .glyph{font-size:42px;color:var(--faint);transition:opacity .25s;z-index:1}
 .back .uphint{position:absolute;bottom:20px;font-size:12px;color:var(--faint);letter-spacing:.1em;z-index:1}
 
@@ -76,8 +81,12 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   background:linear-gradient(165deg,#16121f,#0b0810);
   border:1px solid rgba(255,255,255,.09);box-shadow:0 18px 50px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.04);
   transition:box-shadow .5s,border-color .5s}
+.front::before{content:"";position:absolute;inset:5px;border:1px solid rgba(255,255,255,.055);
+  border-radius:12px;pointer-events:none;z-index:1}                    /* 卡面内细线框（常驻；s-frame 亮版叠加） */
 /* 容器-内容分层：HD 画作窗（纯画面，稀有度标识不再压它） */
-.front .artwin{position:absolute;left:8px;right:8px;top:8px;height:50%;border-radius:9px;overflow:hidden;background:#0a0810}
+.front .artwin{position:absolute;left:8px;right:8px;top:30px;height:47%;border-radius:9px;overflow:hidden;background:#0a0810}
+.front .artwin::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;   /* 图下主色细线 */
+  background:linear-gradient(90deg,transparent,var(--rc,#9aa3b2),transparent);opacity:.3}
 /* 模糊铺底（cover 填满，无黑边）*/
 .front .artbg{position:absolute;inset:0;background-size:cover;background-position:center;opacity:0;
   transition:opacity .7s;filter:blur(16px) brightness(.55) saturate(1.1);transform:scale(1.12)}
@@ -89,10 +98,11 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .front.art-on .artbg{opacity:1}
 .front .artgrad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,8,16,.55) 80%,#0b0810)}
 /* 文字台 */
-.front .plate{position:absolute;left:0;right:0;top:55%;bottom:26px;z-index:2;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:9px;padding:0 26px}
-/* 稀有度标识在台顶，不挡画面：档名左对齐 / 星级右对齐（TCG 抬头条） */
-.front .crown{display:flex;justify-content:space-between;align-items:baseline;width:100%;
+.front .plate{position:absolute;left:0;right:0;top:calc(47% + 36px);bottom:26px;z-index:2;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;padding:0 18px}
+/* 稀有度抬头条：卡牌上沿（档名左 / 星级右） */
+.front .crown{position:absolute;top:8px;left:16px;right:16px;
+  display:flex;justify-content:space-between;align-items:baseline;
   z-index:3;opacity:0;transition:opacity .55s .2s}
 .front .crown .rt{font-family:"Cinzel",serif;font-size:10px;letter-spacing:.14em;color:var(--rc)}
 .front .crown .stars{color:var(--rc);font-size:10px;letter-spacing:.12em;text-shadow:0 0 8px var(--rc)}
@@ -103,12 +113,14 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   background:linear-gradient(90deg,transparent,var(--rc),transparent)}
 .s-divider .front .divider{opacity:.6}
 .front .meta{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:12.5px;letter-spacing:.04em;
-  color:var(--ink);text-align:center;opacity:0;transition:opacity .55s .3s;max-width:92%}
-.front.art-on .meta{opacity:.92}                                       /* 标题挨着图，翻面即显 */
+  color:var(--ink);text-align:left;opacity:0;transition:opacity .55s .3s}
+.front.art-on .meta{opacity:.92}                                       /* 介绍贴图下，左对齐 */
 .front .tagline{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-style:italic;font-size:11.5px;
-  color:var(--dim);text-align:center;opacity:0;transition:opacity .55s .42s;max-width:92%;
-  margin-top:-5px;line-height:1.45}
-.front.art-on .tagline{opacity:.8}                                     /* 一句话简介紧随标题 */
+  color:var(--dim);text-align:left;opacity:0;transition:opacity .55s .42s;
+  margin-top:-4px;line-height:1.45}
+.front.art-on .tagline{opacity:.8}
+.front .big{align-self:center}
+.front .divider{align-self:center}
 .front .poem{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-style:italic;font-size:13px;
   color:var(--goldL);text-align:center;opacity:0;transform:translateY(6px);
   transition:opacity .55s .5s,transform .55s .5s;text-shadow:0 1px 8px #000}
@@ -337,6 +349,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chooseWrap.n2 .card .tagline{font-size:10px!important}
 .chooseWrap.n2 .card .crown .rt,.chooseWrap.n2 .card .crown .stars{font-size:8.5px}
 .chooseWrap.n2 .card .serial{font-size:8px}
+.chooseWrap .card .meta,.chooseWrap .card .tagline{text-align:center}  /* 选牌小卡介绍仍居中 */
 /* 终极目标满条：进度条高光脉冲（climax 时刻全场只看它） */
 #top.climax{transform:scale(1.12);transform-origin:center top;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
 #top.climax #goalFill{animation:goalblaze 1.2s ease-in-out infinite}
