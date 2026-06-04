@@ -15,5 +15,6 @@ export const S = {
   shown:null, card:null, doneActions:0,
   muted:false, ac:null,
   philoStep:0, philoLines:null,
-  POOL:[],
+  POOL:[], deck:"art",
+
 };

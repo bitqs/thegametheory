@@ -3,7 +3,7 @@ import { S } from "./state.js";
 import { I18N, T, setLang } from "./i18n.js";
 import { $ } from "./dom.js";
 import { pickCards } from "./chooser.js";
-import { pickArt } from "./pool.js";
+import { pickArt, setDeck, deckSample, hasDeck } from "./pool.js";
 import { actx, startBgm } from "./audio.js";
 import { showInsight, hideInsight } from "./narration.js";
 import { applyBeat } from "./flow.js";
@@ -33,7 +33,22 @@ export function buildLang(){ S.phase="lang"; const wrap=$("langcards"); wrap.inn
   $("lang").classList.add("show"); }
 function chooseLang(code){ if(S.phase!=="lang") return; S.phase="langpick"; setLang(code);
   actx(); startBgm(); setUILang();
-  $("lang").classList.remove("show"); openingHook(); }
+  if(hasDeck("games")) buildDeckPick();                  // 有游戏卡组才给二选一，否则直进
+  else { $("lang").classList.remove("show"); openingHook(); } }
+// 第二道盲选：画 / 游戏（复用 chooser；标题+题注按已选语言）
+const DECKS=["art","games"];
+function buildDeckPick(){ S.phase="deckpick"; const t=T();
+  $("lang").querySelector(".langsub").textContent=t.deckQ;
+  $("lang").querySelector(".langttl").textContent="THE GAME THEORY · №2";
+  const wrap=$("langcards"); wrap.innerHTML="";
+  pickCards({
+    items: DECKS.map(d=>({ crown:t.decks[d].crown, stars:4, title:t.decks[d].t,
+      sub:t.decks[d].sub, serial:"THE GAME THEORY", art:deckSample(d), rarity:"SSR",
+      hint:t.decks[d].t })),
+    mount: wrap,
+    onPick: idx=>{ setDeck(DECKS[idx]);
+      $("lang").classList.remove("show"); openingHook(); },
+  }); }
 function openingHook(){ const h=T().openHook;
   showInsight(h[0]);
   setTimeout(()=>showInsight(h[1]),2100);

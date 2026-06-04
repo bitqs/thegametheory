@@ -18,6 +18,8 @@ export const I18N = {
     poem:["你点开它的那个深夜。","屏幕的光，映在脸上。","“再一次就好。”你对自己说。","窗外，天快亮了。","你忘了为什么开始。","但手指，还在动。","一个数字，让你心跳。","一道光，让你屏息。","你知道这都是设计好的。","你还是，笑了。","原来你要的从来不是奖励——","是“还会有下一次”的，那个瞬间。"],
     wrong:["现在不是这个动作哦。","换个方向试试？","对，但不是现在。","手感不错，可惜用错地方了。"],
     locked:["那个动作，我还没给你呢。","急什么，慢慢解锁。","这个手势，还没到时候。"],
+    deckQ:"这局，用什么做牌面？",
+    decks:{ art:{t:"画",sub:"PAINTINGS · 890 真迹",crown:"DECK"}, games:{t:"游戏",sub:"GAMES · 1972-2024",crown:"DECK"} },
     openHook:["好看吧？记住这张脸。","我要把它拿走——从最朴素的开始。"],
     beats:[
       { say:["这是一张牌。","上滑，换一张。"], done:"你做了一个动作。游戏，开始了。" },
@@ -60,6 +62,8 @@ export const I18N = {
     poem:["The late night you opened it.","Screen light on your face.","'Just one more,' you tell yourself.","Outside, the sky is brightening.","You forgot why you started.","But your finger keeps moving.","A number makes your heart skip.","A flash holds your breath.","You know it's all by design.","You smile anyway.","Turns out it was never the reward —","it was the 'there might be a next one.'"],
     wrong:["Not that move right now.","Try a different direction?","Right idea, wrong moment.","Nice instinct, wrong place."],
     locked:["I haven't given you that move yet.","Patience. Unlocks come.","That gesture isn't ready yet."],
+    deckQ:"Pick your deck for this run.",
+    decks:{ art:{t:"ART",sub:"PAINTINGS · 890 MASTERWORKS",crown:"DECK"}, games:{t:"GAMES",sub:"VIDEO GAMES · 1972-2024",crown:"DECK"} },
     openHook:["Beautiful, isn't it? Remember this face.","I'm taking it away — we start from the barest thing."],
     beats:[
       { say:["This is a card.","Swipe up for the next."], done:"You did something. The game has begun." },
