@@ -1,10 +1,10 @@
-// 手势输入（tap/up/down）+ 监听 + 按钮绑定（导入即生效）
+// 手势输入：№1 同款跟手滑动（牌随指走，过线出牌，不过线弹回）+ 路由 + 按钮绑定（导入即生效）
 import { S, G } from "./state.js";
 import { BEATS } from "./config.js";
 import { T, getLang } from "./i18n.js";
 import { $, rand } from "./dom.js";
 import { actx, startBgm, setMuted } from "./audio.js";
-import { performAction } from "./cards.js";
+import { flipCard, swapCard } from "./cards.js";
 import { nextBeat, philoNext, chooseEnding, startPhilo } from "./flow.js";
 import { drawShare, openShareEnergy, grantEnergy } from "./share.js";
 
@@ -12,13 +12,18 @@ export function handleGesture(type){
   if(window.AudioContext||window.webkitAudioContext){ actx(); startBgm(); }   // 首次触摸解锁音频 + 起背景乐
   if(S.phase==="play"){
     const b=BEATS[S.beatIdx];
-    if(!G[type]){ quipLocked(); return; }
     if(b.g==="share"){ if(type==="tap"){ S.pendingPhilo=true; drawShare("progress"); } return; }
-    if(type!==b.g){ quipWrong(); return; }
-    performAction(type);
+    if(!G[type]){ quipLocked(); return; }
+    if(type==="tap"){                                   // 点击=翻牌（charge beat 要求下滑蓄力）
+      if(!S.card) return;
+      if(b.g==="down"){ quipWrong(); return; }
+      flipCard("tap");
+    } else if(type==="up"){ swapCard(); }               // 上滑=换牌（未翻开 swapCard 内部拒绝并提示）
+    else if(type==="down"){                             // 下滑=蓄力翻（charge 解锁后）
+      if(S.card) flipCard("down"); else quipWrong();
+    }
   } else if(S.phase==="outro"){
-    if(!G[type]) { quipLocked(); return; }
-    nextBeat();
+    if(type==="up"||type==="tap") nextBeat();
   } else if(S.phase==="philo"){ philoNext(); }
   else if(S.phase==="choice"){ if(G[type]) chooseEnding(type); }
 }
@@ -27,19 +32,28 @@ import { quip } from "./narration.js";
 function quipLocked(){ quip(rand(T().locked)); }
 function quipWrong(){ quip(rand(T().wrong)); }
 
-const tl=$("touchlayer"); let tY=0,tT=0,moved=false;
+// ── №1 跟手层：牌随手指位移渐隐，松手过线出牌 / 不过线弹回 ──
+const tl=$("touchlayer"); let tY=0,tT=0,moved=false,dragC=null;
 const stageCard=()=>document.querySelector("#stage .card");
-const press=on=>{ const c=stageCard(); if(c) c.classList.toggle("pressed",on); };   // 按下/松手反馈
+const press=on=>{ const c=stageCard(); if(c) c.classList.toggle("pressed",on); };
 tl.addEventListener("touchstart",e=>{ if(e.touches.length!==1)return; const t=e.touches[0];
-  tY=t.clientY; tT=Date.now(); moved=false; press(true); e.preventDefault(); },{passive:false});
-tl.addEventListener("touchmove",e=>{ const t=e.touches[0]; if(!t)return;     // 牌不跟手，仅判方向
-  if(Math.abs(t.clientY-tY)>8){ moved=true; press(false); } e.preventDefault(); },{passive:false});
+  tY=t.clientY; tT=Date.now(); moved=false; dragC=stageCard(); press(true); e.preventDefault(); },{passive:false});
+tl.addEventListener("touchmove",e=>{ const t=e.touches[0]; if(!t)return;
+  const dy=t.clientY-tY;
+  if(Math.abs(dy)>8){ moved=true; press(false); }
+  if(dragC&&!S.busy){ dragC.style.transition="none";
+    dragC.style.transform=`translateY(${dy}px)`;
+    dragC.style.opacity=String(Math.max(.25,1-Math.abs(dy)/500)); }
+  e.preventDefault(); },{passive:false});
 tl.addEventListener("touchend",e=>{ const dy=e.changedTouches[0].clientY-tY, dur=Date.now()-tT;
   press(false);
-  if(dy<-50) handleGesture("up");
-  else if(dy>50) handleGesture("down");
-  else if(!moved && dur<400) handleGesture("tap");
-  e.preventDefault(); },{passive:false});
+  if(dragC){                                            // 先弹回；若手势成功出牌，exitUp 会接管样式
+    dragC.style.transition="transform .25s cubic-bezier(.2,.8,.2,1),opacity .25s";
+    dragC.style.transform="translateY(0)"; dragC.style.opacity="1"; }
+  if(dy<-80) handleGesture("up");
+  else if(dy>80) handleGesture("down");
+  else if(!moved && dur<350) handleGesture("tap");
+  dragC=null; e.preventDefault(); },{passive:false});
 tl.addEventListener("mousedown",()=>{ if(!("ontouchstart" in window)) press(true); });
 tl.addEventListener("mouseup",()=>{ if(!("ontouchstart" in window)) press(false); });
 tl.addEventListener("click",()=>{ if(!("ontouchstart" in window)) handleGesture("tap"); });

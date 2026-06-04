@@ -1,4 +1,4 @@
-// 卡片：渲染 / 翻牌 VFX / 出牌动作 / 上滑退场
+// 卡片：渲染 / 抽牌(上滑换牌) / 翻牌(自动或手翻) / 翻牌 VFX / 上滑退场
 import { S, F } from "./state.js";
 import { BEATS, TUNE, RC, RSTARS, RANK } from "./config.js";
 import { T } from "./i18n.js";
@@ -28,33 +28,55 @@ export function makeCard(){
   return c;
 }
 export function hintWord(g){ return T().backhint[g]||""; }
+
+// 出一张牌背：此刻预掷稀有度——SR/SSR 背面分档发光等手翻，低档稍后自动翻
 export function spawnBack(){
   const c=makeCard(); els.stage.appendChild(c); S.card=c;
-  c.querySelector(".back .uphint").textContent = S.phase==="play" ? hintWord(BEATS[S.beatIdx].g) : "";
-  requestAnimationFrame(()=>c.classList.add("in"));
-}
-
-// 一次动作 = 翻开当前面朝下的牌
-export function performAction(type){
-  if(S.busy) return false;                            // 动画中锁输入，防重复出牌/重复计数
-  if(!S.card) spawnBack();
-  const now=Date.now(); const dt=now-S.lastAct; S.lastAct=now;
-  // 心力（仅 energy beat）：耗尽 → 弹"分享得心力"（假分享，制造稀缺心态）；不自动回，逼你分享
-  if(F.energy){ if(S.energy<=0){ openShareEnergy(); return false; }
-    S.energy--; renderEnergy();
-    if(S.energy<=1) dangerOn(); else dangerOff(); }
-
-  S.busy=true; S.actCount++; S.doneActions++;
-  const cur=S.card; S.card=null;                      // 翻这张；揭示后再补新牌
-  const front=cur.querySelector(".front"), big=cur.querySelector(".big");
-  cur.querySelector(".back .uphint").textContent="";
-
-  // 稀有度：rarity 解锁后按档掉；之前 random 阶段只有二元金闪
   let rar=null, isHit=false;
   if(F.rarity){ rar=rollRarity(); isHit = rar!=="N"; }
   else if(F.random){ isHit = Math.random()<0.30; }
+  c.__rar=rar; c.__isHit=isHit;
+  const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
+  if(rar) c.style.setProperty("--rc",RC[rar]);
+  const g = S.phase==="play" ? BEATS[S.beatIdx].g : "up";
+  const uphint=c.querySelector(".back .uphint");
+  uphint.textContent = g==="down" ? hintWord("down") : wait ? hintWord("tap") : "";
+  if(wait){ c.classList.add(rar==="SSR"?"wait-ssr":"wait-sr"); if(rar==="SSR"&&F.sound) riser(700); }
+  requestAnimationFrame(()=>c.classList.add("in"));
+  // 低档自动翻；charge beat(下滑蓄力)与 share beat 不自动，等指定手势
+  if(!wait && g==="up") c.__auto=setTimeout(()=>flipCard("auto"), 520);
+}
+
+// 上滑换牌（主交互）：仅翻开的牌可换——面朝下的先翻（自动或手翻）
+export function swapCard(){
+  if(S.busy) return false;
+  if(S.card){ const g=S.phase==="play"?BEATS[S.beatIdx].g:"up";          // 未翻不能换，提示该做的动作
+    quip(hintWord(g==="down"?"down":"tap")); return false; }
+  if(!S.shown){ spawnBack(); return true; }                              // 台上空了：直接出牌
+  if(F.energy){ if(S.energy<=0){ openShareEnergy(); return false; }
+    S.energy--; renderEnergy();
+    if(S.energy<=1) dangerOn(); else dangerOff(); }
+  const c=S.shown;
+  S.shown=null; S.busy=true;
+  if(F.sound) tick();
+  exitUp(c, ()=>{ spawnBack(); S.busy=false; });
+  return true;
+}
+
+// 翻开当前面朝下的牌（auto=自动 / tap=手翻 / down=下滑蓄力翻）
+export function flipCard(type){
+  if(S.busy) return false;
+  if(!S.card) return false;
+  const now=Date.now(); const dt=now-S.lastAct; S.lastAct=now;
+  S.busy=true; S.actCount++; S.doneActions++;
+  const cur=S.card; S.card=null; clearTimeout(cur.__auto);
+  cur.classList.remove("wait-sr","wait-ssr");
+  const front=cur.querySelector(".front"), big=cur.querySelector(".big");
+  cur.querySelector(".back .uphint").textContent="";
+
+  const rar=cur.__rar, isHit=cur.__isHit;
   const big2 = rar==="SR"||rar==="SSR";
-  if(rar){ cur.dataset.r=rar; cur.style.setProperty("--rc",RC[rar]);
+  if(rar){ cur.dataset.r=rar;
     cur.querySelector(".crown .rt").textContent=rar+" · "+T().rlabel[rar];
     cur.querySelector(".crown .stars").textContent="✦".repeat(RSTARS[rar]);
     if(RANK[rar]>RANK[S.bestR]) S.bestR=rar;
@@ -76,7 +98,7 @@ export function performAction(type){
   const doReveal=()=>{
     const gl=cur.querySelector(".glyph"); if(gl) gl.style.opacity="0";   // 背面图案瞬间消失（不延迟）
     cur.querySelector(".flip").classList.add("flipped");
-    cur.classList.add("pop");                                            // 翻牌弹跳特效
+    cur.classList.add("flippop");                                        // 翻牌弹跳特效
     setTimeout(()=>{ const b=cur.querySelector(".back"); if(b) b.style.visibility="hidden"; },150);
     // 卡面装饰翻面后才显（错峰升起）：精致度随机制累积
     front.classList.add("art-on");
@@ -96,16 +118,15 @@ export function performAction(type){
       const need=TUNE.lvlBase+(S.level-1)*TUNE.lvlStep;
       if(S.xp>=need){ S.xp-=need; S.level++; renderLevel(true); lvlSnd(); flashGo(false);} else renderLevel(false); }
     updateGoal();
-    S.shown=cur;
-    if(last){ enterOutro(); S.busy=false; }                             // 留住，待洞见后统一上滑隐去
-    else { setTimeout(()=>{ exitUp(cur, ()=>{ spawnBack(); S.busy=false; }); }, 760); }  // 先隐去，再出现下一张
+    S.shown=cur; S.busy=false;
+    if(last) enterOutro();                              // 翻完留场上，上滑进下一拍/换牌
   };
 
   if(type==="down" && F.charge){
     const ms=1100; cur.classList.add("charging"); riser(ms);
     setTimeout(()=>{ cur.classList.remove("charging"); doReveal(); }, ms);
   } else {
-    if(F.sound) tick();
+    if(F.sound && type!=="auto") tick();
     requestAnimationFrame(()=>requestAnimationFrame(doReveal));
   }
   return true;

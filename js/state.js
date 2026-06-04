@@ -3,8 +3,8 @@ import { TUNE } from "./config.js";
 
 // 机制开关（beat 解锁后置 1）
 export const F = { sound:0,random:0,rarity:0,bar:0,score:0,level:0,collect:0,energy:0,charge:0,story:0,juice:0,goalreveal:0,share:0 };
-// 已解锁手势
-export const G = { tap:1, up:0, down:0 };
+// 已解锁手势（上滑=换牌主交互，开局即有；tap=翻牌；down=蓄力，charge beat 解锁）
+export const G = { tap:1, up:1, down:0 };
 
 export const S = {
   phase:"play", beatIdx:0, actCount:0,
