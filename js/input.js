@@ -28,15 +28,20 @@ function quipLocked(){ quip(rand(T().locked)); }
 function quipWrong(){ quip(rand(T().wrong)); }
 
 const tl=$("touchlayer"); let tY=0,tT=0,moved=false;
+const stageCard=()=>document.querySelector("#stage .card");
+const press=on=>{ const c=stageCard(); if(c) c.classList.toggle("pressed",on); };   // 按下/松手反馈
 tl.addEventListener("touchstart",e=>{ if(e.touches.length!==1)return; const t=e.touches[0];
-  tY=t.clientY; tT=Date.now(); moved=false; e.preventDefault(); },{passive:false});
+  tY=t.clientY; tT=Date.now(); moved=false; press(true); e.preventDefault(); },{passive:false});
 tl.addEventListener("touchmove",e=>{ const t=e.touches[0]; if(!t)return;     // 牌不跟手，仅判方向
-  if(Math.abs(t.clientY-tY)>8) moved=true; e.preventDefault(); },{passive:false});
+  if(Math.abs(t.clientY-tY)>8){ moved=true; press(false); } e.preventDefault(); },{passive:false});
 tl.addEventListener("touchend",e=>{ const dy=e.changedTouches[0].clientY-tY, dur=Date.now()-tT;
+  press(false);
   if(dy<-50) handleGesture("up");
   else if(dy>50) handleGesture("down");
   else if(!moved && dur<400) handleGesture("tap");
   e.preventDefault(); },{passive:false});
+tl.addEventListener("mousedown",()=>{ if(!("ontouchstart" in window)) press(true); });
+tl.addEventListener("mouseup",()=>{ if(!("ontouchstart" in window)) press(false); });
 tl.addEventListener("click",()=>{ if(!("ontouchstart" in window)) handleGesture("tap"); });
 let wl=0;
 window.addEventListener("wheel",e=>{ const n=Date.now(); if(n-wl<400)return; if(Math.abs(e.deltaY)>10){ wl=n; handleGesture(e.deltaY<0?"up":"down"); } },{passive:true});
