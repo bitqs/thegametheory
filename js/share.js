@@ -58,6 +58,23 @@ export function closeShareModal(){ $("share").classList.remove("show");
 export function grantEnergy(n, msg){ S.energy=Math.min(TUNE.energyMax, S.energy+n); renderEnergy();
   if(S.energy>1) dangerOff(); closeShareModal(); quip(msg); }
 
+// 分享图 blob 缓存：画完即备好——保存点击时同步调 navigator.share，
+// 留在用户手势调用栈内（iOS 对异步 toBlob 后再 share 会拒）
+let shareBlob=null;
+function cacheBlob(){ shareBlob=null;
+  $("shareCanvas").toBlob(b=>{ shareBlob=b; },"image/png"); }
+export async function saveShareImage(){
+  if(shareBlob && navigator.canShare){
+    const file=new File([shareBlob],"the-game-theory.png",{type:"image/png"});
+    if(navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file]}); return; }catch(e){ if(e.name==="AbortError") return; }
+    }
+  }
+  const url=shareBlob?URL.createObjectURL(shareBlob):$("shareCanvas").toDataURL("image/png");
+  const a=document.createElement("a"); a.download="the-game-theory.png"; a.href=url; a.click();
+  if(shareBlob) setTimeout(()=>URL.revokeObjectURL(url),2000);
+}
+
 // 字距排印（canvas 无 letter-spacing，逐字铺）
 function spaced(x, t, cx, y, ls){ const ch=[...t];
   const ws=ch.map(c=>x.measureText(c).width); const total=ws.reduce((a,b)=>a+b,0)+ls*(ch.length-1);
@@ -127,4 +144,5 @@ export async function drawShare(mode){
   x.fillStyle=faint; x.font="500 12px 'Cinzel',serif"; spaced(x,"thegametheory.pages.dev",W/2,H-34,2);
   $("srowMain").hidden=false; $("srowEnergy").hidden=true;
   $("share").classList.add("show");
+  cacheBlob();                                                  // 画完即缓存，保存按钮同步可用
 }

@@ -6,7 +6,7 @@ import { $, rand } from "./dom.js";
 import { actx, startBgm, setMuted } from "./audio.js";
 import { flipCard, swapCard } from "./cards.js";
 import { nextBeat, philoNext, chooseEnding, startPhilo } from "./flow.js";
-import { drawShare, openShareEnergy, grantEnergy } from "./share.js";
+import { drawShare, openShareEnergy, grantEnergy, saveShareImage } from "./share.js";
 import { startFinale } from "./finale.js";
 
 export function handleGesture(type){
@@ -64,14 +64,6 @@ $("mute").onclick=()=>{ setMuted(!S.muted); $("mute").textContent=S.muted?"♪̸
 $("endShare").onclick=()=>drawShare("end");
 $("endAgain").onclick=()=>location.reload();
 $("closeShare").onclick=()=>{ $("share").classList.remove("show"); if(S.pendingPhilo){ S.pendingPhilo=false; startPhilo(); } };
-$("dl").onclick=()=>{                                   // 存相册：Web Share 走系统面板（→存储图像），不支持回退下载
-  $("shareCanvas").toBlob(async blob=>{
-    const file=new File([blob],"game-theory-2.png",{type:"image/png"});
-    if(navigator.canShare && navigator.canShare({files:[file]})){
-      try{ await navigator.share({files:[file]}); return; }catch{}
-    }
-    const a=document.createElement("a"); a.download="game-theory-2.png";
-    a.href=URL.createObjectURL(blob); a.click(); URL.revokeObjectURL(a.href);
-  },"image/png"); };
+$("dl").onclick=()=>saveShareImage();                   // 存相册：缓存 blob 同步 share（手势栈内，iOS 不拒）
 $("shGain").onclick=()=>grantEnergy(3,T().energyShare.gainMsg);
 $("shSkip").onclick=()=>grantEnergy(1,T().energyShare.skipMsg);
