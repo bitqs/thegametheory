@@ -9,7 +9,7 @@ export const G = { tap:1, up:1 };
 export const S = {
   phase:"play", beatIdx:0, actCount:0,
   score:0, level:1, xp:0, lastAct:0,
-  energy:TUNE.energyMax, energyTimer:null, busy:false,
+  energy:TUNE.energyMax, energyTimer:null, energyInf:false, busy:false,
   collected:[], collSet:new Set(), storyIdx:0,
   chosen:null, pendingPhilo:false, bestR:"N", bestArt:null,
   shown:null, card:null, doneActions:0,

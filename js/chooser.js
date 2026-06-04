@@ -32,16 +32,18 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
     h.onclick = () => {
       if (picked) return; picked = true;
       c.classList.remove("waiting");
+      h.classList.add("settle");                                                  // 先回原位（悬停抬升/按压复位），两卡齐平再翻
       [...wrap.querySelectorAll(".chint")].forEach(t => t.style.opacity = "0");   // 题注让位给翻面
       h.querySelector(".chint")?.remove();                                        // 选中卡题注移除，放大不遮挡
       // 其余淡出缩小
       [...wrap.children].forEach(o => { if (o !== h) o.classList.add("ccard-out"); });
-      // 翻面
+      setTimeout(() => {                                                          // 回位完成后翻面
       const gl = c.querySelector(".glyph"); if (gl) gl.style.opacity = "0";
       c.querySelector(".flip").classList.add("flipped");
       c.querySelector(".front").classList.add("art-on", "sheen");
       setTimeout(() => { const b = c.querySelector(".back"); if (b) b.style.visibility = "hidden"; }, 200);
       chord(); flashGo(true); sparkle(14);
+      }, 240);
       // 翻完 → 放大到最大（FLIP：以当前位置为起点位移+缩放到视口中心）
       setTimeout(() => {
         const r = c.getBoundingClientRect();
@@ -57,7 +59,7 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
           c.style.transform += " scale(.92)"; c.style.opacity = "0";
           setTimeout(() => { wrap.remove(); onPick && onPick(idx); }, 440);
         }, dwell + 600);
-      }, 620);
+      }, 860);                                                                    // 240 回位 + 620 翻面后起飞
     };
     wrap.appendChild(h);
   });

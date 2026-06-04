@@ -32,6 +32,12 @@ export function applyBeat(){ const b=BEATS[S.beatIdx];
     import("./boss.js").then(m=>m.startBoss());
     setHint("hold"); return;
   }
+  if(b.on.includes("share")){                                          // 终幕 beat：不出牌，等 tap 召唤黑镜
+    const pv=S.shown; S.shown=null;
+    [...els.stage.children].forEach(c=>{ if(c!==pv) c.remove(); });
+    if(pv) exitUp(pv);
+    setHint("tap"); return;
+  }
   [...els.stage.children].forEach(c=>{ if(c!==prev) c.remove(); });    // 清掉残留，防累积
   if(prev) exitUp(prev, spawnBack);                                    // 上一张上滑隐去 → 再出现下一张
   else spawnBack();
@@ -39,7 +45,8 @@ export function applyBeat(){ const b=BEATS[S.beatIdx];
 }
 export function enterOutro(){ S.phase="outro"; clearSay(); els.hint.classList.remove("show");
   const b=BEATS[S.beatIdx];
-  if(b.on.includes("energy")){ F.energy=0; $("cEnergy").classList.remove("show"); dangerOff(); }  // 收尾稀缺
+  if(b.on.includes("energy")){ F.energy=0; S.energyInf=true;                     // 收尾稀缺：限制拆掉，∞ 常驻打脸
+    import("./hud.js").then(m=>m.renderEnergy()); dangerOff(); }
   if(b.on.includes("goalreveal")){ goalClimax(); return; }                                        // 终极目标满条：震撼揭示
   const done=T().beats[S.beatIdx].done;
   if(done) setTimeout(()=>showInsight(done),350); else { nextBeat(); return; }

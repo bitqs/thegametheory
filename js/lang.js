@@ -41,7 +41,7 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
   $("lang").querySelector(".langsub").textContent=t.deckQ;
   $("lang").querySelector(".langttl").textContent="THE GAME THEORY · №2";
   const wrap=$("langcards"); wrap.innerHTML="";
-  pickCards({
+  const cw=pickCards({
     items: DECKS.map(d=>({ crown:t.decks[d].crown, stars:4, title:t.decks[d].t,
       sub:t.decks[d].sub, serial:"THE GAME THEORY", art:deckSample(d), rarity:"SSR",
       hint:t.decks[d].t })),
@@ -49,11 +49,12 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
     onPick: idx=>{ setDeck(DECKS[idx]);
       $("lang").classList.remove("show"); openingHook(); },
   });
-  const first=wrap.querySelector(".ccard");                       // 引导首选游戏卡：呼吸更亮 + 题注金字
+  const first=cw.querySelector(".ccard");                         // 引导首选游戏卡（在返回的 wrap 上查，挂载是异步的）
   first.classList.add("nudge-pick");
   const fh=first.querySelector(".chint"); if(fh) fh.textContent+=" ✦"; }
-function openingHook(){ const h=T().openHook;            // 使命交付：逐行递进，最后一行许诺"秘密"
-  h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2100));
-  setTimeout(()=>{ hideInsight(); S.beatIdx=0; applyBeat(); }, h.length*2100);
+function openingHook(){ const h=T().openHook;            // 使命交付：片头字幕式，屏幕正中逐行
+  const ins=document.getElementById("insight"); ins.classList.add("cinema");
+  h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2300));
+  setTimeout(()=>{ hideInsight(); ins.classList.remove("cinema"); S.beatIdx=0; applyBeat(); }, h.length*2300);
   // 趁开场白预热前几张卡面，开局零白图
   import("./pool.js").then(m=>{ for(let i=0;i<6;i++){ const a=m.pickArt(null); if(a){ const im=new Image(); im.src=a.img; } } }); }

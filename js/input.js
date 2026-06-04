@@ -7,12 +7,13 @@ import { actx, startBgm, setMuted } from "./audio.js";
 import { flipCard, swapCard } from "./cards.js";
 import { nextBeat, philoNext, chooseEnding, startPhilo } from "./flow.js";
 import { drawShare, openShareEnergy, grantEnergy } from "./share.js";
+import { startFinale } from "./finale.js";
 
 export function handleGesture(type){
   if(window.AudioContext||window.webkitAudioContext){ actx(); startBgm(); }   // 首次触摸解锁音频 + 起背景乐
   if(S.phase==="play"){
     const b=BEATS[S.beatIdx];
-    if(b.g==="share"){ if(type==="tap"){ S.pendingPhilo=true; drawShare("progress"); } return; }
+    if(b.on.includes("share")){ if(type==="tap") startFinale(); return; }   // 终幕：黑镜→SSS《你》→分享卡
     if(!G[type]){ quipLocked(); return; }
     if(type==="tap"){ if(S.card) flipCard("tap"); }     // 点击=翻牌
     else if(type==="up"){ swapCard(); }                 // 上滑=换牌（未翻开 swapCard 内部拒绝并提示）
