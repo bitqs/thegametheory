@@ -128,6 +128,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .front.art-on .tagline{opacity:.8}
 .front .big{align-self:center}
 .front .divider{align-self:center}
+.front .pline{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-style:italic;font-size:12px;
+  color:var(--goldL);text-align:center;opacity:0;transition:opacity .55s .46s;margin-top:-2px;
+  text-shadow:0 1px 8px #000}                              /* 原则招供句：跟在原则名下 */
+.front.art-on .pline{opacity:.85}
 .front .poem{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-style:italic;font-size:13px;
   color:var(--goldL);text-align:center;opacity:0;transform:translateY(6px);
   transition:opacity .55s .5s,transform .55s .5s;text-shadow:0 1px 8px #000}
@@ -346,6 +350,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 /* 小牌强制排版：chooser/pick 卡宽 ~140-180px，字号锁死防溢出（!important 压内联） */
 .chooseWrap .card .plate{gap:5px;padding:0 10px;bottom:14px}
 .chooseWrap .card .big{font-size:13px!important;line-height:1.35}
+.chooseWrap .card .pline{font-size:8px!important}
 .chooseWrap .card .meta{font-size:9px!important;letter-spacing:.02em}
 .chooseWrap .card .tagline{font-size:8.5px!important;margin-top:-3px;line-height:1.3}
 .chooseWrap .card .crown .rt,.chooseWrap .card .crown .stars{font-size:7px}
@@ -358,15 +363,20 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chooseWrap.n2 .card .crown .rt,.chooseWrap.n2 .card .crown .stars{font-size:8.5px}
 .chooseWrap.n2 .card .serial{font-size:8px}
 .chooseWrap .card .meta,.chooseWrap .card .tagline{text-align:center}  /* 选牌小卡介绍仍居中 */
+/* 目标梯度：进度 ≥70% 末段视觉加速（更亮+脉冲+填充提速感） */
+#top.gg #goalFill{filter:brightness(1.25) drop-shadow(0 0 6px var(--gold));
+  animation:ggpulse 1s ease-in-out infinite;transition:width .25s ease-out}
+@keyframes ggpulse{0%,100%{opacity:1}50%{opacity:.82}}
 /* 终极目标满条：进度条高光脉冲（climax 时刻全场只看它） */
 #top.climax{transform:scale(1.12);transform-origin:center top;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
 #top.climax #goalFill{animation:goalblaze 1.2s ease-in-out infinite}
 @keyframes goalblaze{0%,100%{box-shadow:0 0 10px var(--gold)}50%{box-shadow:0 0 30px var(--gold),0 0 60px rgba(255,211,77,.5)}}
 /* boss beat：上 Boss 牌探头 / 下蓄力牌变小；绿区指示；冲撞打击感 */
 .bossArena{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
-  justify-content:space-between;padding:0 0 13vh}
-#stage .bossArena .card.bossTop{width:min(44vw,175px);margin-top:-7%}        /* Boss 探出一点 */
-#stage .bossArena .card.chargeCard{width:min(54vw,210px)}                    /* 蓄力牌缩小待命 */
+  justify-content:space-between;padding:0 0 12vh}
+/* 宽度同时受 vw 与 vh 约束：矮屏自动缩，双牌永不相撞（卡高=宽×1.618） */
+#stage .bossArena .card.bossTop{width:min(56vw,215px,23vh);margin-top:-9%}   /* Boss 加大，探出一点 */
+#stage .bossArena .card.chargeCard{width:min(54vw,210px,24vh)}               /* 蓄力牌待命 */
 .card.bossTop .back{animation:breathe 1.6s ease-in-out infinite}
 .card.bossTop .back .glyph{color:#ff5a5a;text-shadow:0 0 28px #ff5a5a;font-size:44px}
 .card.chargeCard .back .glyph{color:var(--gold);text-shadow:0 0 18px var(--gold)}

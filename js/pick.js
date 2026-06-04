@@ -23,8 +23,8 @@ function fillFront(c, rar, art){
     c.querySelector(".tagline").textContent=artLine(art); }
   const pool = (rar==="SR"||rar==="SSR") ? T().wordsRare : T().words;
   const ch = pool[(Math.random()*pool.length)|0];
-  const big=c.querySelector(".big"); big.textContent=ch;
-  big.style.fontSize = ch.length<=4 ? "22px" : ch.length<=7 ? "17px" : "13px";  // 小卡缩字
+  const big=c.querySelector(".big"); big.textContent=ch.t;
+  c.querySelector(".pline").textContent=ch.s;
 }
 function flipOpen(c){
   const gl=c.querySelector(".glyph"); if(gl) gl.style.opacity="0";

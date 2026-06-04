@@ -68,8 +68,9 @@ function hair(x, x1, x2, y, color){ x.strokeStyle=color; x.lineWidth=1;
 
 export async function drawShare(mode){
   const cv=$("shareCanvas"), x=cv.getContext("2d"), W=cv.width,H=cv.height, SH=T().share;
-  const e = S.chosen?T().endings[S.chosen]:null;
-  const accent = S.chosen?EG[S.chosen][1]:(RC[S.bestR]||"#ffd34d");
+  const isYou = mode==="you";                                   // 《？》卡分享图：终幕专用
+  const e = (!isYou && S.chosen)?T().endings[S.chosen]:null;
+  const accent = isYou?"#ffd34d":(S.chosen?EG[S.chosen][1]:(RC[S.bestR]||"#ffd34d"));
   const ink="#ece8f4", dim="#9a93b0", faint="#6f6a85";
   // 底：深空渐变 + 主色辉光 + 暗角
   const bg=x.createLinearGradient(0,0,0,H); bg.addColorStop(0,"#171130"); bg.addColorStop(.55,"#0a0816"); bg.addColorStop(1,"#06060d");
@@ -88,15 +89,19 @@ export async function drawShare(mode){
   const cy=H*.335, R=118;
   x.strokeStyle=accent+"77"; x.lineWidth=1; x.beginPath(); x.arc(W/2,cy,R,0,7); x.stroke();
   x.strokeStyle=accent+"33"; x.beginPath(); x.arc(W/2,cy,R+8,0,7); x.stroke();
-  const hero = e?e.char : (S.collected.slice(-1)[0]||"—");
+  const hero = isYou ? T().finale.youChar : (e?e.char : (S.collected.slice(-1)[0]||"—"));
   const heroLong = [...String(hero)].length>4;
   x.fillStyle=accent; x.font=(getLang()==="en"?"600 ":"400 ")+(heroLong?44:96)+"px "+(getLang()==="en"?"'Playfair Display',serif":"'Noto Serif SC',serif");
   x.shadowColor=accent; x.shadowBlur=34;
   if(heroLong) wrap(x,hero,W/2,cy-10,R*1.5,52); else x.fillText(hero,W/2,cy+34);
   x.shadowBlur=0;
-  // 引言
+  // 引言（you 模式：SSS·《你》·限量 1/1 + 一句）
   x.fillStyle=ink; x.font="italic 25px "+(getLang()==="en"?"'Cormorant Garamond',serif":"'Noto Serif SC',serif");
-  wrap(x, e? e.card : SH.myline, W/2, H*.555, W-140, 38);
+  if(isYou){ const F=T().finale;
+    x.fillText(F.youLine, W/2, H*.545);
+    x.fillStyle=accent; x.font="700 14px 'Cinzel','Noto Serif SC',serif";
+    x.fillText("SSS · "+F.youMeta+" · "+F.youSerial, W/2, H*.585);
+  } else wrap(x, e? e.card : SH.myline, W/2, H*.555, W-140, 38);
   // 三栏数据：大数字 + 小标签，栏间细竖线
   const sy=H*.645, cols=[[SH.score,S.score],[SH.level,S.level],[SH.collected,S.collSet.size+(SH.unit||"")]];
   cols.forEach((c,i)=>{ const cx=W*(0.25+0.25*i);

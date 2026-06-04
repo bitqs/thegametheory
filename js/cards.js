@@ -22,7 +22,7 @@ export function makeCard(){
       <div class="artwin"><div class="artbg"></div><div class="artfg"></div><div class="artgrad"></div></div>
       <div class="frame"></div>
       <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
-      <div class="plate"><div class="meta"></div><div class="tagline"></div><div class="divider"></div><div class="big"></div><div class="poem"></div></div>
+      <div class="plate"><div class="meta"></div><div class="tagline"></div><div class="divider"></div><div class="big"></div><div class="pline"></div><div class="poem"></div></div>
       <div class="serial"><span class="sn"></span><span class="ed">MMXXVI</span></div><div class="foil"></div><div class="ring"></div><div class="holo"></div>
     </div>
   </div>`;
@@ -42,7 +42,10 @@ export function spawnBack(){
   const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
   if(rar) c.style.setProperty("--rc",RC[rar]);
   const uphint=c.querySelector(".back .uphint");
-  uphint.textContent = wait ? hintWord("tap") : "";
+  // 故事拍：牌背露下一句诗的开头（好奇缺口——知道一半最痒）
+  if(F.story && !wait){ const pm=T().poem, nx=pm[S.storyIdx%pm.length];
+    uphint.textContent="「"+[...nx].slice(0,4).join("")+"……」"; }
+  else uphint.textContent = wait ? hintWord("tap") : "";
   if(wait){ c.classList.add(rar==="SSR"?"wait-ssr":"wait-sr"); if(rar==="SSR"&&F.sound) riser(700); }
   requestAnimationFrame(()=>c.classList.add("in"));
   // 低档自动翻（等图解码完成才翻，慢网不闪白图）；SR/SSR 留背等手翻
@@ -85,12 +88,12 @@ export function flipCard(type){
   const art=cur.__art||pickArt(rar); cur.__art=art;
   if(art){ const u="url('"+art.img+"')"; cur.querySelector(".artbg").style.backgroundImage=u; cur.querySelector(".artfg").style.backgroundImage=u;
     if(rar && rar===S.bestR) S.bestArt=art; }   // 记最高档画作，给战绩卡当主视觉
-  // 牌面文字：稀有牌给完整句子，普通牌给短词；按长度定字号
+  // 牌面=游戏设计原则+一句招供；稀有牌掉深层原则。收藏=集齐设计原则
   const pool = big2 ? T().wordsRare : T().words;
-  const ch = pool[(Math.random()*pool.length)|0]; big.textContent=ch; S.collected.push(ch);
-  // 字号三档固定（短词/长词/句子），保证卡面排版统一
-  big.style.fontSize = ch.length<=4 ? "34px" : ch.length<=7 ? "26px" : "20px";
-  const fresh=!S.collSet.has(ch); S.collSet.add(ch);
+  const ch = pool[(Math.random()*pool.length)|0]; big.textContent=ch.t; S.collected.push(ch.t);
+  cur.querySelector(".pline").textContent=ch.s;
+  big.style.fontSize = ch.t.length<=5 ? "30px" : ch.t.length<=8 ? "24px" : "19px";
+  const fresh=!S.collSet.has(ch.t); S.collSet.add(ch.t);
   if(F.collect){ document.getElementById("cCollect").querySelector("b").textContent=S.collSet.size;
     if(fresh && S.collSet.size%5===0){ setTimeout(()=>{ flashGo(true); chord(); quip(T().milestone(S.collSet.size)); },300); } }
   if(F.story){ const pm=T().poem; cur.querySelector(".poem").textContent=pm[S.storyIdx%pm.length]; S.storyIdx++; }

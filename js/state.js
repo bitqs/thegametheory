@@ -12,7 +12,7 @@ export const S = {
   energy:TUNE.energyMax, energyTimer:null, energyInf:false, busy:false,
   collected:[], collSet:new Set(), storyIdx:0,
   chosen:null, pendingPhilo:false, bestR:"N", bestArt:null,
-  shown:null, card:null, doneActions:0,
+  shown:null, card:null, doneActions:2,   // 预填 2 格=天赋进度效应（结局点名拆穿）
   muted:false, ac:null,
   philoStep:0, philoLines:null,
   POOL:[], deck:"art", goalMarks:new Set(), firstSSR:false, t0:Date.now(),

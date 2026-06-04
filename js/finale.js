@@ -89,6 +89,6 @@ function spawnYouCard(F){
   setTimeout(()=>{ hideInsight();
     c.style.transition="transform .5s,opacity .5s"; c.style.transform="translateY(-130%)"; c.style.opacity="0";
     setTimeout(()=>{ c.remove(); touchEl().style.pointerEvents="";
-      S.pendingPhilo=true; drawShare("progress"); },500);
+      S.pendingPhilo=true; drawShare("you"); },500);          // 分享图=《？》卡（带二维码，可存相册）
   }, 5200);
 }

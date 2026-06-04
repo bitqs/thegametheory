@@ -55,7 +55,7 @@ export function enterOutro(){ S.phase="outro"; clearSay(); els.hint.classList.re
 // 满条时刻：金闪连发 + 进度条高光 + 第四面墙报数 + 逐行揭示"里面什么都没有"
 function goalClimax(){
   const mins=Math.max(1, Math.round((Date.now()-S.t0)/60000));
-  const lines=T().goalClimax(S.doneActions, mins);
+  const lines=T().goalClimax(S.doneActions-2, mins);     // 报真实动作数（扣掉预填 2 格）
   import("./dom.js").then(d=>{ d.flashGo(true); d.sparkle(22);
     setTimeout(()=>{ d.flashGo(true); d.sparkle(16); },420); });
   chord(); setTimeout(chord, 450);

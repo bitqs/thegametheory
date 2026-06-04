@@ -64,6 +64,14 @@ $("mute").onclick=()=>{ setMuted(!S.muted); $("mute").textContent=S.muted?"♪̸
 $("endShare").onclick=()=>drawShare("end");
 $("endAgain").onclick=()=>location.reload();
 $("closeShare").onclick=()=>{ $("share").classList.remove("show"); if(S.pendingPhilo){ S.pendingPhilo=false; startPhilo(); } };
-$("dl").onclick=()=>{ const a=document.createElement("a"); a.download="game-theory-2.png"; a.href=$("shareCanvas").toDataURL("image/png"); a.click(); };
+$("dl").onclick=()=>{                                   // 存相册：Web Share 走系统面板（→存储图像），不支持回退下载
+  $("shareCanvas").toBlob(async blob=>{
+    const file=new File([blob],"game-theory-2.png",{type:"image/png"});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      try{ await navigator.share({files:[file]}); return; }catch{}
+    }
+    const a=document.createElement("a"); a.download="game-theory-2.png";
+    a.href=URL.createObjectURL(blob); a.click(); URL.revokeObjectURL(a.href);
+  },"image/png"); };
 $("shGain").onclick=()=>grantEnergy(3,T().energyShare.gainMsg);
 $("shSkip").onclick=()=>grantEnergy(1,T().energyShare.skipMsg);

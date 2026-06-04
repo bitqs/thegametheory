@@ -7,7 +7,7 @@ import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
 import { makeCard, needOf, exitUp } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
-import { els, sparkle, flashGo, rand } from "./dom.js";
+import { els, sparkle, flashGo, flashWhite, rand } from "./dom.js";
 import { riser, land, chord, tick } from "./audio.js";
 import { bumpScore, updateGoal } from "./hud.js";
 import { enterOutro } from "./flow.js";
@@ -47,6 +47,7 @@ export function startBoss(){
     const inz=p>=LO&&p<=HI;
     me.classList.toggle("inzone", inz); gauge.classList.toggle("inzone", inz);   // 进绿区：表+卡辉光同变绿
     me.classList.toggle("overheat", p>HI); gauge.classList.toggle("overheat", p>HI);
+    me.style.filter=`brightness(${1+p/240})`;                                    // 蓄力渐亮（触觉峰值铺垫）
     raf=requestAnimationFrame(loop); }
   function down(e){ if(busy||t0) return; t0=Date.now(); riser(FULL); loop(); e.preventDefault(); }
   function up(){ if(!t0||busy) return; cancelAnimationFrame(raf);
@@ -61,10 +62,10 @@ export function startBoss(){
       me.classList.add("blast"); flashGo(false); quip(rand(T().bossHot));
       setTimeout(()=>{ me.classList.remove("blast"); fill.style.height="0"; busy=false; },900);
     } else {                                                     // 刚好：冲撞——顿帧+震退+爆闪
-      me.classList.add("lunge-hit"); tick();
+      me.style.filter=""; me.classList.add("lunge-hit"); tick();
       setTimeout(()=>{                                           // 撞上：80ms 顿帧后一起炸开
         bossC.classList.add("staggered"); me.classList.add("recoil");
-        flashGo(true); sparkle(18); land(true); chord();
+        flashWhite(); sparkle(18); land(true); chord();
         quip(T().bossWin);
         if(F.score){ S.score+=120; bumpScore(120); }
         S.actCount++; S.doneActions++; updateGoal();
@@ -87,8 +88,10 @@ export function startBoss(){
       bossC.querySelector(".meta").textContent=artMeta(art);
       bossC.querySelector(".tagline").textContent=artLine(art); }
     const pool=T().wordsRare, ch=pool[(Math.random()*pool.length)|0];
-    const big=bossC.querySelector(".big"); big.textContent=ch;
-    big.style.fontSize = ch.length<=7 ? "15px" : "12px";        // Boss 牌小，字号跟着锁
+    const big=bossC.querySelector(".big"); big.textContent=ch.t;
+    bossC.querySelector(".pline").textContent=ch.s;
+    big.style.fontSize="15px";                                  // Boss 牌小，字号跟着锁
+    bossC.querySelector(".pline").style.fontSize="8.5px";
     bossC.querySelector(".meta").style.fontSize="9px";
     bossC.querySelector(".tagline").style.fontSize="8.5px";
     bossC.querySelector(".poem").style.display="none";
