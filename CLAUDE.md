@@ -23,6 +23,10 @@ npx wrangler pages deploy . --project-name=thegametheory   # 线上 https://theg
 - `index.html` + `css/style.css` + `js/` 13 模块（config/i18n/state/rarity/pool/audio/dom/hud/narration/cards/flow/share/input/lang/main）。
 - 数值改 `js/config.js`（`BEATS`/`TUNE`/`TARGET`），文案改 `js/i18n.js`（`POEM`/`CHARS`/`ENDINGS`），改这里不碰逻辑。
 - `data/museums/*.json` 890 件真迹（Met/AIC/CMA/V&A），含 `cardline_zh/cardline` AI 题词；`art/` 890 张 768px WebP（同源，canvas 可导出）。img/data 路径全部以 `/` 开头的绝对路径。
+- **游戏卡组**：`data/games.json` 148 款（1972-2024 中外，稀有度=年代+国民度+火热度）；封面 `art-games/`。
+  源数据 `build/games-list.mjs`，抓图 `build/fetch-game-art.mjs`（维基 pageimages `pilimit=50&pilicense=any` 批量 + `action=parse` 抠 infobox 兜底；可重复跑只补缺）。
+  `pool.js` 双池 + `setDeck`；开局语言后 chooser 二选一「画/游戏」。
+- wrangler 部署：中文 commit message 会被 CF API 拒（UTF-8 bug），加 `--commit-message="ascii"`。
 - `test/` node --test 单测；`build/sim.mjs` 蒙特卡洛模拟（改数值后必跑）。
 - 分享卡内联 canvas 绘制（无 QR 依赖）。
 - `?debug` 暴露 `window.GT` 供自动化验收。
