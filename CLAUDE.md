@@ -20,7 +20,10 @@ npx wrangler pages deploy . --project-name=thegametheory   # 线上 https://theg
 
 ## 架构
 
-- `index.html` + `css/style.css` + `js/` 13 模块（config/i18n/state/rarity/pool/audio/dom/hud/narration/cards/flow/share/input/lang/main）。
+- `index.html` + `css/style.css` + `js/` 17 模块（config/i18n/state/rarity/pool/audio/dom/hud/narration/cards/flow/share/input/lang/chooser/pick/boss/main）。
+- **BEATS 16 拍**：up 主循环 ×11 + pick3(三选一真随机) + boss(按住蓄力三区：弱弹回/贪炸膛/刚好破牌) + pick4(near-miss：金卡永远在隔壁，选中卡"▼你的选择"标签区分) + goalreveal(满条 climax：金闪+条脉冲+第四面墙报数) + share。
+- 开局：语言二选一 → 卡组二选一（游戏左✦引导/画右）→ 4 行使命开场白。
+- 同类元游戏调研与待用点子：`docs/meta-games-research.md`。
 - 数值改 `js/config.js`（`BEATS`/`TUNE`/`TARGET`），文案改 `js/i18n.js`（`POEM`/`CHARS`/`ENDINGS`），改这里不碰逻辑。
 - `data/museums/*.json` 890 件真迹（Met/AIC/CMA/V&A），含 `cardline_zh/cardline` AI 题词；`art/` 890 张 768px WebP（同源，canvas 可导出）。img/data 路径全部以 `/` 开头的绝对路径。
 - **游戏卡组**：`data/games.json` 148 款（1972-2024 中外，稀有度=年代+国民度+火热度）；封面 `art-games/`。
