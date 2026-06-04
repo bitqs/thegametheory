@@ -9,14 +9,15 @@ import urllib.request
 KEY = os.environ["ELEVENLABS_API_KEY"]
 LEN = int(os.environ.get("BGM_LEN_MS", "90000"))
 
-# 电影级氛围弦乐（A24/《降临》向）：低沉持续、无旋律钩子、动态平稳——垫底不抢 SFX
+# JRPG 小镇/冒险主题：温暖明亮有旋律，但动态克制——垫底不抢 SFX
 PROMPT = (
-    "Instrumental cinematic ambient underscore: deep sustained low strings, "
-    "slowly evolving cello and viola drones, subtle airy string harmonics, "
-    "faint sub bass swells, distant shimmering textures. Mysterious, "
-    "contemplative, restrained, elegant, like a prestige film score. Very slow, "
-    "quiet, consistent dynamics throughout, no melodic hooks, no percussion, "
-    "strictly instrumental, no vocals. Smooth seamless loop."
+    "Instrumental fantasy RPG background music, like a classic JRPG town and "
+    "overworld theme: warm gentle strings, flowing harp arpeggios, a soft "
+    "woodwind flute melody, light celesta sparkles. Hopeful, nostalgic, "
+    "adventurous yet cozy and relaxed. Bright, uplifting, elegant. Moderate "
+    "slow tempo, gentle consistent dynamics suitable for quiet background "
+    "looping, no heavy percussion. Strictly instrumental, no vocals. Smooth "
+    "seamless loop."
 )
 
 
