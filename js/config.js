@@ -15,6 +15,7 @@ export const BEATS = [
   { on:["pick3"],   g:"pick",need:2 },
   { on:["story"],   g:"up",  need:4 },
   { on:["juice"],   g:"up",  need:4 },
+  { on:["boss"],    g:"hold",need:2 },
   { on:["pick4"],   g:"pick",need:1 },
   { on:["goalreveal"], g:"up", need:4 },
   { on:["share"],   g:"tap", need:1 },

@@ -27,6 +27,11 @@ export function applyBeat(){ const b=BEATS[S.beatIdx];
     import("./pick.js").then(m=>m.startPick(b.on.includes("pick4")?4:3, b.on.includes("pick4")?"nearmiss":null));
     setHint("pick"); return;
   }
+  if(b.g==="hold"){                                                    // boss beat：蓄力战
+    [...els.stage.children].forEach(c=>c.remove());
+    import("./boss.js").then(m=>m.startBoss());
+    setHint("hold"); return;
+  }
   [...els.stage.children].forEach(c=>{ if(c!==prev) c.remove(); });    // 清掉残留，防累积
   if(prev) exitUp(prev, spawnBack);                                    // 上一张上滑隐去 → 再出现下一张
   else spawnBack();
