@@ -253,6 +253,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chooseWrap .ccard-out{transition:opacity .5s,transform .5s;opacity:0;transform:scale(.9);pointer-events:none}
 .chooseWrap .chint{margin-top:14px;text-align:center;font-size:13px;letter-spacing:.3em;
   color:var(--dim);transition:opacity .4s}                            /* 牌背题注（翻面即淡出） */
+/* 终极目标满条：进度条高光脉冲（climax 时刻全场只看它） */
+#top.climax{transform:scale(1.12);transform-origin:center top;transition:transform .8s cubic-bezier(.2,.8,.2,1)}
+#top.climax #goalFill{animation:goalblaze 1.2s ease-in-out infinite}
+@keyframes goalblaze{0%,100%{box-shadow:0 0 10px var(--gold)}50%{box-shadow:0 0 30px var(--gold),0 0 60px rgba(255,211,77,.5)}}
 /* boss beat：怪物牌（红光呼吸）+ 蓄力条三区反馈 */
 .card.boss .back{animation:breathe 1.6s ease-in-out infinite}
 .card.boss .back .glyph{color:#ff5a5a;text-shadow:0 0 28px #ff5a5a;font-size:54px}

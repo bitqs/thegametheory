@@ -1,5 +1,5 @@
 // Beat 状态机 / 哲学 / 选择 / 结局
-import { S, F, G } from "./state.js";
+import { S, F } from "./state.js";
 import { BEATS, TARGET, EG } from "./config.js";
 import { T, getLang } from "./i18n.js";
 import { $, els } from "./dom.js";
@@ -40,9 +40,23 @@ export function applyBeat(){ const b=BEATS[S.beatIdx];
 export function enterOutro(){ S.phase="outro"; clearSay(); els.hint.classList.remove("show");
   const b=BEATS[S.beatIdx];
   if(b.on.includes("energy")){ F.energy=0; $("cEnergy").classList.remove("show"); dangerOff(); }  // 收尾稀缺
+  if(b.on.includes("goalreveal")){ goalClimax(); return; }                                        // 终极目标满条：震撼揭示
   const done=T().beats[S.beatIdx].done;
   if(done) setTimeout(()=>showInsight(done),350); else { nextBeat(); return; }
   setTimeout(nudgeHint,900);
+}
+// 满条时刻：金闪连发 + 进度条高光 + 第四面墙报数 + 逐行揭示"里面什么都没有"
+function goalClimax(){
+  const mins=Math.max(1, Math.round((Date.now()-S.t0)/60000));
+  const lines=T().goalClimax(S.doneActions, mins);
+  import("./dom.js").then(d=>{ d.flashGo(true); d.sparkle(22);
+    setTimeout(()=>{ d.flashGo(true); d.sparkle(16); },420); });
+  chord(); setTimeout(chord, 450);
+  els.top.classList.add("climax");
+  const prev=S.shown; S.shown=null; if(prev) exitUp(prev);
+  lines.forEach((t,i)=>setTimeout(()=>showInsight(t), 900+i*2300));
+  setTimeout(()=>{ els.top.classList.remove("climax");
+    showInsight(T().beats[S.beatIdx].done); nudgeHint(); }, 900+lines.length*2300);
 }
 export function nextBeat(){ hideInsight(); S.beatIdx++;
   if(S.beatIdx>=BEATS.length){ startPhilo(); return; }

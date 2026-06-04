@@ -15,6 +15,6 @@ export const S = {
   shown:null, card:null, doneActions:0,
   muted:false, ac:null,
   philoStep:0, philoLines:null,
-  POOL:[], deck:"art", goalMarks:new Set(), firstSSR:false,
+  POOL:[], deck:"art", goalMarks:new Set(), firstSSR:false, t0:Date.now(),
 
 };
