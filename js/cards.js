@@ -1,0 +1,117 @@
+// 卡片：渲染 / 翻牌 VFX / 出牌动作 / 上滑退场
+import { S, F } from "./state.js";
+import { BEATS, TUNE, RC, RSTARS, RANK } from "./config.js";
+import { T } from "./i18n.js";
+import { rollRarity } from "./rarity.js";
+import { pickArt, artMeta } from "./pool.js";
+import { land, chord, tick, riser, lvlSnd } from "./audio.js";
+import { els, sparkle, flashGo, dangerOn, dangerOff } from "./dom.js";
+import { bumpScore, renderLevel, renderEnergy, updateGoal } from "./hud.js";
+import { quip } from "./narration.js";
+import { enterOutro } from "./flow.js";
+import { openShareEnergy } from "./share.js";
+
+export function needOf(b){ return b.need; }
+
+export function makeCard(){
+  const c=document.createElement("div"); c.className="card";
+  c.innerHTML=`<div class="flip">
+    <div class="face back"><div class="bpat"></div><div class="bring"></div><div class="glyph">❖</div><div class="uphint"></div></div>
+    <div class="face front">
+      <div class="artwin"><div class="artbg"></div><div class="artfg"></div><div class="artgrad"></div></div>
+      <div class="frame"></div>
+      <span class="corner c1"></span><span class="corner c2"></span><span class="corner c3"></span><span class="corner c4"></span>
+      <div class="plate"><div class="crown"><span class="rt"></span><span class="stars"></span></div><div class="big"></div><div class="divider"></div><div class="meta"></div><div class="poem"></div></div>
+      <div class="serial"><span class="sn"></span><span class="ed">MMXXVI</span></div><div class="foil"></div><div class="ring"></div><div class="holo"></div>
+    </div>
+  </div>`;
+  return c;
+}
+export function hintWord(g){ return T().backhint[g]||""; }
+export function spawnBack(){
+  const c=makeCard(); els.stage.appendChild(c); S.card=c;
+  c.querySelector(".back .uphint").textContent = S.phase==="play" ? hintWord(BEATS[S.beatIdx].g) : "";
+  requestAnimationFrame(()=>c.classList.add("in"));
+}
+
+// 一次动作 = 翻开当前面朝下的牌
+export function performAction(type){
+  if(S.busy) return false;                            // 动画中锁输入，防重复出牌/重复计数
+  if(!S.card) spawnBack();
+  const now=Date.now(); const dt=now-S.lastAct; S.lastAct=now;
+  // 心力（仅 energy beat）：耗尽 → 弹"分享得心力"（假分享，制造稀缺心态）；不自动回，逼你分享
+  if(F.energy){ if(S.energy<=0){ openShareEnergy(); return false; }
+    S.energy--; renderEnergy();
+    if(S.energy<=1) dangerOn(); else dangerOff(); }
+
+  S.busy=true; S.actCount++; S.doneActions++;
+  const cur=S.card; S.card=null;                      // 翻这张；揭示后再补新牌
+  const front=cur.querySelector(".front"), big=cur.querySelector(".big");
+  cur.querySelector(".back .uphint").textContent="";
+
+  // 稀有度：rarity 解锁后按档掉；之前 random 阶段只有二元金闪
+  let rar=null, isHit=false;
+  if(F.rarity){ rar=rollRarity(); isHit = rar!=="N"; }
+  else if(F.random){ isHit = Math.random()<0.30; }
+  const big2 = rar==="SR"||rar==="SSR";
+  if(rar){ cur.dataset.r=rar; cur.style.setProperty("--rc",RC[rar]);
+    cur.querySelector(".crown .rt").textContent=rar+" · "+T().rlabel[rar];
+    cur.querySelector(".crown .stars").textContent="✦".repeat(RSTARS[rar]);
+    if(RANK[rar]>RANK[S.bestR]) S.bestR=rar;
+  } else cur.style.setProperty("--rc","#9aa3b2");
+  const art=pickArt(rar); cur.__art=art;
+  if(art){ const u="url('"+art.img+"')"; cur.querySelector(".artbg").style.backgroundImage=u; cur.querySelector(".artfg").style.backgroundImage=u;
+    if(rar && rar===S.bestR) S.bestArt=art; }   // 记最高档画作，给战绩卡当主视觉
+  // 牌面文字：稀有牌给完整句子，普通牌给短词；按长度定字号
+  const pool = big2 ? T().wordsRare : T().words;
+  const ch = pool[(Math.random()*pool.length)|0]; big.textContent=ch; S.collected.push(ch);
+  big.style.fontSize = ch.length<=4 ? "50px" : ch.length<=7 ? "38px" : "29px";
+  const fresh=!S.collSet.has(ch); S.collSet.add(ch);
+  if(F.collect){ document.getElementById("cCollect").querySelector("b").textContent=S.collSet.size;
+    if(fresh && S.collSet.size%5===0){ setTimeout(()=>{ flashGo(true); chord(); quip(T().milestone(S.collSet.size)); },300); } }
+  if(F.story){ const pm=T().poem; cur.querySelector(".poem").textContent=pm[S.storyIdx%pm.length]; S.storyIdx++; }
+  cur.querySelector(".serial .sn").textContent="No."+String(S.collected.length).padStart(4,"0");  // 每张牌序列号
+  const last = S.actCount>=needOf(BEATS[S.beatIdx]);
+
+  const doReveal=()=>{
+    const gl=cur.querySelector(".glyph"); if(gl) gl.style.opacity="0";   // 背面图案瞬间消失（不延迟）
+    cur.querySelector(".flip").classList.add("flipped");
+    cur.classList.add("pop");                                            // 翻牌弹跳特效
+    setTimeout(()=>{ const b=cur.querySelector(".back"); if(b) b.style.visibility="hidden"; },150);
+    // 卡面装饰翻面后才显（错峰升起）：精致度随机制累积
+    front.classList.add("art-on");
+    if(cur.__art) cur.querySelector(".meta").textContent=artMeta(cur.__art);
+    if(rar) cur.classList.add("r-on");
+    if(F.score) cur.classList.add("s-frame");
+    if(F.story){ cur.classList.add("s-divider","s-backorn"); front.classList.add("story"); }
+    if(F.juice) cur.classList.add("s-corners","s-foil");
+    front.classList.add("sheen");                                        // 光扫 + 揭示光环（始终）
+    setTimeout(()=>cur.classList.add("float"), 480);
+    // 反馈分层：稀有度越高越炸
+    if(F.sound) land(big2);
+    if(isHit){ flashGo(big2); sparkle(rar==="SSR"?18:rar==="SR"?12:rar==="R"?8:(F.juice?8:6)); if(big2&&F.sound) chord(); }
+    if(F.score){ const add=TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60:0);
+      S.score+=add; bumpScore(add); }
+    if(F.level){ let gg=TUNE.xpBase + (dt<TUNE.fastMs?TUNE.xpFast:0) + (big2?6:0); S.xp+=gg;
+      const need=TUNE.lvlBase+(S.level-1)*TUNE.lvlStep;
+      if(S.xp>=need){ S.xp-=need; S.level++; renderLevel(true); lvlSnd(); flashGo(false);} else renderLevel(false); }
+    updateGoal();
+    S.shown=cur;
+    if(last){ enterOutro(); S.busy=false; }                             // 留住，待洞见后统一上滑隐去
+    else { setTimeout(()=>{ exitUp(cur, ()=>{ spawnBack(); S.busy=false; }); }, 760); }  // 先隐去，再出现下一张
+  };
+
+  if(type==="down" && F.charge){
+    const ms=1100; cur.classList.add("charging"); riser(ms);
+    setTimeout(()=>{ cur.classList.remove("charging"); doReveal(); }, ms);
+  } else {
+    if(F.sound) tick();
+    requestAnimationFrame(()=>requestAnimationFrame(doReveal));
+  }
+  return true;
+}
+// 所有牌统一：向上滑动隐去，移除后再回调出下一张（避免两张同时占位导致居中跳动）
+export function exitUp(c, cb){ if(!c){ cb&&cb(); return; } c.classList.remove("float");
+  c.style.transition="transform .45s cubic-bezier(.4,0,.2,1),opacity .4s";
+  c.style.transform="translateY(-135%)"; c.style.opacity="0";
+  setTimeout(()=>{ c.remove(); cb&&cb(); },460); }

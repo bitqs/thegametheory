@@ -1,0 +1,10 @@
+{
+  "name": "thegametheory-no2",
+  "private": true,
+  "type": "module",
+  "description": "№2 游戏的诞生 — modular vanilla web game (no build).",
+  "scripts": {
+    "test": "node --test test/",
+    "sim": "node build/sim.mjs"
+  }
+}

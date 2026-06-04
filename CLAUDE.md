@@ -3,8 +3,13 @@
 极简但有深度、有设计感的游戏系列。第一性原理探索"最小逻辑产生游戏感"：
 compulsion 是引擎（可变奖励+保底+juice），内容是皮。分享的目的是"让大家夸夸我"，不是增长漏斗。
 
-**№1 一眼万年**：上滑抽真迹卡 → 普通自动翻 / 中奖(SR/SSR)留背面发光等手翻（蓄力时长=中奖预期）→
-下拉渐显详情(鉴赏/缩放) → 点卡心动 → 本命揭晓 → 收藏卡分享。
+**№1 一眼万年**（已下架，完整代码在 git 历史 `f167548`）：上滑抽真迹卡的单文件抽卡游戏。
+
+**№2 游戏的诞生**（现占根目录）：边玩边拆穿自己的元游戏。
+一个自嘲坦诚的设计师("我")陪玩家逐层装机制(即时反馈→随机奖励→稀有度→进度条→获得感→升级→
+稀缺→蓄力→叙事→juice→终极目标→分享)，每装一个当场承认在操纵你(幽默=诚实的骗子边行骗边解说)。
+手势渐进 tap→上滑→下滑→结局三者组合答题。终极目标揭穿为任意画的线 → 哲学延伸到人生
+("游戏是一组我们都同意假装重要的规则，人生也是；区别是游戏里你能选为什么继续") → 三向选择(希望/故事/此刻)出三种结局卡+分享卡。
 
 ## 跑 / 部署
 
@@ -15,15 +20,13 @@ npx wrangler pages deploy . --project-name=thegametheory   # 线上 https://theg
 
 ## 架构
 
-- `index.html` ★ 单文件（样式+逻辑内联）。数值集中在顶部 const：`RATES`（概率/保底）、`FLIP`（蓄力时长/爆闪强度）、`STARS`、`JACKPOT`。
-- `js/share-image.js` 收藏卡 canvas 渲染（与 art-looting 同源拷贝）；`js/vendor/qrcode-generator.js`。
-- `data/museums/*.json` 890 件真迹（Met/AIC/CMA/V&A），含 `cardline_zh/cardline` AI 题词；`art/` 890 张 768px WebP（同源，canvas 可导出）。
-- pity 状态存 localStorage key `yywn.pity`（跨局持久，容错）。
-
-## 数值（已蒙特卡洛验证，改 RATES 后要重新模拟）
-
-N64.5/R26/SR8/SSR1.5%；SSR 软保底 20 抽起 +2%/抽、硬保底 40（间隔均值~23/中位25/p95 36）；
-SR 保底 12（10% 升金）；防连黑：连 5 N 必≥R；新手垫刀：4-8 抽必首金。
+- `index.html` + `css/style.css` + `js/` 13 模块（config/i18n/state/rarity/pool/audio/dom/hud/narration/cards/flow/share/input/lang/main）。
+- 数值改 `js/config.js`（`BEATS`/`TUNE`/`TARGET`），文案改 `js/i18n.js`（`POEM`/`CHARS`/`ENDINGS`），改这里不碰逻辑。
+- `data/museums/*.json` 890 件真迹（Met/AIC/CMA/V&A），含 `cardline_zh/cardline` AI 题词；`art/` 890 张 768px WebP（同源，canvas 可导出）。img/data 路径全部以 `/` 开头的绝对路径。
+- `test/` node --test 单测；`build/sim.mjs` 蒙特卡洛模拟（改数值后必跑）。
+- 分享卡内联 canvas 绘制（无 QR 依赖）。
+- `?debug` 暴露 `window.GT` 供自动化验收。
+- 全流程 jsdom 无头验证过（13 beat→哲学→选择→结局零运行时错）；`busy` 锁防动画中重复出牌。
 
 ## 交互铁律（用户逐条打磨出的，别回退）
 
@@ -36,5 +39,5 @@ SR 保底 12（10% 升金）；防连黑：连 5 N 必≥R；新手垫刀：4-8 
 
 ## 工作流
 
-改数值 → node 蒙特卡洛验证 → 浏览器手感验收（chrome-devtools，几何优先）→ wrangler 部署。
+改数值 → `node build/sim.mjs` 蒙特卡洛验证 → 浏览器手感验收（chrome-devtools，几何优先）→ wrangler 部署。
 设计新机制/调数值时用 game-design 技能（.claude/skills/game-design）。

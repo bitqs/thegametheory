@@ -1,0 +1,19 @@
+// 中央可变状态：各模块 import 同一对象读写（消灭散落全局）
+import { TUNE } from "./config.js";
+
+// 机制开关（beat 解锁后置 1）
+export const F = { sound:0,random:0,rarity:0,bar:0,score:0,level:0,collect:0,energy:0,charge:0,story:0,juice:0,goalreveal:0,share:0 };
+// 已解锁手势
+export const G = { tap:1, up:0, down:0 };
+
+export const S = {
+  phase:"play", beatIdx:0, actCount:0,
+  score:0, level:1, xp:0, lastAct:0,
+  energy:TUNE.energyMax, energyTimer:null, busy:false,
+  collected:[], collSet:new Set(), storyIdx:0,
+  chosen:null, pendingPhilo:false, bestR:"N", bestArt:null,
+  shown:null, card:null, doneActions:0,
+  muted:false, ac:null,
+  philoStep:0, philoLines:null,
+  POOL:[],
+};
