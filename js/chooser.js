@@ -46,6 +46,7 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
       }, 240);
       // 翻完 → 放大到最大（FLIP：以当前位置为起点位移+缩放到视口中心）
       setTimeout(() => {
+        h.classList.remove("settle");                                             // settle 的 transform:none!important 会压死放大，先摘
         const r = c.getBoundingClientRect();
         const s = Math.min(innerWidth * 0.88 / r.width, innerHeight * 0.76 / r.height);
         const dx = innerWidth / 2 - (r.left + r.width / 2);
