@@ -5,7 +5,7 @@ import { $, els, dangerOff } from "./dom.js";
 
 export function showChip(el){ el.classList.add("show"); }
 export function bumpScore(add){ $("cScore").querySelector("b").textContent=S.score;
-  const p=document.createElement("div"); p.className="pop"; p.textContent="+"+add; document.body.appendChild(p); setTimeout(()=>p.remove(),1000); }
+  const p=document.createElement("div"); p.className="scorepop"; p.textContent="+"+add; document.body.appendChild(p); setTimeout(()=>p.remove(),1000); }
 export function renderLevel(up){ const b=$("cLevel").querySelector("b"); b.textContent=S.level;
   if(up){ b.animate?.([{transform:"scale(1)"},{transform:"scale(1.5)",color:"#fff"},{transform:"scale(1)"}],{duration:500}); } }
 export function renderEnergy(){ const w=$("energyDots"); if(w.children.length!==TUNE.energyMax){ w.innerHTML=""; for(let i=0;i<TUNE.energyMax;i++) w.appendChild(document.createElement("i")); }

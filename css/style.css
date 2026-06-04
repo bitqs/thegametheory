@@ -169,7 +169,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   animation:burst .9s ease-out forwards}
 @keyframes burst{to{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 /* 飘分 */
-.pop{position:fixed;left:50%;top:42%;transform:translateX(-50%);z-index:17;pointer-events:none;
+.scorepop{position:fixed;left:50%;top:42%;transform:translateX(-50%);z-index:17;pointer-events:none;
   font-family:"Cinzel",serif;font-weight:700;font-size:26px;color:var(--goldL);
   text-shadow:0 0 16px var(--gold);animation:popup 1s ease-out forwards}
 @keyframes popup{from{opacity:0;transform:translate(-50%,10px)}
