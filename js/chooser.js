@@ -1,0 +1,65 @@
+// 通用 N 选一（2/3/4 张）：牌背阵 → 点一张翻面 → 放大停留鉴赏 → 缩出 → onPick(idx)
+// item: { crown, stars(1-4), title, sub, serial, art, rarity }
+import { RC } from "./config.js";
+import { makeCard } from "./cards.js";
+import { chord } from "./audio.js";
+import { sparkle, flashGo } from "./dom.js";
+
+export function pickCards({ items, mount, onPick, dwell = 1200 }) {
+  const wrap = document.createElement("div");
+  wrap.className = "chooseWrap n" + items.length;
+  let picked = false;
+
+  items.forEach((it, idx) => {
+    const c = makeCard();
+    const rar = it.rarity || "SSR";
+    c.dataset.r = rar; c.style.setProperty("--rc", RC[rar]);
+    c.classList.add("waiting");                                   // 牌背微光脉动
+    // 正面内容先备好，翻开即见
+    c.classList.add("r-on", "s-frame", "s-corners", "s-foil", "s-divider");
+    c.querySelector(".crown .rt").textContent = it.crown || "";
+    c.querySelector(".crown .stars").textContent = "✦".repeat(it.stars || 4);
+    if (it.art) { const u = "url('" + it.art.img + "')";
+      c.querySelector(".artbg").style.backgroundImage = u;
+      c.querySelector(".artfg").style.backgroundImage = u; }
+    const big = c.querySelector(".big"); big.textContent = it.title || ""; big.style.fontSize = "32px";
+    const meta = c.querySelector(".meta"); meta.textContent = it.sub || ""; meta.style.opacity = ".8";
+    c.querySelector(".serial .sn").textContent = it.serial || "";
+
+    const h = document.createElement("div"); h.className = "ccard"; h.appendChild(c);
+    if (it.hint) { const t = document.createElement("div"); t.className = "chint"; t.textContent = it.hint; h.appendChild(t); }
+    h.onclick = () => {
+      if (picked) return; picked = true;
+      c.classList.remove("waiting");
+      [...wrap.querySelectorAll(".chint")].forEach(t => t.style.opacity = "0");   // 题注让位给翻面
+      h.querySelector(".chint")?.remove();                                        // 选中卡题注移除，放大不遮挡
+      // 其余淡出缩小
+      [...wrap.children].forEach(o => { if (o !== h) o.classList.add("ccard-out"); });
+      // 翻面
+      const gl = c.querySelector(".glyph"); if (gl) gl.style.opacity = "0";
+      c.querySelector(".flip").classList.add("flipped");
+      c.querySelector(".front").classList.add("art-on", "sheen");
+      setTimeout(() => { const b = c.querySelector(".back"); if (b) b.style.visibility = "hidden"; }, 200);
+      chord(); flashGo(true); sparkle(14);
+      // 翻完 → 放大到最大（FLIP：以当前位置为起点位移+缩放到视口中心）
+      setTimeout(() => {
+        const r = c.getBoundingClientRect();
+        const s = Math.min(innerWidth * 0.88 / r.width, innerHeight * 0.76 / r.height);
+        const dx = innerWidth / 2 - (r.left + r.width / 2);
+        const dy = innerHeight / 2 - (r.top + r.height / 2);
+        h.style.zIndex = "5";
+        c.style.transition = "transform .6s cubic-bezier(.2,.8,.2,1)";
+        c.style.transform = `translate(${dx}px,${dy}px) scale(${s})`;
+        // 停留鉴赏 → 缩出 → 回调
+        setTimeout(() => {
+          c.style.transition = "transform .45s cubic-bezier(.4,0,.2,1),opacity .4s";
+          c.style.transform += " scale(.92)"; c.style.opacity = "0";
+          setTimeout(() => { wrap.remove(); onPick && onPick(idx); }, 440);
+        }, dwell + 600);
+      }, 620);
+    };
+    wrap.appendChild(h);
+  });
+  mount.appendChild(wrap);
+  return wrap;
+}

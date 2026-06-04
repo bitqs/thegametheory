@@ -224,6 +224,22 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 #lang .lcard .card{position:relative;width:100%;transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .28s}
 @media(hover:hover){ #lang .lcard:hover .card{transform:translateY(-12px) scale(1.04);filter:brightness(1.12) saturate(1.05)} }
 #lang .lcard:active .card{scale:.96}                                  /* 语言卡按下反馈 */
+/* ── 通用 N 选一 ── */
+.chooseWrap{display:flex;gap:24px;align-items:center;justify-content:center}
+.chooseWrap.n3{gap:14px}
+.chooseWrap.n4{display:grid;grid-template-columns:repeat(2,auto);gap:16px;justify-content:center}
+.chooseWrap .ccard{cursor:pointer;animation:cardin .7s cubic-bezier(.2,.8,.2,1) both}
+.chooseWrap .ccard:nth-child(2){animation-delay:.13s}
+.chooseWrap .ccard:nth-child(3){animation-delay:.26s}
+.chooseWrap .ccard:nth-child(4){animation-delay:.39s}
+.chooseWrap .ccard .card{position:relative;width:min(40vw,180px)}
+.chooseWrap.n3 .ccard .card{width:min(28vw,140px)}
+.chooseWrap.n4 .ccard .card{width:min(38vw,160px)}
+.chooseWrap .ccard:active .card{scale:.96}
+.chooseWrap .card.waiting .back{animation:breathe 2.2s ease-in-out infinite}  /* 牌背微光候选 */
+.chooseWrap .ccard-out{transition:opacity .5s,transform .5s;opacity:0;transform:scale(.9);pointer-events:none}
+.chooseWrap .chint{margin-top:14px;text-align:center;font-size:13px;letter-spacing:.3em;
+  color:var(--dim);transition:opacity .4s}                            /* 牌背题注（翻面即淡出） */
 #lang .langtip{margin-top:34px;font-family:"Cinzel",serif;font-size:11px;letter-spacing:.18em;color:var(--faint);opacity:0;animation:langfade 1s 1.1s forwards}
 @keyframes langfade{to{opacity:.65}}
 /* 选择 */

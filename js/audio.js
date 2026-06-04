@@ -1,5 +1,5 @@
 // 音频：优先播放 /audio 下的开源采样，缺文件则回退 Web Audio 合成（零素材也能跑）
-// 静音读 S.muted；不可用全程静默降级。下载素材见 game2/audio/SOUNDS.md
+// 静音读 S.muted；不可用全程静默降级。下载素材见 audio/SOUNDS.md
 import { S } from "./state.js";
 
 export function actx(){ if(S.muted) return null;
