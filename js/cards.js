@@ -87,7 +87,8 @@ export function flipCard(type){
   // 牌面文字：稀有牌给完整句子，普通牌给短词；按长度定字号
   const pool = big2 ? T().wordsRare : T().words;
   const ch = pool[(Math.random()*pool.length)|0]; big.textContent=ch; S.collected.push(ch);
-  big.style.fontSize = ch.length<=4 ? "50px" : ch.length<=7 ? "38px" : "29px";
+  // 字号三档固定（短词/长词/句子），保证卡面排版统一
+  big.style.fontSize = ch.length<=4 ? "34px" : ch.length<=7 ? "26px" : "20px";
   const fresh=!S.collSet.has(ch); S.collSet.add(ch);
   if(F.collect){ document.getElementById("cCollect").querySelector("b").textContent=S.collSet.size;
     if(fresh && S.collSet.size%5===0){ setTimeout(()=>{ flashGo(true); chord(); quip(T().milestone(S.collSet.size)); },300); } }
