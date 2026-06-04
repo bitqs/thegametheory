@@ -98,8 +98,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .front.art-on .artbg{opacity:1}
 .front .artgrad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,8,16,.55) 80%,#0b0810)}
 /* 文字台 */
-.front .plate{position:absolute;left:0;right:0;top:calc(47% + 36px);bottom:26px;z-index:2;
-  display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:7px;padding:0 18px}
+.front .plate{position:absolute;left:0;right:0;top:calc(47% + 34px);bottom:26px;z-index:2;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px;padding:4px 18px 0}
+.front .divider{margin-top:auto}                       /* 介绍紧贴图片；大字在剩余空间居中 */
+.front .poem{margin-bottom:auto}
 /* 稀有度抬头条：卡牌上沿（档名左 / 星级右） */
 .front .crown{position:absolute;top:8px;left:16px;right:16px;
   display:flex;justify-content:space-between;align-items:baseline;
