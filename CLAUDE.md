@@ -23,7 +23,12 @@ npx wrangler pages deploy . --project-name=thegametheory   # 线上 https://theg
 - `index.html` + `css/style.css` + `js/` 17 模块（config/i18n/state/rarity/pool/audio/dom/hud/narration/cards/flow/share/input/lang/chooser/pick/boss/main）。
 - **BEATS 16 拍**：up 主循环 ×11 + pick3(三选一真随机) + boss(按住蓄力三区：弱弹回/贪炸膛/刚好破牌) + pick4(near-miss：金卡永远在隔壁，选中卡"▼你的选择"标签区分) + goalreveal(满条 climax：金闪+条脉冲+第四面墙报数) + share。
 - 开局：语言二选一 → 卡组二选一（游戏左✦引导/画右）→ 4 行使命开场白。
-- 同类元游戏调研与待用点子：`docs/meta-games-research.md`。
+- 同类元游戏调研与待用点子：`docs/meta-games-research.md`；**改文案先读 `docs/copy-constitution.md`**。
+- 终幕（share beat tap → `js/finale.js`）：黑镜牌缓放大 + 全屏"玻璃表面"层（雾/水珠/指印/眩光/暗角，
+  焦点拉回屏幕玻璃反射出玩家）→ SSS《你》卡（彩虹描边+指纹纹理）→ 分享卡（双线框高级排版）。
+- 心力耗尽=YOU DIED 幽默死亡屏→分享复活；energy beat 后心力 chip 常驻 ∞。
+- 启动 #boot 进度条；所有出牌路径 `pool.warm()` 解码完成再展示；art-games 统一 ≤640px JPEG。
+- 坑：beat 分支判断用 `b.on.includes(flag)`，不要用 `b.g`（share beat g 是 tap）。
 - 数值改 `js/config.js`（`BEATS`/`TUNE`/`TARGET`），文案改 `js/i18n.js`（`POEM`/`CHARS`/`ENDINGS`），改这里不碰逻辑。
 - `data/museums/*.json` 890 件真迹（Met/AIC/CMA/V&A），含 `cardline_zh/cardline` AI 题词；`art/` 890 张 768px WebP（同源，canvas 可导出）。img/data 路径全部以 `/` 开头的绝对路径。
 - **游戏卡组**：`data/games.json` 148 款（1972-2024 中外，稀有度=年代+国民度+火热度）；封面 `art-games/`。
