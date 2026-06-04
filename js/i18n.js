@@ -50,7 +50,7 @@ export const I18N = {
     locked:["那个动作，我还没给你呢。","急什么，慢慢解锁。","这个手势，还没到时候。"],
     deckQ:"这局，用什么做牌面？",
     decks:{ art:{t:"画",sub:"PAINTINGS · 890 真迹",crown:"DECK"}, games:{t:"游戏",sub:"GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["你好，普通玩家！","命运之神，选中了你。","接下来，你将经历一段神奇的旅程——","旅程结束后，你不再是一名普通的玩家！","最后，我会揭示一个巨大的秘密：","关于游戏。关于你。关于这个世界。","准备好了么？","命运已至。迈出第一步。"],
+    openHook:["你好，普通玩家！","命运之神选中了你！","接下来，你将经历一段神奇的旅程——","旅程结束后，你不再是一名普通的玩家！","最后，我会揭示一个巨大的秘密：","关于游戏，关于世界，关于你。","准备好了么？","命运已至。迈出第一步。"],
     beats:[
       { say:["勇者的第一张牌！","……好吧，其实是张白牌。上滑，换一张。"], done:"其实第一张牌，开场就打过了——“使命感”。命运选中你？我编的。但你因此走到了这里。" },
       { say:["听！我为你加上了圣音！","再滑一张——听见了吗？","你的大脑刚刚奖励了你。不客气。"], done:"即时反馈。第一个钩子，钉进去了。" },
@@ -88,7 +88,7 @@ export const I18N = {
     dead:{ t:"你 死 了", sub:"开玩笑的。只是心力用完了——分享一下，立刻复活。" },
     finale:{
       mirror:["最后一张牌。全黑的。","盯着它，看仔细——里面什么都没有。","……不对。把手机稍微压低一点。","看见黑色里那个反光的人影了吗？","这局真正的奖励——从头到尾，都是那个人。"],
-      youChar:"？", youRank:"人生", youMeta:"《你》 · 至今 · 开放世界 · 永久运营",
+      youChar:"?", youRank:"人生", youMeta:"《你》 · 至今 · 开放世界 · 永久运营",
       youLine:"更好的你自己。", youSerial:"限量 1 / 1",
       youQuip:"开个玩笑。但评级是认真的——SSS。",
     },
@@ -142,7 +142,7 @@ export const I18N = {
     locked:["I haven't given you that move yet.","Patience. Unlocks come.","That gesture isn't ready yet."],
     deckQ:"Pick your deck for this run.",
     decks:{ art:{t:"ART",sub:"PAINTINGS · 890 MASTERWORKS",crown:"DECK"}, games:{t:"GAMES",sub:"VIDEO GAMES · 1972-2024",crown:"DECK"} },
-    openHook:["Hello, ordinary player!","The God of Fate has chosen YOU.","Ahead lies a wondrous journey —","and at its end, you will be ordinary no more!","At the very last, I shall reveal a great secret:","About games. About you. About this world.","Ready?","Fate has arrived. Take the first step."],
+    openHook:["Hello, ordinary player!","The God of Fate has chosen YOU!","Ahead lies a wondrous journey —","and at its end, you will be ordinary no more!","At the very last, I shall reveal a great secret:","About games. About the world. About you.","Ready?","Fate has arrived. Take the first step."],
     beats:[
       { say:["The hero's first card!","…Okay, it's a blank. Swipe up for the next."], done:"Truth is, I played the first card at the title screen — 'a sense of destiny'. Chosen by fate? I made that up. But it carried you here." },
       { say:["Hark! I grant you holy sound!","Swipe again — hear it?","Your brain just rewarded you. You're welcome."], done:"Instant feedback. The first hook, set." },

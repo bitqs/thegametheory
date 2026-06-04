@@ -55,18 +55,20 @@ export function startFinale(){
   els.stage.appendChild(c);
   requestAnimationFrame(()=>c.classList.add("grow"));
   riser(3200);
-  // 玻璃层淡入 + 从边缘向心收拢；全场灯光压暗
+  // 玻璃层淡入 + 从边缘向心收拢；全场灯光压暗；屏幕级镜框（潜意识：屏=镜）
   const fx=buildGlass(); document.body.appendChild(fx);
+  const mf=document.createElement("div"); mf.className="mframe"; document.body.appendChild(mf);
   document.getElementById("app")?.classList.add("lights-off");
-  requestAnimationFrame(()=>fx.classList.add("on"));
+  requestAnimationFrame(()=>{ fx.classList.add("on"); mf.classList.add("on"); });
 
   // 旁白与放大同步：点破"反光里的那个人"
   F.mirror.forEach((t,i)=>setTimeout(()=>showInsight(t), 600+i*2400));
   const tReveal=600+F.mirror.length*2400+400;
 
-  // 揭晓：黑牌炸开 → SSS《你》卡（玻璃层退场，灯光回来）
+  // 揭晓：黑牌炸开 → SSS《你》卡（玻璃层/镜框退场，灯光回来）
   setTimeout(()=>{ hideInsight(); flashGo(true); sparkle(24); chord(); land(true);
-    fx.classList.remove("on"); setTimeout(()=>fx.remove(),1300);
+    fx.classList.remove("on"); mf.classList.remove("on");
+    setTimeout(()=>{ fx.remove(); mf.remove(); },1300);
     document.getElementById("app")?.classList.remove("lights-off");
     c.remove(); spawnYouCard(F);
   }, tReveal);
@@ -85,10 +87,13 @@ function spawnYouCard(F){
   requestAnimationFrame(()=>c.classList.add("in"));
   setTimeout(()=>{ flashGo(true); sparkle(18); chord(); },420);
   setTimeout(()=>showInsight(F.youQuip), 1200);
-  // 停留鉴赏 → 进分享卡（关闭后接哲学）
-  setTimeout(()=>{ hideInsight();
+  // 停留鉴赏——这张牌留在台上，等玩家自己点（最重要的一张，节奏交还给你）
+  setTimeout(()=>{ import("./narration.js").then(n=>n.nudgeHint()); }, 4200);
+  let gone=false;
+  c.style.cursor="pointer";
+  c.onclick=()=>{ if(gone) return; gone=true; hideInsight();
+    els.hint.classList.remove("show");
     c.style.transition="transform .5s,opacity .5s"; c.style.transform="translateY(-130%)"; c.style.opacity="0";
     setTimeout(()=>{ c.remove(); touchEl().style.pointerEvents="";
-      S.pendingPhilo=true; drawShare("you"); },500);          // 分享图=《？》卡（带二维码，可存相册）
-  }, 5200);
+      S.pendingPhilo=true; drawShare("you"); },500); };       // 分享图=《？》卡（带二维码，可存相册）
 }
