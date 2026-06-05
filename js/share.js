@@ -1,5 +1,6 @@
 // 分享卡 / 邀请卡（内联 canvas，无外部依赖）+ 装饰二维码 + 分享得心力
 import { S } from "./state.js";
+import qrcode from "./vendor/qrcode-generator.js";
 import { TUNE, RC, RSTARS, EG } from "./config.js";
 import { T, getLang } from "./i18n.js";
 import { $, dangerOff } from "./dom.js";
@@ -13,15 +14,16 @@ export function wrap(x,t,cx,cy,maxw,lh){ const ch=[...t]; let line="",y=cy;
   for(const c of ch){ if(x.measureText(line+c).width>maxw && line){ x.fillText(line,cx,y); line=c; y+=lh; } else line+=c; }
   if(line) x.fillText(line,cx,y); }
 
-// 装饰二维码（只是个样子，确定性伪随机模块 + 三定位角）
+// 真二维码：指向线上地址，可扫（qrcode-generator，纠错 M）
+let QR=null;
+function realQR(){ if(QR) return QR;
+  const q=qrcode(0,"M"); q.addData("https://thegametheory.pages.dev"); q.make(); QR=q; return q; }
 export function drawQR(x, ox, oy, S2, fg="#0b0b12", bg="#ffffff"){
-  const n=21, m=S2/n; x.fillStyle=bg; x.fillRect(ox-m,oy-m,S2+2*m,S2+2*m);
-  let seed=20260604; const rnd=()=>{ seed=(seed*1103515245+12345)&0x7fffffff; return seed/0x7fffffff; };
-  x.fillStyle=fg; for(let r=0;r<n;r++)for(let c=0;c<n;c++){ if(rnd()<0.5) x.fillRect(ox+c*m,oy+r*m,m+0.6,m+0.6); }
-  const finder=(fx,fy)=>{ x.fillStyle=fg; x.fillRect(ox+fx*m,oy+fy*m,7*m,7*m);
-    x.fillStyle=bg; x.fillRect(ox+(fx+1)*m,oy+(fy+1)*m,5*m,5*m);
-    x.fillStyle=fg; x.fillRect(ox+(fx+2)*m,oy+(fy+2)*m,3*m,3*m); };
-  finder(0,0); finder(n-7,0); finder(0,n-7);
+  const q=realQR(), n=q.getModuleCount(), m=S2/n;
+  x.fillStyle=bg; x.fillRect(ox-m*1.5,oy-m*1.5,S2+3*m,S2+3*m);      // 静区 1.5 模块
+  x.fillStyle=fg;
+  for(let r=0;r<n;r++) for(let c=0;c<n;c++)
+    if(q.isDark(r,c)) x.fillRect(ox+c*m, oy+r*m, m+0.5, m+0.5);
 }
 export function buildInviteCanvas(){
   const cv=$("shareCanvas"), x=cv.getContext("2d"), W=cv.width,H=cv.height, accent="#ffd34d", E=T().energyShare;
