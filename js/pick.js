@@ -65,8 +65,9 @@ export function startPick(n, rig){
     h.onclick=()=>choose(i);
     wrap.appendChild(h); cards.push(c);
   }
-  // 整轮图先解码完再上桌（避免翻开白图）
-  Promise.all(cards.map(c=>warm(c.__art))).then(()=>els.stage.appendChild(wrap));
+  // 立即上桌（牌背无图）；各张图后台解码，翻开瞬间各自等位
+  const readies=cards.map(c=>warm(c.__art));
+  els.stage.appendChild(wrap);
   let done=false;
   function choose(i){
     if(done) return; done=true; tick();
@@ -78,7 +79,8 @@ export function startPick(n, rig){
     const mine=cards[i];
     const holder=wrap.children[i]; holder.classList.add("chosen");   // 选中卡：描边+标签，与隔壁金卡区分
     holder.dataset.label=T().yourPick;
-    fillFront(mine, mine.__rar, mine.__art); flipOpen(mine);
+    Promise.race([readies[i], new Promise(r=>setTimeout(r,900))]).then(()=>{
+      fillFront(mine, mine.__rar, mine.__art); flipOpen(mine); });
     const hit = mine.__rar==="SR"||mine.__rar==="SSR";
     if(hit){ const pc=RC[mine.__rar]; flashGo(true,pc); sparkle(14,pc); chord(); } else land(false);
     setTimeout(()=>{ cards.forEach((c,j)=>{ if(j!==i){       // 其余揭示：你错过的那张在发光

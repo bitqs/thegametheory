@@ -37,14 +37,14 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
       h.querySelector(".chint")?.remove();                                        // 选中卡题注移除，放大不遮挡
       // 其余淡出缩小
       [...wrap.children].forEach(o => { if (o !== h) o.classList.add("ccard-out"); });
-      setTimeout(() => {                                                          // 回位完成后翻面
+      const ready=Promise.race([wrap.__readies?.[idx], new Promise(r=>setTimeout(r,1200))]);
+      Promise.all([ready, new Promise(r=>setTimeout(r,240))]).then(() => {           // 回位+该张图就绪后翻面
       const gl = c.querySelector(".glyph"); if (gl) gl.style.opacity = "0";
       c.querySelector(".flip").classList.add("flipped");
       c.querySelector(".front").classList.add("art-on", "sheen");
       setTimeout(() => { const b = c.querySelector(".back"); if (b) b.style.visibility = "hidden"; }, 200);
       chord(); flashGo(true); sparkle(14);
-      }, 240);
-      // 翻完 → 放大到最大（FLIP：以当前位置为起点位移+缩放到视口中心）
+      // 翻完 → 放大到最大（FLIP：以当前位置为起点位移+缩放到视口中心）——挂在翻面之后，慢网不抢跑
       setTimeout(() => {
         h.classList.remove("settle");                                             // settle 的 transform:none!important 会压死放大，先摘
         const r = c.getBoundingClientRect();
@@ -60,10 +60,13 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
           c.style.transform += " scale(.92)"; c.style.opacity = "0";
           setTimeout(() => { wrap.remove(); onPick && onPick(idx); }, 440);
         }, dwell + 600);
-      }, 860);                                                                    // 240 回位 + 620 翻面后起飞
+      }, 620);                                                                    // 翻面后 620ms 起飞
+      });
     };
     wrap.appendChild(h);
   });
-  Promise.all(items.map(it=>warm(it.art))).then(()=>mount.appendChild(wrap));  // 图齐再上桌
+  const readies=items.map(it=>warm(it.art));            // 后台解码；牌背不需要图，立即上桌
+  mount.appendChild(wrap);
+  wrap.__readies=readies;
   return wrap;
 }
