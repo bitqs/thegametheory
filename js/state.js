@@ -10,7 +10,7 @@ export const S = {
   phase:"play", beatIdx:0, actCount:0,
   score:0, level:1, xp:0, lastAct:0,
   energy:TUNE.energyMax, energyTimer:null, energyInf:false, busy:false,
-  collected:[], collSet:new Set(), storyIdx:0,
+  collected:[], collSet:new Set(),
   chosen:null, pendingPhilo:false, bestR:"N", bestArt:null,
   shown:null, card:null, doneActions:2,   // 预填 2 格=天赋进度效应（结局点名拆穿）
   muted:false, ac:null,

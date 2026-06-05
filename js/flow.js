@@ -19,7 +19,9 @@ export function applyBeat(){ const b=BEATS[S.beatIdx];
     if(f==="goalreveal"){ els.top.classList.add("reveal"); $("goalName").textContent=T().goalFinal; }
   });
   S.phase="play"; S.actCount=0; clearSay();
-  const bi=S.beatIdx; setTimeout(()=>{ if((S.phase==="play"||S.phase==="pick")&&S.beatIdx===bi) speak(T().beats[bi].say); },300);
+  // up 拍故事印在牌面上（翻牌推剧情）；pick/boss/share 是模态时刻，仍走底部旁白
+  if(b.g!=="up"){ const bi=S.beatIdx;
+    setTimeout(()=>{ if((S.phase==="play"||S.phase==="pick")&&S.beatIdx===bi) speak(T().beats[bi].say); },300); }
   S.card=null;
   const prev=S.shown; S.shown=null;
   if(b.g==="pick"){                                                    // 选牌 beat：三/四选一

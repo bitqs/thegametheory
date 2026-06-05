@@ -71,9 +71,9 @@ export function spawnBack(){
   const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
   if(rar) c.style.setProperty("--rc",RC[rar]);
   const uphint=c.querySelector(".back .uphint");
-  // 故事拍：牌背露下一句诗的开头（好奇缺口——知道一半最痒）
-  if(F.story && !wait){ const pm=T().poem, nx=pm[S.storyIdx%pm.length];
-    uphint.textContent="「"+[...nx].slice(0,4).join("")+"……」"; }
+  // 故事拍解锁后：牌背露下一句故事的开头（好奇缺口——知道一半最痒）
+  if(F.story && !wait){ const nx=T().beats[S.beatIdx]?.say?.[S.actCount];
+    uphint.textContent = nx ? "「"+[...nx].slice(0,4).join("")+"……」" : ""; }
   else uphint.textContent = wait ? hintWord("tap") : "";
   if(wait){ c.classList.add(rar==="SSR"?"wait-ssr":"wait-sr"); if(rar==="SSR"&&F.sound) riser(700); }
   requestAnimationFrame(()=>c.classList.add("in"));
@@ -124,7 +124,9 @@ export function flipCard(type){
   const fresh=!S.collSet.has(ch.t); S.collSet.add(ch.t);
   if(F.collect){ document.getElementById("cCollect").querySelector("b").textContent=S.collSet.size;
     if(fresh && S.collSet.size%5===0){ setTimeout(()=>{ flashGo(true); chord(); quip(T().milestone(S.collSet.size)); },300); } }
-  if(F.story){ const pm=T().poem; cur.querySelector(".poem").textContent=pm[S.storyIdx%pm.length]; S.storyIdx++; }
+  // 每张牌一行故事：翻牌即推进剧情（叙事融进牌里，底部旁白只留纠错/里程碑）
+  const ln=T().beats[S.beatIdx]?.say?.[S.actCount-1];
+  if(ln){ cur.querySelector(".poem").textContent=ln; front.classList.add("story"); }
   cur.querySelector(".serial .sn").textContent="No."+String(S.collected.length).padStart(4,"0");  // 每张牌序列号
   const last = S.actCount>=needOf(BEATS[S.beatIdx]);
 
@@ -139,7 +141,7 @@ export function flipCard(type){
       cur.querySelector(".tagline").textContent=artLine(cur.__art); }
     if(rar) cur.classList.add("r-on");
     if(F.score) cur.classList.add("s-frame");
-    if(F.story){ cur.classList.add("s-divider","s-backorn"); front.classList.add("story"); }
+    if(F.story) cur.classList.add("s-divider","s-backorn");
     if(F.juice) cur.classList.add("s-corners","s-foil");
     front.classList.add("sheen");                                        // 光扫 + 揭示光环（始终）
     setTimeout(()=>cur.classList.add("float"), 480);
