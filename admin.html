@@ -95,9 +95,17 @@ function collect(){
   ov.i18n.en.openHook=$("hooken").value.split("\n").map(s=>s.trim()).filter(Boolean);
   return ov;
 }
-$("save").onclick=()=>{ localStorage.setItem(KEY, JSON.stringify(collect()));
+$("save").onclick=()=>{ const ov=collect();
+  // 约束校验：up 拍剧情上牌，say 行数必须=need
+  const warn=[];
+  BEATS.forEach((b,i)=>{ if(b.g!=="up") return;
+    for(const L of ["zh","en"]){ const n=(ov.i18n[L].beats[i]?.say||[]).length, need=ov.needs[i]||b.need;
+      if(n!==need) warn.push(`#${i} ${L} say=${n}≠need=${need}`); } });
+  localStorage.setItem(KEY, JSON.stringify(ov));
   document.querySelectorAll(".dirty").forEach(x=>x.classList.remove("dirty"));
-  $("status").textContent="已保存 "+new Date().toLocaleTimeString()+"，游戏页刷新生效"; };
+  $("status").textContent = warn.length
+    ? "⚠ 已保存但行数失配（up 拍 say 行数须=need）："+warn.join("；")
+    : "已保存 "+new Date().toLocaleTimeString()+"，游戏页刷新生效"; };
 $("export").onclick=()=>{ const o=$("out"); o.style.display="block";
   o.value=JSON.stringify(collect(),null,2); o.select(); document.execCommand("copy");
   $("status").textContent="JSON 已复制到剪贴板"; };

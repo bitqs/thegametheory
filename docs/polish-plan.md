@@ -32,9 +32,9 @@
 - [ ] 验收：全文案出声朗读一遍不拗口；同句型连续出现 ≤2 次
 
 ## P5 稳定性与卫生
-- [ ] e2e 驱动脚本固化：把手工 evaluate 全程跑封装进 `build/e2e.md`（粘贴即用）
-- [ ] admin.html 与"剧情上牌"新结构核对（say 行数=need 的约束在后台编辑时提示）
-- [ ] 死代码清理：多会话合并残留（未引用 export、孤儿 CSS 类 grep 清单）
+- [x] e2e 固化 build/e2e.md（含宣告快进/boss蓄力/复活处理）
+- [x] admin 保存时校验 up 拍 say=need，失配警示
+- [x] 清剿：lcard×5/charging×2 CSS、goalTier、hints.down、backhint.down、state.goalTier、kbd 标签
 - [ ] 控制台零 warning（除可选音频 404）
 - [ ] 验收：tests 全绿 + 全程自然跑零 console error
 

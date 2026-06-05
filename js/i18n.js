@@ -10,8 +10,8 @@ export const I18N = {
     title:"游戏的诞生", choose:"选择语言 · CHOOSE",
     label:"中文", sub:"CHINESE",
     chips:{score:"金币",level:"LV",collect:"收藏",energy:"心力"},
-    hints:{tap:"○ 点一下",up:"↑ 上滑",down:"↓ 下滑",pick:"○ 选一张牌",hold:"⊙ 按住蓄力",cont:"轻触继续"},
-    backhint:{tap:"点击翻牌",up:"上滑",down:"下滑蓄力"},
+    hints:{tap:"○ 点一下",up:"↑ 上滑",pick:"○ 选一张牌",hold:"⊙ 按住蓄力",cont:"轻触继续"},
+    backhint:{tap:"点击翻牌",up:"上滑"},
     goalName:"PROGRESS", goalFinal:"终极目标",
     rlabel:{N:"普通",R:"稀有",SR:"史诗",SSR:"传世"},
     wordFirst:{t:"使命感",s:"命运没选你，是我选的。"},
@@ -80,7 +80,6 @@ export const I18N = {
     endAgain:"再玩一次", endShare:"生成战绩卡",
     share:{sub:"游戏论 · 游戏的诞生",scan:"扫码即玩 · SCAN TO PLAY",goalDone:"终极目标 100% · 达成",best:"最高",save:"保存图片",close:"关闭",tip:"长按图片可保存 · thegametheory.pages.dev",myline:"我玩了一个，拆穿自己的游戏。",score:"金币",level:"LV",collected:"收藏",unit:"种"},
     milestone:(n)=>"收藏里程碑 · 集齐 "+n+" 种！",
-    goalTier:(r)=>"进阶 "+r+"——看，又一条新线。",
     firstSSR:"✦ 首张传世！手气封神 ✦",
     lvlUp:(n)=>n<=2?"⬆ LV 2！你，升级了！":
       n===3?"⬆ LV 3！势不可挡！":
@@ -106,8 +105,8 @@ export const I18N = {
     title:"The Birth of a Game", choose:"CHOOSE LANGUAGE",
     label:"English", sub:"ENGLISH",
     chips:{score:"COINS",level:"LV",collect:"COLLECT",energy:"LIFE"},
-    hints:{tap:"○ Tap",up:"↑ Swipe up",down:"↓ Swipe down",pick:"○ Pick a card",hold:"⊙ Hold to charge",cont:"Tap to continue"},
-    backhint:{tap:"tap to flip",up:"swipe up",down:"swipe to charge"},
+    hints:{tap:"○ Tap",up:"↑ Swipe up",pick:"○ Pick a card",hold:"⊙ Hold to charge",cont:"Tap to continue"},
+    backhint:{tap:"tap to flip",up:"swipe up"},
     goalName:"PROGRESS", goalFinal:"ULTIMATE GOAL",
     rlabel:{N:"COMMON",R:"RARE",SR:"EPIC",SSR:"LEGEND"},
     wordFirst:{t:"DESTINY",s:"Fate didn't pick you. I did."},
@@ -176,7 +175,6 @@ export const I18N = {
     endAgain:"Play again", endShare:"Share card",
     share:{sub:"The Birth of a Game",scan:"SCAN TO PLAY",goalDone:"ULTIMATE GOAL 100% · DONE",best:"BEST",save:"Save image",close:"Close",tip:"Long-press to save · thegametheory.pages.dev",myline:"I played a game that exposed itself.",score:"COINS",level:"LV",collected:"COLLECTED",unit:""},
     milestone:(n)=>"Collection milestone · "+n+" kinds!",
-    goalTier:(r)=>"RANK "+r+" — look, another empty line.",
     firstSSR:"✦ First LEGEND! Blessed hands ✦",
     lvlUp:(n)=>n<=2?"⬆ LV 2! You leveled up!":
       n===3?"⬆ LV 3! Unstoppable!":
