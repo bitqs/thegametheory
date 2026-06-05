@@ -228,11 +228,21 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   20%{opacity:1}to{opacity:0;transform:translate(-50%,-46px)}}
 
 /* 作者署名：结局页底部，点击去 GitHub */
-#end .author{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 18px);left:0;right:0;
-  text-align:center;font-family:"Cinzel",serif;font-size:10px;letter-spacing:.26em;
-  color:var(--faint);text-decoration:none;opacity:0;transition:opacity .8s 1.6s,color .3s}
-#end.show .author{opacity:.75}
-#end .author:hover{color:var(--gold)}
+#end .author{position:absolute;bottom:calc(env(safe-area-inset-bottom) + 20px);left:50%;
+  transform:translateX(-50%);display:inline-flex;align-items:center;gap:8px;
+  font-family:"Cinzel",serif;font-size:12px;letter-spacing:.2em;white-space:nowrap;
+  color:var(--goldL);text-decoration:none;padding:9px 20px;border-radius:22px;
+  border:1px solid rgba(255,211,77,.5);background:rgba(255,211,77,.08);
+  box-shadow:0 0 18px -4px rgba(255,211,77,.35);
+  opacity:0;transition:opacity .8s 1.4s,box-shadow .3s,background .3s;
+  animation:authorglow 3s ease-in-out infinite}
+#end .author b{color:var(--gold);font-weight:600}
+#end .author .adot{color:var(--gold);font-size:10px}
+#end .author .aarr{color:var(--gold)}
+#end.show .author{opacity:1}
+#end .author:hover{background:rgba(255,211,77,.16);box-shadow:0 0 26px -2px rgba(255,211,77,.55)}
+@keyframes authorglow{0%,100%{box-shadow:0 0 18px -4px rgba(255,211,77,.3)}
+  50%{box-shadow:0 0 24px -2px rgba(255,211,77,.5)}}
 
 /* ── 死亡屏（魂系幽默版）+ ∞ 心力 ── */
 .deadveil{position:fixed;inset:0;z-index:55;display:flex;flex-direction:column;align-items:center;
