@@ -61,8 +61,7 @@ export function startPick(n, rig){
     const c=makeCard();
     const rar = (!rig && i===winner) ? bigRar : (Math.random()<0.4?"R":"N");
     c.__rar=rar; c.__art=pickArt(rar);
-    c.style.setProperty("--rc", RC[rar]);
-    c.classList.add("waiting");
+    c.classList.add("waiting");                             // 盲选期不上稀有度色（中性灰呼吸，翻开才见档）
     const h=document.createElement("div"); h.className="ccard"; h.appendChild(c);
     h.onclick=()=>choose(i);
     wrap.appendChild(h); cards.push(c);
