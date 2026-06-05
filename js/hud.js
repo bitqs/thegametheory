@@ -40,7 +40,8 @@ export function updateGoal(){ const pct=Math.min(100, Math.round(S.doneActions/T
       f.style.transition="none"; f.style.width=tpct+"%";
       requestAnimationFrame(()=>{ f.style.transition=""; });
       $("goalName").textContent=TXT().goalName+" · "+TIERS[tier];
-      $("goalPct").textContent=tpct+"%"; },650);
+      $("goalPct").textContent = F.level ? tpct+"% · "+S.xpTotal.toLocaleString("en-US")+" XP" : tpct+"%"; },650);
     return; }
-  $("goalFill").style.width=tpct+"%"; $("goalPct").textContent=tpct+"%"; }
+  $("goalFill").style.width=tpct+"%";
+  $("goalPct").textContent = F.level ? tpct+"% · "+S.xpTotal.toLocaleString("en-US")+" XP" : tpct+"%"; }
 let TXT; import("./i18n.js").then(m=>{ TXT=m.T; });            // 防环：i18n 动态引入

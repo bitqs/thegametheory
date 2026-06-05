@@ -86,7 +86,7 @@ export function startPick(n, rig){
     setTimeout(()=>{ cards.forEach((c,j)=>{ if(j!==i){       // 其余揭示：你错过的那张在发光
       fillFront(c, c.__rar, c.__art); flipOpen(c);
       c.classList.add(c.__rar==="SR"||c.__rar==="SSR" ? "missed-hot" : "missed"); } }); }, 650);
-    if(F.score){ const add=hit?80000:15000; S.score+=add; bumpScore(add); }
+    if(F.score){ const add=(hit?80000:15000)*S.level; S.score+=add; bumpScore(add); }
     S.actCount++; S.doneActions++; updateGoal();
     const last = S.actCount>=needOf(BEATS[S.beatIdx]);
     // 全亮后停留品味（near-miss 多看一眼隔壁的金）→ 选中牌放大居中，其余隐去

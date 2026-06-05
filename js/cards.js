@@ -157,9 +157,10 @@ export function flipCard(type){
       if(big2&&F.sound) chord(); }
     if(rar==="SSR" && !S.firstSSR){ S.firstSSR=true;            // 首张传世：单独的里程碑喜报
       setTimeout(()=>{ flashGo(true); quip(T().firstSSR); },650); }
-    if(F.score){ const add=TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60000:0);
-      S.score+=add; bumpScore(add); }
-    if(F.level){ let gg=TUNE.xpBase + (dt<TUNE.fastMs?TUNE.xpFast:0) + (big2?6:0); S.xp+=gg;
+    if(F.score){ const add=(TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60000:0))*S.level;
+      S.score+=add; bumpScore(add); }                       // 金币随等级翻倍：越升越富（通胀我印的）
+    if(F.level){ let gg=(TUNE.xpBase + (dt<TUNE.fastMs?TUNE.xpFast:0) + (big2?6:0))*S.level;
+      S.xp+=gg; S.xpTotal+=gg;                              // 经验同涨：升级速率不变，数字越来越大
       const need=TUNE.lvlBase+(S.level-1)*TUNE.lvlStep;
       if(S.xp>=need){ S.xp-=need; S.level++; renderLevel(true); lvlSnd(); flashGo(false);} else renderLevel(false); }
     updateGoal();
