@@ -1,6 +1,7 @@
 // 分享卡 / 邀请卡（内联 canvas，无外部依赖）+ 装饰二维码 + 分享得心力
 import { S } from "./state.js";
 import qrcode from "./vendor/qrcode-generator.js";
+import { hasDeck, deckSample } from "./pool.js";
 import { TUNE, RC, RSTARS, EG } from "./config.js";
 import { T, getLang } from "./i18n.js";
 import { $, dangerOff } from "./dom.js";
@@ -84,6 +85,38 @@ function spaced(x, t, cx, y, ls){ const ch=[...t];
   ch.forEach((c,i)=>{ x.fillText(c,cur,y); cur+=ws[i]+ls; }); x.textAlign=ta; }
 function hair(x, x1, x2, y, color){ x.strokeStyle=color; x.lineWidth=1;
   x.beginPath(); x.moveTo(x1,y); x.lineTo(x2,y); x.stroke(); }
+
+// 首页分享：随机一张高档卡面做海报（图占上半，含真二维码），开分享弹窗
+export async function promoShare(){
+  const deck = hasDeck("games") && Math.random()<.5 ? "games" : "art";
+  let a=null; for(let i=0;i<24;i++){ const c=deckSample(deck); if(c&&(c.rarity==="SSR"||c.rarity==="SR")){ a=c; break; } }
+  if(!a) a=deckSample(deck);
+  const img=new Image(); img.src=a.img;
+  try{ await (img.decode?img.decode():new Promise(r=>{img.onload=r;})); }catch{}
+  const cv=$("shareCanvas"), x=cv.getContext("2d"), W=cv.width, H=cv.height, accent="#ffd34d";
+  const bg=x.createLinearGradient(0,0,0,H); bg.addColorStop(0,"#171130"); bg.addColorStop(1,"#06060d");
+  x.fillStyle=bg; x.fillRect(0,0,W,H);
+  // 大图窗：cover 裁满上 56%
+  const wh=H*.56, ir=img.width/img.height, wr=W/wh;
+  let dw=W, dh=W/ir; if(dh<wh){ dh=wh; dw=wh*ir; }
+  x.save(); x.beginPath(); roundRect(x,18,18,W-36,wh-18,14); x.clip();
+  x.drawImage(img,(W-dw)/2, 18+(wh-18-dh)/2, dw, dh); 
+  const sh=x.createLinearGradient(0,wh*.55,0,wh); sh.addColorStop(0,"transparent"); sh.addColorStop(1,"rgba(6,6,13,.92)");
+  x.fillStyle=sh; x.fillRect(0,0,W,wh); x.restore();
+  x.strokeStyle=accent+"55"; x.lineWidth=1; roundRect(x,18,18,W-36,wh-18,14); x.stroke();
+  x.textAlign="center";
+  x.fillStyle="#ece8f4"; x.font="600 21px 'Cinzel',serif"; spaced(x,"THE GAME THEORY",W/2,wh+52,6);
+  x.fillStyle=accent; x.font=(getLang()==="en"?"italic ":"")+"16px 'Cormorant Garamond','Noto Serif SC',serif";
+  x.fillText("游戏论 · 游戏的诞生", W/2, wh+82);
+  x.fillStyle="#cfc8e0"; x.font="22px 'Noto Serif SC',serif";
+  x.fillText(T().share.myline, W/2, wh+126);
+  const qs=128; drawQR(x,(W-qs)/2,wh+150,qs);
+  x.fillStyle="#9a93b0"; x.font="500 13px 'Cinzel','Noto Serif SC',serif"; x.fillText(T().share.scan, W/2, wh+150+qs+26);
+  x.fillStyle="#6f6a85"; x.font="500 12px 'Cinzel',serif"; spaced(x,"thegametheory.pages.dev",W/2,H-30,2);
+  $("srowMain").hidden=false; $("srowEnergy").hidden=true;
+  $("share").classList.add("show");
+  cacheBlob();
+}
 
 export async function drawShare(mode){
   const cv=$("shareCanvas"), x=cv.getContext("2d"), W=cv.width,H=cv.height, SH=T().share;
