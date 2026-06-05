@@ -79,6 +79,7 @@ export function startPhilo(){ S.phase="philo"; els.stage.innerHTML=""; S.shown=n
     d.className="pl"+(p.k?" key":""); d.textContent=p.t; v.appendChild(d); });
   const go=document.createElement("div"); go.className="go"; go.textContent=T().insightCont; v.appendChild(go);
   v.classList.add("show"); S.philoStep=0; S.philoLines=null; philoNext();
+  nudgeHint(); $("hint").style.opacity="";                  // 最后的话：全程提示轻触推进（上面批量隐藏要解开）
 }
 export function philoNext(){ S.philoLines=S.philoLines||[...$("philo").querySelectorAll(".pl")];
   if(S.philoStep<S.philoLines.length){ const n=Math.min(S.philoLines.length, S.philoStep+2);

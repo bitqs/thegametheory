@@ -76,7 +76,7 @@ export const I18N = {
     choiceOpts:[{g:"↑ 上滑",t:"因为下一张，可能更好"},{g:"↓ 下滑",t:"因为想看，故事怎么结束"},{g:"○ 点击",t:"没有因为，就是想翻"}],
     endings:{ hope:{char:"望",line:"因为下一张，\n可能更好。",card:"我为「下一个」而活。"},
       story:{char:"续",line:"因为我想看，\n故事怎么结束。",card:"我为故事而活。"},
-      now:{char:"此",line:"没有因为。\n就是想翻。",card:"我为此刻而活。"} },
+      now:{char:"当下",line:"没有因为。\n就是想翻。",card:"我为此刻而活。"} },
     endAgain:"再玩一次", endShare:"生成战绩卡",
     share:{sub:"游戏论 · 游戏的诞生",scan:"扫码即玩 · SCAN TO PLAY",goalDone:"终极目标 100% · 达成",best:"最高",save:"保存图片",close:"关闭",tip:"长按图片可保存 · thegametheory.pages.dev",myline:"我玩了一个，拆穿自己的游戏。",score:"金币",level:"LV",collected:"收藏",unit:"种"},
     milestone:(n)=>"收藏里程碑 · 集齐 "+n+" 种！",
