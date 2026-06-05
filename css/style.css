@@ -90,6 +90,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .s-backorn .back .bring{opacity:1}
 .back .glyph{font-size:42px;color:var(--faint);transition:opacity .25s;z-index:1}
 .back .uphint{position:absolute;bottom:20px;font-size:12px;color:var(--faint);letter-spacing:.1em;z-index:1}
+.card[data-r="R"] .back{box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 16px -6px var(--rc)}   /* R 蓝缘微光 */
+.card[data-r="R"] .back .glyph{color:var(--rc)}
 
 .front{transform:rotateY(180deg);display:block;
   background:linear-gradient(165deg,#16121f,#0b0810);
@@ -200,8 +202,8 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 @keyframes srin{from{box-shadow:0 0 0 rgba(0,0,0,0)}to{box-shadow:0 0 34px -4px var(--rc)}}
 @keyframes breatheglyph{0%,100%{opacity:.85}50%{opacity:1}}
 .card.charging .back .glyph{color:var(--gold);text-shadow:0 0 24px var(--gold)}
-@keyframes breathe{0%,100%{box-shadow:0 0 0 1px rgba(255,211,77,.2),0 18px 50px rgba(0,0,0,.6)}
-  50%{box-shadow:0 0 30px 2px rgba(255,211,77,.5),0 18px 50px rgba(0,0,0,.6)}}
+@keyframes breathe{0%,100%{box-shadow:0 0 0 1px color-mix(in srgb,var(--rc,#ffd34d) 28%,transparent),0 18px 50px rgba(0,0,0,.6)}
+  50%{box-shadow:0 0 30px 2px color-mix(in srgb,var(--rc,#ffd34d) 62%,transparent),0 18px 50px rgba(0,0,0,.6)}}
 
 /* 紧张感：四周泛红脉动（稀缺/危险） */
 #danger{position:fixed;inset:0;z-index:14;pointer-events:none;opacity:0;transition:opacity .6s;
@@ -215,7 +217,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 #flash.go{animation:flash .5s ease-out}
 @keyframes flash{0%{opacity:var(--int,.4)}100%{opacity:0}}
 .burstdot{position:fixed;left:50%;top:50%;width:7px;height:7px;border-radius:50%;
-  background:var(--gold);box-shadow:0 0 8px var(--gold);z-index:16;pointer-events:none;
+  background:var(--pc,var(--gold));box-shadow:0 0 8px var(--pc,var(--gold));z-index:16;pointer-events:none;
   animation:burst .9s ease-out forwards}
 @keyframes burst{to{transform:translate(var(--tx),var(--ty)) scale(0);opacity:0}}
 /* 飘分 */

@@ -82,7 +82,7 @@ export function startPick(n, rig){
     holder.dataset.label=T().yourPick;
     fillFront(mine, mine.__rar, mine.__art); flipOpen(mine);
     const hit = mine.__rar==="SR"||mine.__rar==="SSR";
-    if(hit){ flashGo(true); sparkle(14); chord(); } else land(false);
+    if(hit){ const pc=RC[mine.__rar]; flashGo(true,pc); sparkle(14,pc); chord(); } else land(false);
     setTimeout(()=>{ cards.forEach((c,j)=>{ if(j!==i){       // 其余揭示：你错过的那张在发光
       fillFront(c, c.__rar, c.__art); flipOpen(c);
       c.classList.add(c.__rar==="SR"||c.__rar==="SSR" ? "missed-hot" : "missed"); } }); }, 650);

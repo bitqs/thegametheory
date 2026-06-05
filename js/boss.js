@@ -99,7 +99,7 @@ export function startBoss(){
     bossC.querySelector(".flip").classList.add("flipped");
     bossC.querySelector(".front").classList.add("art-on","sheen");
     setTimeout(()=>{ const b=bossC.querySelector(".back"); if(b) b.style.visibility="hidden"; },160);
-    sparkle(12);
+    sparkle(12, RC[rar]);
     cleanup();
     setTimeout(()=>{                                            // 战利品时刻：Boss 牌移到屏中央放大，完整鉴赏
       row.style.transition="opacity .5s,transform .5s"; row.style.opacity="0"; row.style.transform="scale(.92)";

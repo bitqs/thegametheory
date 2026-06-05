@@ -8,16 +8,17 @@ export const els = {
   hint:$("hint"), top:$("top"),
 };
 
-export function flashGo(big){
-  const f=$("flash"); f.style.setProperty("--bc",big?"#ffd34d":"#ffffff");
+export function flashGo(big,color){
+  const f=$("flash"); f.style.setProperty("--bc",color||(big?"#ffd34d":"#ffffff"));
   f.style.setProperty("--int",big?.55:.28); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
 }
 export function flashWhite(){                              // 全屏闪白（开场转场用，比 flashGo 强）
   const f=$("flash"); f.style.setProperty("--bc","#ffffff");
   f.style.setProperty("--int",.95); f.classList.remove("go"); void f.offsetWidth; f.classList.add("go");
 }
-export function sparkle(n=14){
+export function sparkle(n=14,color){
   for(let i=0;i<n;i++){ const s=document.createElement("i"); s.className="burstdot";
+    if(color) s.style.setProperty("--pc",color);
     const a=(i/n)*Math.PI*2+Math.random()*.4, d=110+Math.random()*180;
     s.style.setProperty("--tx",(Math.cos(a)*d|0)+"px"); s.style.setProperty("--ty",(Math.sin(a)*d|0)+"px");
     document.body.appendChild(s); setTimeout(()=>s.remove(),900); }

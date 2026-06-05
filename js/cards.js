@@ -66,6 +66,7 @@ export function spawnBack(){
   if(F.rarity){ rar=rollRarity(); isHit = rar!=="N"; }
   else if(F.random){ isHit = Math.random()<0.30; }
   c.__rar=rar; c.__isHit=isHit;
+  if(rar) c.dataset.r=rar;                              // 牌背即带稀有度配色（边光/呼吸随 --rc）
   c.__art=pickArt(rar);                                 // 出牌时即定画面并预解码，翻开零白图
   c.__ready=warm(c.__art);
   const wait = rar==="SR"||rar==="SSR";                 // 高级牌：留背等手翻（蓄力感=中奖预期）
@@ -149,7 +150,9 @@ export function flipCard(type){
     setTimeout(()=>cur.classList.add("float"), 480);
     // 反馈分层：稀有度越高越炸
     if(F.sound) land(big2);
-    if(isHit){ flashGo(big2); sparkle(rar==="SSR"?18:rar==="SR"?12:rar==="R"?8:(F.juice?8:6)); if(big2&&F.sound) chord(); }
+    if(isHit){ const pc=RC[rar]||"#ffd34d";
+      flashGo(big2, big2?pc:undefined); sparkle(rar==="SSR"?18:rar==="SR"?12:rar==="R"?8:(F.juice?8:6), pc);
+      if(big2&&F.sound) chord(); }
     if(rar==="SSR" && !S.firstSSR){ S.firstSSR=true;            // 首张传世：单独的里程碑喜报
       setTimeout(()=>{ flashGo(true); quip(T().firstSSR); },650); }
     if(F.score){ const add=TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60:0);
