@@ -22,7 +22,12 @@ const TIERS=["Ⅰ","Ⅱ","Ⅲ","Ⅳ"];
 export function updateGoal(){ const pct=Math.min(100, Math.round(S.doneActions/TARGET*100));
   if(pct>=55) els.app.classList.add("warm"); if(pct>=85) els.app.classList.add("hot");
   els.top.classList.toggle("gg", pct>=70 && pct<100);     // 目标梯度：末段视觉加速
-  if(F.goalreveal){ $("goalFill").style.width=pct+"%"; $("goalPct").textContent=pct+"%"; return; }
+  if(F.goalreveal){                                       // 揭穿段：末尾悬在 99%——"马上就好，就差一点"
+    const remain=TARGET-S.doneActions;
+    const show = remain<=0 ? 100 : remain<=3 ? 99 : Math.min(98,pct);
+    $("goalFill").style.width=show+"%"; $("goalPct").textContent=show+"%";
+    if(show===99) els.top.classList.add("gg");            // 99% 持续加速脉冲，痒感拉满
+    return; }
   const tier=Math.min(3, Math.floor(S.doneActions/TARGET*4));
   const lo=tier*TARGET/4, tpct=Math.min(100, Math.round((S.doneActions-lo)/(TARGET/4)*100));
   if(tier>S.goalTier){ S.goalTier=tier;                   // 升阶时刻：满条金闪 → 快照重填新段
