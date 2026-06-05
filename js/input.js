@@ -63,6 +63,13 @@ window.addEventListener("keydown",e=>{ const k=e.key;
   else if(k==="ArrowDown"){ e.preventDefault(); handleGesture("down"); }
   else if(k==="Enter"){ handleGesture("tap"); } });
 
+$("shareGame").onclick=async()=>{                       // 首页分享：系统面板优先，复制链接兜底
+  const data={title:"游戏论 · The Game Theory",text:"我玩了一个，拆穿自己的游戏。",url:"https://thegametheory.pages.dev"};
+  const el=$("shareGame"), orig=el.textContent;
+  if(navigator.share){ try{ await navigator.share(data); return; }catch(e){ if(e.name==="AbortError") return; } }
+  try{ await navigator.clipboard.writeText(data.url);
+    el.textContent="已复制链接 ✓ · LINK COPIED"; setTimeout(()=>el.textContent=orig,1800); }catch{}
+};
 $("mute").onclick=()=>{ setMuted(!S.muted); $("mute").textContent=S.muted?"♪̸":"♪"; $("mute").style.opacity=S.muted?.3:.5; };
 $("endShare").onclick=()=>drawShare("end");
 $("endAgain").onclick=()=>location.reload();

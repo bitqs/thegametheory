@@ -534,3 +534,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   pointer-events:none;transition:opacity 1.2s;animation:floatup 12s linear infinite}
 @keyframes floatup{0%{transform:translateY(0);opacity:0}12%{opacity:.5}
   85%{opacity:.35}100%{transform:translateY(-108vh);opacity:0}}
+
+/* 首页分享按钮：淡金胶囊，置语言卡下方 */
+.sharegame{margin-top:26px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;
+  font-family:"Cinzel","Noto Serif SC",serif;font-size:11px;letter-spacing:.2em;color:var(--dim);
+  padding:8px 18px;border-radius:20px;border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.04);transition:color .3s,border-color .3s,background .3s;pointer-events:auto}
+.sharegame:hover{color:var(--goldL);border-color:rgba(255,211,77,.5);background:rgba(255,211,77,.08)}
