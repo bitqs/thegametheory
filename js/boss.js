@@ -7,17 +7,16 @@ import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
 import { makeCard, needOf, exitUp, drawPrinciple, bigSize } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
-import { els, sparkle, flashGo, flashWhite, rand } from "./dom.js";
+import { els, sparkle, flashGo, flashWhite, rand, touchLock } from "./dom.js";
 import { riser, land, chord, tick } from "./audio.js";
 import { bumpScore, updateGoal } from "./hud.js";
 import { enterOutro } from "./flow.js";
 import { quip } from "./narration.js";
 
 const FULL=2200, LO=40, HI=85;                                  // 满蓄时长 / 绿区(%)
-const touchEl=()=>document.getElementById("touchlayer");
 
 export function startBoss(){
-  S.phase="boss"; touchEl().style.pointerEvents="none";
+  S.phase="boss"; touchLock(true);
   [...els.stage.children].forEach(c=>c.remove());
   const arena=document.createElement("div"); arena.className="bossArena";
 
@@ -108,7 +107,7 @@ export function startBoss(){
       bossC.style.zIndex="6";
     },700);
     setTimeout(()=>{ exitUp(arena, ()=>{
-      if(S.actCount>=needOf(BEATS[S.beatIdx])){ touchEl().style.pointerEvents=""; enterOutro(); }
+      if(S.actCount>=needOf(BEATS[S.beatIdx])){ touchLock(false); enterOutro(); }
       else startBoss();
     }); },3400);
   }

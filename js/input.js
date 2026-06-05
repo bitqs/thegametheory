@@ -48,8 +48,9 @@ tl.addEventListener("touchend",e=>{ const dy=e.changedTouches[0].clientY-tY, dur
   if(dragC){                                            // 先弹回；若手势成功出牌，exitUp 会接管样式
     dragC.style.transition="transform .25s cubic-bezier(.2,.8,.2,1),opacity .25s";
     dragC.style.transform="translateY(0)"; dragC.style.opacity="1"; }
-  if(dy<-80) handleGesture("up");
-  else if(dy>80) handleGesture("down");
+  const TH=Math.min(110, innerHeight*0.12);            // 出牌阈值随屏高（小屏更省力，大屏不变重）
+  if(dy<-TH) handleGesture("up");
+  else if(dy>TH) handleGesture("down");
   else if(!moved && dur<350) handleGesture("tap");
   dragC=null; e.preventDefault(); },{passive:false});
 tl.addEventListener("mousedown",()=>{ if(!("ontouchstart" in window)) press(true); });

@@ -171,8 +171,12 @@ export function flipCard(type){
   requestAnimationFrame(()=>requestAnimationFrame(doReveal));
   return true;
 }
-// 所有牌统一：向上滑动隐去，移除后再回调出下一张（避免两张同时占位导致居中跳动）
+// 所有牌统一：先按当前位置钉死脱出文档流（防两张占位居中跳动），随即回调出下一张——换牌零死区
 export function exitUp(c, cb){ if(!c){ cb&&cb(); return; } c.classList.remove("float");
+  const r=c.getBoundingClientRect(), sr=els.stage.getBoundingClientRect();
+  c.style.position="absolute"; c.style.left=(r.left-sr.left)+"px"; c.style.top=(r.top-sr.top)+"px";
+  c.style.width=r.width+"px"; c.style.margin="0";
   c.style.transition="transform .45s cubic-bezier(.4,0,.2,1),opacity .4s";
-  c.style.transform="translateY(-135%)"; c.style.opacity="0";
-  setTimeout(()=>{ c.remove(); cb&&cb(); },460); }
+  requestAnimationFrame(()=>{ c.style.transform="translateY(-135%)"; c.style.opacity="0"; });
+  cb&&cb();                                              // 下一张立刻顶上（旧牌已脱流，不挤位）
+  setTimeout(()=>c.remove(),470); }

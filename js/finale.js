@@ -2,12 +2,11 @@
 // 奖励揭晓=更好的你 → 玩笑一翻：SSS 级游戏《你》（彩虹 holo，特别好看）→ 分享卡
 import { S } from "./state.js";
 import { T } from "./i18n.js";
-import { els, sparkle, flashGo } from "./dom.js";
+import { els, sparkle, flashGo, touchLock } from "./dom.js";
 import { chord, riser, land } from "./audio.js";
 import { showInsight, hideInsight, clearSay } from "./narration.js";
 import { drawShare } from "./share.js";
 
-const touchEl=()=>document.getElementById("touchlayer");
 
 // "玻璃表面"全屏层：把焦点从画面纵深拉回屏幕玻璃这一层（雾/水珠/指印贴在玻璃上，
 // 大脑只能理解为表面附着物 → 焦点回表面 → 反射里的自己显形）。中心留净，边缘加重。
@@ -44,7 +43,7 @@ function buildGlass(){
 }
 
 export function startFinale(){
-  S.phase="finale"; touchEl().style.pointerEvents="none";
+  S.phase="finale"; touchLock(true);
   clearSay(); els.hint.classList.remove("show");
   [...els.stage.children].forEach(c=>c.remove());
   const F=T().finale;
@@ -94,6 +93,6 @@ function spawnYouCard(F){
   c.onclick=()=>{ if(gone) return; gone=true; hideInsight();
     els.hint.classList.remove("show");
     c.style.transition="transform .5s,opacity .5s"; c.style.transform="translateY(-130%)"; c.style.opacity="0";
-    setTimeout(()=>{ c.remove(); touchEl().style.pointerEvents="";
+    setTimeout(()=>{ c.remove(); touchLock(false);
       S.pendingPhilo=true; drawShare("you"); },500); };       // 分享图=《？》卡（带二维码，可存相册）
 }

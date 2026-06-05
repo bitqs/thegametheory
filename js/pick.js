@@ -4,12 +4,11 @@ import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
 import { makeCard, needOf, drawPrinciple, bigSize } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
-import { els, sparkle, flashGo } from "./dom.js";
+import { els, sparkle, flashGo, touchLock } from "./dom.js";
 import { land, chord, tick } from "./audio.js";
 import { bumpScore, updateGoal } from "./hud.js";
 import { enterOutro } from "./flow.js";
 
-const touchEl = () => document.getElementById("touchlayer");
 
 // 选中牌放大居中鉴赏；keepOthers=near-miss 模式（隔壁金卡留场作证，只压暗微缩）
 function zoomChosen(wrap, i, keepOthers){
@@ -50,7 +49,7 @@ function flipOpen(c){
 // n=3：一张高级混两张低级，位置真随机（选完全亮，给你看错过了什么）
 // n=4：rig — 你选哪张都是低级，高级牌在揭示时出现在你隔壁（near-miss）
 export function startPick(n, rig){
-  S.phase="pick"; touchEl().style.pointerEvents="none";       // 点击直达卡牌
+  S.phase="pick"; touchLock(true);       // 点击直达卡牌
   [...els.stage.children].forEach(c=>c.remove());
   const wrap=document.createElement("div");
   wrap.className="chooseWrap n"+n+" pickWrap";
@@ -92,7 +91,7 @@ export function startPick(n, rig){
     const zoomAt = rig ? 2400 : 1900;
     setTimeout(()=>zoomChosen(wrap, i, !!rig), zoomAt);   // near-miss 不全隐：揭穿词要指着隔壁的金卡
     if(last){                                                 // 最后一轮放大的牌留台上陪洞见（空屏听揭穿=没画面感）
-      setTimeout(()=>{ touchEl().style.pointerEvents=""; enterOutro(); }, zoomAt+1100);
+      setTimeout(()=>{ touchLock(false); enterOutro(); }, zoomAt+1100);
       return;                                                 // wrap 不删，下一拍 applyBeat 清场
     }
     setTimeout(()=>{

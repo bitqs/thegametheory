@@ -23,5 +23,6 @@ export function sparkle(n=14,color){
     s.style.setProperty("--tx",(Math.cos(a)*d|0)+"px"); s.style.setProperty("--ty",(Math.sin(a)*d|0)+"px");
     document.body.appendChild(s); setTimeout(()=>s.remove(),900); }
 }
+export const touchLock=v=>{ const t=$("touchlayer"); if(t) t.style.pointerEvents=v?"none":""; };  // 模态拍开关手势层
 export function dangerOn(){ $("danger").classList.add("on"); }
 export function dangerOff(){ $("danger").classList.remove("on"); }

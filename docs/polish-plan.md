@@ -10,10 +10,11 @@
 - [ ] 验收：模拟 Fast 3G 首屏 ≤3s 可玩；中端机全程无掉帧感
 
 ## P2 手感（操作打磨）
-- [ ] 跟手系数与回弹曲线统一调校（现 -80px 阈值固定，小屏偏深；改视口比例 ~12vh）
-- [ ] swipe 出牌后到下一张可交互的死区计时收紧（exitUp 460ms + spawn 520ms 串行→适度并行）
-- [ ] busy 锁全路径审查：连点/连滑/蓄力中滑动等边角（建清单逐项过）
-- [ ] pick/boss/finale 的 touchlayer 关闭-恢复时序统一成一个 helper（现三处手写）
+- [x] 出牌阈值视口化：12vh 封顶 110px
+- [x] 换牌零死区：exitUp 矩形钉死脱流+立即补牌（省 ~450ms/次）
+- [x] busy 锁审查结论：flipCard 同 tick 释放✓；swapCard 改零死区后立即可交互✓；
+      面朝下连滑→quip 提示（保留）；boss/pick/finale 各自 done 闸✓；蓄力中滑动被 pointer 流隔离✓
+- [x] touchLock helper 收口（dom.js），三处替换
 - [ ] 验收：手机连续乱点乱滑 2 分钟无卡死无错位
 
 ## P3 视觉一致性
