@@ -1,7 +1,8 @@
 // 双语文案（改文案只动这里）。lang 私有，经 getLang/setLang/T 访问
 let lang = "zh";
 export const getLang = () => lang;
-export const setLang = v => { lang = v; };
+export const setLang = v => { lang = v;
+  if(typeof document!=="undefined") document.documentElement.lang = v==="en"?"en":"zh"; };  // :lang() 驱动斜体开关
 export const T = () => I18N[lang];
 
 export const I18N = {
@@ -81,7 +82,11 @@ export const I18N = {
     milestone:(n)=>"收藏里程碑 · 集齐 "+n+" 种！",
     goalTier:(r)=>"进阶 "+r+"——看，又一条新线。",
     firstSSR:"✦ 首张传世！手气封神 ✦",
-    lvlUp:(n)=>"⬆ LV "+n+"！新的一段，开始了",
+    lvlUp:(n)=>n<=2?"⬆ LV 2！你，升级了！":
+      n===3?"⬆ LV 3！势不可挡！":
+      n===4?"⬆ LV 4。嗯……又升了。":
+      n===5?"⬆ LV 5。坦白：等级也是我编的。":
+      "⬆ LV "+n+"。还在为这个数字高兴吗？……在就好。",
     goalClimax:(n,m)=>["100%。终极目标——达成。","为了这条进度条，你点了 "+n+" 次屏幕，花了 "+m+" 分钟。","对了，坦白一件事：开局我偷偷送了你 2 格。","白送的进度，最让人舍不得放手——这招叫“禀赋进度”。","现在，凑近看看终点里面是什么。"],
     bossHint:"按住蓄力 · 松手出击",
     yourPick:"▼ 你的选择",
@@ -173,7 +178,11 @@ export const I18N = {
     milestone:(n)=>"Collection milestone · "+n+" kinds!",
     goalTier:(r)=>"RANK "+r+" — look, another empty line.",
     firstSSR:"✦ First LEGEND! Blessed hands ✦",
-    lvlUp:(n)=>"⬆ LV "+n+"! A new chapter begins",
+    lvlUp:(n)=>n<=2?"⬆ LV 2! You leveled up!":
+      n===3?"⬆ LV 3! Unstoppable!":
+      n===4?"⬆ LV 4. Huh. Again.":
+      n===5?"⬆ LV 5. Confession: I made levels up too.":
+      "⬆ LV "+n+". Still happy about the number? …Good.",
     goalClimax:(n,m)=>["100%. ULTIMATE GOAL — COMPLETE.","For this bar, you tapped "+n+" times and gave "+m+" minutes.","Oh — one confession: I gifted you 2 free ticks at the start.","Free progress is the hardest to abandon. It's called 'endowed progress'.","Now lean in. See what's inside the finish line."],
     bossHint:"HOLD TO CHARGE · RELEASE",
     yourPick:"▼ YOUR PICK",

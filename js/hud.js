@@ -1,4 +1,4 @@
-// HUD：分数 / 等级 / 心力 / 终极目标进度
+// HUD：金币 / 等级 / 心力 / 终极目标进度
 import { S, F } from "./state.js";
 import { TUNE, TARGET } from "./config.js";
 import { $, els, dangerOff } from "./dom.js";

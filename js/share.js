@@ -32,7 +32,7 @@ export function buildInviteCanvas(){
   x.fillStyle=accent; x.font="700 18px 'Cinzel',serif"; x.fillText("THE GAME THEORY", W/2, 96);
   x.fillStyle="#ece8f4"; x.font="500 40px 'Noto Serif SC',serif"; x.fillText(E.title, W/2, H*.27);
   const qs=300; drawQR(x, (W-qs)/2, H*.34, qs);
-  x.fillStyle="#cfc8e0"; x.font="italic 26px 'Noto Serif SC',serif"; x.fillText(E.scan, W/2, H*.74);
+  x.fillStyle="#cfc8e0"; x.font=(getLang()==="en"?"italic ":"")+"26px 'Noto Serif SC',serif"; x.fillText(E.scan, W/2, H*.74);
   x.fillStyle=accent; x.font="700 20px 'Cinzel',serif"; x.fillText(E.plus, W/2, H*.80);
   x.fillStyle="#8a84a0"; x.font="500 16px 'Cinzel',serif"; x.fillText("thegametheory.pages.dev", W/2, H-58);
 }
@@ -101,7 +101,7 @@ export async function drawShare(mode){
   // 版头：字距大写 + 两侧细线 + 副题
   x.fillStyle=ink; x.font="600 19px 'Cinzel',serif"; spaced(x,"THE GAME THEORY",W/2,96,7);
   hair(x,70,W/2-150,89,"rgba(255,255,255,.14)"); hair(x,W/2+150,W-70,89,"rgba(255,255,255,.14)");
-  x.fillStyle=accent; x.font="italic 15px 'Cormorant Garamond','Noto Serif SC',serif"; x.fillText(SH.sub, W/2, 124);
+  x.fillStyle=accent; x.font=(getLang()==="en"?"italic ":"")+"15px 'Cormorant Garamond','Noto Serif SC',serif"; x.fillText(SH.sub, W/2, 124);
   // 主字：细双圆环内
   const cy=H*.335, R=118;
   x.strokeStyle=accent+"77"; x.lineWidth=1; x.beginPath(); x.arc(W/2,cy,R,0,7); x.stroke();
@@ -115,7 +115,7 @@ export async function drawShare(mode){
   if(heroLong) wrap(x,hero,W/2,cy-10,R*1.5,52); else x.fillText(hero,W/2,cy+(isYou?38:34));
   x.shadowBlur=0;
   // 引言（you 模式：SSS·《你》·限量 1/1 + 一句）
-  x.fillStyle=ink; x.font="italic 25px "+(getLang()==="en"?"'Cormorant Garamond',serif":"'Noto Serif SC',serif");
+  x.fillStyle=ink; x.font=(getLang()==="en"?"italic 25px 'Cormorant Garamond',serif":"25px 'Noto Serif SC',serif");
   if(isYou){ const F=T().finale;
     x.fillText(F.youLine, W/2, H*.545);
     x.fillStyle=accent; x.font="700 14px 'Cinzel','Noto Serif SC',serif";
