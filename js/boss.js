@@ -67,7 +67,7 @@ export function startBoss(){
         bossC.classList.add("staggered"); me.classList.add("recoil");
         flashWhite(); sparkle(18); land(true); chord();
         quip(T().bossWin);
-        if(F.score){ S.score+=120; bumpScore(120); }
+        if(F.score){ S.score+=120000; bumpScore(120000); }
         S.actCount++; S.doneActions++; updateGoal();
         setTimeout(()=>breakOpen(),520);
       },240);

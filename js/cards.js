@@ -155,7 +155,7 @@ export function flipCard(type){
       if(big2&&F.sound) chord(); }
     if(rar==="SSR" && !S.firstSSR){ S.firstSSR=true;            // 首张传世：单独的里程碑喜报
       setTimeout(()=>{ flashGo(true); quip(T().firstSSR); },650); }
-    if(F.score){ const add=TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60:0);
+    if(F.score){ const add=TUNE.scoreMin+((Math.random()*(TUNE.scoreMax-TUNE.scoreMin))|0)+(big2?60000:0);
       S.score+=add; bumpScore(add); }
     if(F.level){ let gg=TUNE.xpBase + (dt<TUNE.fastMs?TUNE.xpFast:0) + (big2?6:0); S.xp+=gg;
       const need=TUNE.lvlBase+(S.level-1)*TUNE.lvlStep;

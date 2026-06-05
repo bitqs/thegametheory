@@ -8,7 +8,7 @@ export const BEATS = [
   { on:["random"],  g:"up",  need:2 },
   { on:["rarity"],  g:"up",  need:2 },
   { on:["bar"],     g:"up",  need:1 },
-  { on:["score"],   g:"up",  need:1 },
+  { on:["score"],   g:"up",  need:2 },
   { on:["level"],   g:"up",  need:2 },
   { on:["collect"], g:"up",  need:3 },
   { on:["energy"],  g:"up",  need:5 },
@@ -21,7 +21,7 @@ export const BEATS = [
   { on:["share"],   g:"tap", need:1 },
 ];
 
-export const TUNE = { scoreMin:10, scoreMax:80, xpBase:8, fastMs:650, xpFast:6, lvlBase:30, lvlStep:14, energyMax:3, energyRegen:1700 };
+export const TUNE = { scoreMin:10000, scoreMax:80000, xpBase:8, fastMs:650, xpFast:6, lvlBase:30, lvlStep:14, energyMax:3, energyRegen:1700 };
 
 // 稀有度配色 / 星级 / 排序（仅 rarity 解锁后生效，金字塔分布见 rarity.js）
 export const RC = { N:"#9aa3b2", R:"#5aa6ff", SR:"#bd7dff", SSR:"#ffd34d" };

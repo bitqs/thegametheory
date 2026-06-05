@@ -122,7 +122,7 @@ export async function drawShare(mode){
     x.fillText("SSS · "+F.youMeta+" · "+F.youSerial, W/2, H*.585);
   } else wrap(x, e? e.card : SH.myline, W/2, H*.555, W-140, 38);
   // 三栏数据：大数字 + 小标签，栏间细竖线
-  const sy=H*.645, cols=[[SH.score,S.score],[SH.level,S.level],[SH.collected,S.collSet.size+(SH.unit||"")]];
+  const sy=H*.645, cols=[[SH.score,S.score.toLocaleString("en-US")],[SH.level,S.level],[SH.collected,S.collSet.size+(SH.unit||"")]];
   cols.forEach((c,i)=>{ const cx=W*(0.25+0.25*i);
     x.fillStyle=ink; x.font="600 34px 'Cinzel','Noto Serif SC',serif"; x.fillText(String(c[1]),cx,sy);
     x.fillStyle=faint; x.font="500 11px 'Cinzel','Noto Serif SC',serif"; spaced(x,String(c[0]).toUpperCase(),cx,sy+24,3); });

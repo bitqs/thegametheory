@@ -5,8 +5,8 @@ import { $, els, dangerOff } from "./dom.js";
 
 export function showChip(el){ el.classList.add("show","newin");        // 新元素上线：金光脉冲提示
   setTimeout(()=>el.classList.remove("newin"),2600); }
-export function bumpScore(add){ $("cScore").querySelector("b").textContent=S.score;
-  const p=document.createElement("div"); p.className="scorepop"; p.textContent="+"+add; document.body.appendChild(p); setTimeout(()=>p.remove(),1000); }
+export function bumpScore(add){ $("cScore").querySelector("b").textContent=S.score.toLocaleString("en-US");
+  const p=document.createElement("div"); p.className="scorepop"; p.textContent="+"+add.toLocaleString("en-US"); document.body.appendChild(p); setTimeout(()=>p.remove(),1000); }
 export function renderLevel(up){ const b=$("cLevel").querySelector("b"); b.textContent=S.level;
   if(up){ b.animate?.([{transform:"scale(1)"},{transform:"scale(1.5)",color:"#fff"},{transform:"scale(1)"}],{duration:500});
     import("./narration.js").then(n=>n.quip(TXT().lvlUp(S.level))); } }   // 新起点效应：每级=新的一段
