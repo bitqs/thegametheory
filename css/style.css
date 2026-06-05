@@ -65,7 +65,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 #stage .chooseWrap .ccard .card{width:min(40vw,180px)}
 #stage .chooseWrap.n3 .ccard .card{width:min(34vw,150px)}   /* 品字两列，卡可更大 */
 #stage .chooseWrap.n4 .ccard .card{width:min(36vw,150px)}
-.card{width:min(76vw,290px);aspect-ratio:1/1.618;position:relative;perspective:1400px;
+.card{width:min(76vw,290px);aspect-ratio:1/1.618;position:relative;perspective:1400px;container-type:inline-size;
   will-change:transform,opacity;scale:1;transition:scale .3s cubic-bezier(.34,1.56,.64,1)}  /* 松手回弹（轻微过冲） */
 .card.pressed{scale:.96;transition:scale .12s ease}                                         /* 按下收缩，即时反馈 */
 .card.in{animation:cardin .5s cubic-bezier(.2,.8,.2,1)}
@@ -80,16 +80,16 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   border:1px solid rgba(255,255,255,.08);box-shadow:0 18px 50px rgba(0,0,0,.6)}
 .back::before{content:"";position:absolute;inset:7px;border:1px solid rgba(255,255,255,.06);
   border-radius:11px;pointer-events:none}                              /* 卡背内细线框（常驻） */
-.back::after{content:"❖";position:absolute;top:12px;left:0;right:0;text-align:center;
-  font-size:9px;color:rgba(255,255,255,.14);pointer-events:none}       /* 上沿小徽记 */
+.back::after{content:"❖";position:absolute;top:4.1cqw;left:0;right:0;text-align:center;
+  font-size:3.1cqw;color:rgba(255,255,255,.14);pointer-events:none}       /* 上沿小徽记 */
 .back .bpat{position:absolute;inset:0;opacity:0;transition:opacity .6s;pointer-events:none;
   background:repeating-linear-gradient(45deg,rgba(255,255,255,.025) 0 10px,transparent 10px 20px)}
 .back .bring{position:absolute;width:46%;aspect-ratio:1;border:1px solid rgba(255,255,255,.07);
   border-radius:50%;opacity:.45;transition:opacity .6s;pointer-events:none}   /* 中心环常驻淡显 */
 .s-backorn .back .bpat{opacity:1}
 .s-backorn .back .bring{opacity:1}
-.back .glyph{font-size:42px;color:var(--faint);transition:opacity .25s;z-index:1}
-.back .uphint{position:absolute;bottom:20px;font-size:12px;color:var(--faint);letter-spacing:.1em;z-index:1}
+.back .glyph{font-size:14.5cqw;color:var(--faint);transition:opacity .25s;z-index:1}
+.back .uphint{position:absolute;bottom:6.9cqw;font-size:4.1cqw;color:var(--faint);letter-spacing:.1em;z-index:1}
 .card[data-r="R"] .back{box-shadow:0 18px 50px rgba(0,0,0,.6),0 0 16px -6px var(--rc)}   /* R 蓝缘微光 */
 .card[data-r="R"] .back .glyph{color:var(--rc)}
 
@@ -114,36 +114,36 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .front.art-on .artbg{opacity:1}
 .front .artgrad{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(11,8,16,.55) 80%,#0b0810)}
 /* 文字台 */
-.front .plate{position:absolute;left:0;right:0;top:calc(47% + 34px);bottom:26px;z-index:2;
-  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:6px;padding:4px 18px 0}
+.front .plate{position:absolute;left:0;right:0;top:calc(47% + 11.7cqw);bottom:9cqw;z-index:2;
+  display:flex;flex-direction:column;align-items:stretch;justify-content:flex-start;gap:2.1cqw;padding:1.4cqw 6.2cqw 0}
 .front .divider{margin-top:auto}                       /* 介绍紧贴图片；大字在剩余空间居中 */
 .front .poem{margin-bottom:auto}
 /* 稀有度抬头条：卡牌上沿（档名左 / 星级右） */
 .front .crown{position:absolute;top:8px;left:16px;right:16px;
   display:flex;justify-content:space-between;align-items:baseline;
   z-index:3;opacity:0;transition:opacity .55s .2s}
-.front .crown .rt{font-family:"Cinzel",serif;font-size:10px;letter-spacing:.14em;color:var(--rc)}
-.front .crown .stars{color:var(--rc);font-size:10px;letter-spacing:.12em;text-shadow:0 0 8px var(--rc)}
+.front .crown .rt{font-family:"Cinzel",serif;font-size:3.4cqw;letter-spacing:.14em;color:var(--rc)}
+.front .crown .stars{color:var(--rc);font-size:3.4cqw;letter-spacing:.12em;text-shadow:0 0 8px var(--rc)}
 .r-on .front .crown{opacity:1}
-.front .big{font-size:28px;font-weight:500;line-height:1.4;color:var(--ink);text-align:center;
+.front .big{font-size:9.7cqw;font-weight:500;line-height:1.4;color:var(--ink);text-align:center;
   font-family:"Noto Serif SC",serif;text-shadow:0 2px 12px rgba(0,0,0,.65);transition:color .4s,text-shadow .4s}
 .front .divider{width:32%;height:1px;opacity:0;transition:opacity .55s .34s;
   background:linear-gradient(90deg,transparent,var(--rc),transparent)}
 .s-divider .front .divider{opacity:.6}
-.front .meta{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:12.5px;letter-spacing:.04em;
+.front .meta{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:4.3cqw;letter-spacing:.04em;
   color:var(--ink);text-align:left;opacity:0;transition:opacity .55s .3s}
 .front.art-on .meta{opacity:.92}                                       /* 介绍贴图下，左对齐 */
-.front .tagline{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:11.5px;
+.front .tagline{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:4cqw;
   color:var(--dim);text-align:left;opacity:0;transition:opacity .55s .42s;
   margin-top:-4px;line-height:1.45}
 .front.art-on .tagline{opacity:.8}
 .front .big{align-self:center}
 .front .divider{align-self:center}
-.front .pline{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:12px;
+.front .pline{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:4.1cqw;
   color:var(--goldL);text-align:center;opacity:0;transition:opacity .55s .46s;margin-top:-2px;
   text-shadow:0 1px 8px #000}                              /* 原则招供句：跟在原则名下 */
 .front.art-on .pline{opacity:.85}
-.front .poem{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:14px;line-height:1.55;
+.front .poem{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:4.8cqw;line-height:1.55;
   color:var(--ink);text-align:center;opacity:0;transform:translateY(6px);
   transition:opacity .55s .5s,transform .55s .5s;text-shadow:0 1px 8px #000}   /* 剧情行=设计师正体白字，与金斜体招供句拉开 */
 .front.story .poem{opacity:.9;transform:none}
@@ -160,7 +160,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .s-corners .front .corner{opacity:.85}
 /* 底栏：序列号左对齐 / 限量年份右对齐，留边不贴 */
 .front .serial{position:absolute;bottom:9px;left:0;right:0;z-index:3;display:flex;justify-content:space-between;
-  padding:0 16px;font-family:"Cinzel",serif;font-size:8.5px;letter-spacing:.16em;color:var(--faint);opacity:.6}
+  padding:0 16px;font-family:"Cinzel",serif;font-size:2.9cqw;letter-spacing:.16em;color:var(--faint);opacity:.6}
 .front .serial .ed{opacity:.75}
 /* 稀有度：描边/辉光随档升级 */
 .r-on .front{border-color:var(--rc)}
@@ -389,19 +389,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chooseWrap .nudge-pick .chint{color:var(--goldL)}
 /* 小牌强制排版：chooser/pick 卡宽 ~140-180px，字号锁死防溢出（!important 压内联） */
 .chooseWrap .card .plate{gap:5px;padding:0 10px;bottom:14px}
-.chooseWrap .card .big{font-size:13px!important;line-height:1.35}
-.chooseWrap .card .pline{font-size:8px!important}
-.chooseWrap .card .meta{font-size:9px!important;letter-spacing:.02em}
-.chooseWrap .card .tagline{font-size:8.5px!important;margin-top:-3px;line-height:1.3}
-.chooseWrap .card .crown .rt,.chooseWrap .card .crown .stars{font-size:7px}
-.chooseWrap .card .serial{font-size:7px}
-.chooseWrap .card .poem{display:none}
-.chooseWrap .card .back .uphint{font-size:9px;bottom:10px}
-.chooseWrap.n2 .card .big{font-size:22px!important}              /* 语言/卡组二选一稍大 */
-.chooseWrap.n2 .card .meta{font-size:10.5px!important}
-.chooseWrap.n2 .card .tagline{font-size:10px!important}
-.chooseWrap.n2 .card .crown .rt,.chooseWrap.n2 .card .crown .stars{font-size:8.5px}
-.chooseWrap.n2 .card .serial{font-size:8px}
+.chooseWrap .card .poem{display:none}                                /* 小牌不放剧情行 */
 .chooseWrap .card .meta,.chooseWrap .card .tagline{text-align:center}  /* 选牌小卡介绍仍居中 */
 /* 目标梯度：进度 ≥70% 末段视觉加速（更亮+脉冲+填充提速感） */
 #top.tierup #goalFill{filter:brightness(1.7) drop-shadow(0 0 12px var(--gold))}
@@ -419,7 +407,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 #stage .bossArena .card.bossTop{width:min(78vw,300px,30vh);margin-top:-16vh}  /* Boss 巨大压顶，只露下半（压迫感） */
 #stage .bossArena .card.chargeCard{width:min(54vw,210px,24vh)}                /* 蓄力牌居中待命 */
 .card.bossTop .back{animation:breathe 1.6s ease-in-out infinite}
-.card.bossTop .back .glyph{color:#ff5a5a;text-shadow:0 0 28px #ff5a5a;font-size:44px}
+.card.bossTop .back .glyph{color:#ff5a5a;text-shadow:0 0 28px #ff5a5a;font-size:15cqw}
 .card.chargeCard .back .glyph{color:var(--gold);text-shadow:0 0 18px var(--gold)}
 /* 蓄力表：卡右侧独立竖表，绿带=安全区（卡背图案零重叠） */
 .chargeRow{display:flex;align-items:stretch;gap:12px}

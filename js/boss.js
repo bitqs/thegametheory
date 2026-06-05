@@ -5,7 +5,7 @@
 import { S, F } from "./state.js";
 import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
-import { makeCard, needOf, exitUp, drawPrinciple } from "./cards.js";
+import { makeCard, needOf, exitUp, drawPrinciple, bigSize } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { els, sparkle, flashGo, flashWhite, rand } from "./dom.js";
 import { riser, land, chord, tick } from "./audio.js";
@@ -90,10 +90,7 @@ export function startBoss(){
     const ch=drawPrinciple(true);
     const big=bossC.querySelector(".big"); big.textContent=ch.t;
     bossC.querySelector(".pline").textContent=ch.s;
-    big.style.fontSize="15px";                                  // Boss 牌小，字号跟着锁
-    bossC.querySelector(".pline").style.fontSize="8.5px";
-    bossC.querySelector(".meta").style.fontSize="9px";
-    bossC.querySelector(".tagline").style.fontSize="8.5px";
+    big.style.fontSize=bigSize(ch.t);                           // cqw：与大牌同比例
     bossC.querySelector(".poem").style.display="none";
     const gl=bossC.querySelector(".glyph"); if(gl) gl.style.opacity="0";
     bossC.querySelector(".flip").classList.add("flipped");

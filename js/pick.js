@@ -2,7 +2,7 @@
 import { S, F } from "./state.js";
 import { BEATS, RC, RSTARS } from "./config.js";
 import { T } from "./i18n.js";
-import { makeCard, needOf, drawPrinciple } from "./cards.js";
+import { makeCard, needOf, drawPrinciple, bigSize } from "./cards.js";
 import { pickArt, artMeta, artLine, warm } from "./pool.js";
 import { els, sparkle, flashGo } from "./dom.js";
 import { land, chord, tick } from "./audio.js";
@@ -37,7 +37,7 @@ function fillFront(c, rar, art){
     c.querySelector(".meta").textContent=artMeta(art);
     c.querySelector(".tagline").textContent=artLine(art); }
   const ch = drawPrinciple(rar==="SR"||rar==="SSR");
-  const big=c.querySelector(".big"); big.textContent=ch.t;
+  const big=c.querySelector(".big"); big.textContent=ch.t; big.style.fontSize=bigSize(ch.t);
   c.querySelector(".pline").textContent=ch.s;
 }
 function flipOpen(c){

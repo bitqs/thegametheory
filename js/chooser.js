@@ -23,7 +23,7 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
     if (it.art) { const u = "url('" + it.art.img + "')";
       c.querySelector(".artbg").style.backgroundImage = u;
       c.querySelector(".artfg").style.backgroundImage = u; }
-    const big = c.querySelector(".big"); big.textContent = it.title || ""; big.style.fontSize = "32px";
+    const big = c.querySelector(".big"); big.textContent = it.title || ""; big.style.fontSize = "17.8cqw";
     const meta = c.querySelector(".meta"); meta.textContent = it.sub || ""; meta.style.opacity = ".8";
     c.querySelector(".serial .sn").textContent = it.serial || "";
 

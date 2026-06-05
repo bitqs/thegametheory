@@ -58,6 +58,8 @@ export function makeCard(){
   return c;
 }
 export function hintWord(g){ return T().backhint[g]||""; }
+// 原则名字号三档（容器相对：任何尺寸的牌同比例）
+export function bigSize(t){ return [...t].length<=5 ? "10.3cqw" : [...t].length<=8 ? "8.3cqw" : "6.6cqw"; }
 
 // 出一张牌背：此刻预掷稀有度——SR/SSR 背面分档发光等手翻，低档稍后自动翻
 export function spawnBack(){
@@ -123,7 +125,7 @@ export function flipCard(type){
   // 牌面=游戏设计原则+一句招供；稀有牌掉深层原则。收藏=集齐设计原则（同局不重复）
   const ch = drawPrinciple(big2); big.textContent=ch.t; S.collected.push(ch.t);
   cur.querySelector(".pline").textContent=ch.s;
-  big.style.fontSize = ch.t.length<=5 ? "30px" : ch.t.length<=8 ? "24px" : "19px";
+  big.style.fontSize = bigSize(ch.t);
   const fresh=!S.collSet.has(ch.t); S.collSet.add(ch.t);
   if(F.collect){ document.getElementById("cCollect").querySelector("b").textContent=S.collSet.size;
     if(fresh && S.collSet.size%5===0){ setTimeout(()=>{ flashGo(true); chord(); quip(T().milestone(S.collSet.size)); },300); } }
