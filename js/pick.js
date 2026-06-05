@@ -11,14 +11,15 @@ import { enterOutro } from "./flow.js";
 
 const touchEl = () => document.getElementById("touchlayer");
 
-// 选中牌放大居中鉴赏，其余淡出隐去（多选揭示的统一收尾）
-function zoomChosen(wrap, i){
+// 选中牌放大居中鉴赏；keepOthers=near-miss 模式（隔壁金卡留场作证，只压暗微缩）
+function zoomChosen(wrap, i, keepOthers){
   [...wrap.children].forEach(h=>h.style.animation="none");   // cardin 动画 fill:both 会压过 inline transform，先摘掉
   [...wrap.children].forEach((h,j)=>{ if(j===i) return;
-    h.style.transition="opacity .5s,transform .5s"; h.style.opacity="0"; h.style.transform="scale(.92)";
-    h.style.pointerEvents="none"; });
+    h.style.transition="opacity .5s,transform .5s"; h.style.pointerEvents="none";
+    if(keepOthers){ h.style.opacity=".55"; h.style.transform="scale(.86)"; }
+    else { h.style.opacity="0"; h.style.transform="scale(.92)"; } });
   const holder=wrap.children[i], r=holder.getBoundingClientRect(), st=els.stage.getBoundingClientRect();
-  const sc=Math.min(2.1, (st.width*0.62)/r.width);
+  const sc=Math.min(keepOthers?1.5:2.1, (st.width*0.62)/r.width);
   const dx=(st.left+st.width/2)-(r.left+r.width/2), dy=(st.top+st.height/2)-(r.top+r.height/2);
   holder.style.zIndex="5";
   holder.style.transition="transform .7s cubic-bezier(.2,.8,.2,1)";
@@ -90,7 +91,7 @@ export function startPick(n, rig){
     const last = S.actCount>=needOf(BEATS[S.beatIdx]);
     // 全亮后停留品味（near-miss 多看一眼隔壁的金）→ 选中牌放大居中，其余隐去
     const zoomAt = rig ? 2400 : 1900;
-    setTimeout(()=>zoomChosen(wrap, i), zoomAt);
+    setTimeout(()=>zoomChosen(wrap, i, !!rig), zoomAt);   // near-miss 不全隐：揭穿词要指着隔壁的金卡
     if(last){                                                 // 最后一轮放大的牌留台上陪洞见（空屏听揭穿=没画面感）
       setTimeout(()=>{ touchEl().style.pointerEvents=""; enterOutro(); }, zoomAt+1100);
       return;                                                 // wrap 不删，下一拍 applyBeat 清场

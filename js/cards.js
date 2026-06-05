@@ -73,7 +73,9 @@ export function spawnBack(){
   const uphint=c.querySelector(".back .uphint");
   // 故事拍解锁后：牌背露下一句故事的开头（好奇缺口——知道一半最痒）
   if(F.story && !wait){ const nx=T().beats[S.beatIdx]?.say?.[S.actCount];
-    uphint.textContent = nx ? "「"+[...nx].slice(0,4).join("")+"……」" : ""; }
+    const head = !nx ? "" : nx.includes(" ") ? nx.split(/\s+/).slice(0,3).join(" ")   // en 按词取 3
+                                             : [...nx].slice(0,4).join("");           // zh 取 4 字
+    uphint.textContent = head ? "「"+head+"……」" : ""; }
   else uphint.textContent = wait ? hintWord("tap") : "";
   if(wait){ c.classList.add(rar==="SSR"?"wait-ssr":"wait-sr"); if(rar==="SSR"&&F.sound) riser(700); }
   requestAnimationFrame(()=>c.classList.add("in"));

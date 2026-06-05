@@ -141,9 +141,9 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
   color:var(--goldL);text-align:center;opacity:0;transition:opacity .55s .46s;margin-top:-2px;
   text-shadow:0 1px 8px #000}                              /* 原则招供句：跟在原则名下 */
 .front.art-on .pline{opacity:.85}
-.front .poem{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-style:italic;font-size:13px;
-  color:var(--goldL);text-align:center;opacity:0;transform:translateY(6px);
-  transition:opacity .55s .5s,transform .55s .5s;text-shadow:0 1px 8px #000}
+.front .poem{font-family:"Cormorant Garamond","Noto Serif SC",serif;font-size:14px;line-height:1.55;
+  color:var(--ink);text-align:center;opacity:0;transform:translateY(6px);
+  transition:opacity .55s .5s,transform .55s .5s;text-shadow:0 1px 8px #000}   /* 剧情行=设计师正体白字，与金斜体招供句拉开 */
 .front.story .poem{opacity:.9;transform:none}
 /* 卡面装饰：随机制解锁逐层叠加 */
 .front .frame{position:absolute;inset:5px;border:1px solid rgba(255,255,255,.14);border-radius:12px;
