@@ -176,7 +176,7 @@ export function exitUp(c, cb){ if(!c){ cb&&cb(); return; } c.classList.remove("f
   const r=c.getBoundingClientRect(), sr=els.stage.getBoundingClientRect();
   c.style.position="absolute"; c.style.left=(r.left-sr.left)+"px"; c.style.top=(r.top-sr.top)+"px";
   c.style.width=r.width+"px"; c.style.margin="0";
-  c.style.transition="transform .45s cubic-bezier(.4,0,.2,1),opacity .4s";
+  c.style.transition="transform .45s var(--ease-exit),opacity .4s";
   requestAnimationFrame(()=>{ c.style.transform="translateY(-135%)"; c.style.opacity="0"; });
   cb&&cb();                                              // 下一张立刻顶上（旧牌已脱流，不挤位）
   setTimeout(()=>c.remove(),470); }

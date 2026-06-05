@@ -52,11 +52,11 @@ export function pickCards({ items, mount, onPick, dwell = 1200 }) {
         const dx = innerWidth / 2 - (r.left + r.width / 2);
         const dy = innerHeight / 2 - (r.top + r.height / 2);
         h.style.zIndex = "5";
-        c.style.transition = "transform .6s cubic-bezier(.2,.8,.2,1)";
+        c.style.transition = "transform .6s var(--ease-out)";
         c.style.transform = `translate(${dx}px,${dy}px) scale(${s})`;
         // 停留鉴赏 → 缩出 → 回调
         setTimeout(() => {
-          c.style.transition = "transform .45s cubic-bezier(.4,0,.2,1),opacity .4s";
+          c.style.transition = "transform .45s var(--ease-exit),opacity .4s";
           c.style.transform += " scale(.92)"; c.style.opacity = "0";
           setTimeout(() => { wrap.remove(); onPick && onPick(idx); }, 440);
         }, dwell + 600);

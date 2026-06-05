@@ -46,7 +46,7 @@ tl.addEventListener("touchmove",e=>{ const t=e.touches[0]; if(!t)return;
 tl.addEventListener("touchend",e=>{ const dy=e.changedTouches[0].clientY-tY, dur=Date.now()-tT;
   press(false);
   if(dragC){                                            // 先弹回；若手势成功出牌，exitUp 会接管样式
-    dragC.style.transition="transform .25s cubic-bezier(.2,.8,.2,1),opacity .25s";
+    dragC.style.transition="transform .25s var(--ease-out),opacity .25s";
     dragC.style.transform="translateY(0)"; dragC.style.opacity="1"; }
   const TH=Math.min(110, innerHeight*0.12);            // 出牌阈值随屏高（小屏更省力，大屏不变重）
   if(dy<-TH) handleGesture("up");

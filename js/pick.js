@@ -21,7 +21,7 @@ function zoomChosen(wrap, i, keepOthers){
   const sc=Math.min(keepOthers?1.5:2.1, (st.width*0.62)/r.width);
   const dx=(st.left+st.width/2)-(r.left+r.width/2), dy=(st.top+st.height/2)-(r.top+r.height/2);
   holder.style.zIndex="5";
-  holder.style.transition="transform .7s cubic-bezier(.2,.8,.2,1)";
+  holder.style.transition="transform .7s var(--ease-out)";
   holder.style.transform=`translate(${dx}px,${dy}px) scale(${sc})`;
 }
 

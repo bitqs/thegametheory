@@ -21,7 +21,7 @@ export function startBoss(){
   const arena=document.createElement("div"); arena.className="bossArena";
 
   const bossC=makeCard(); bossC.classList.add("boss","bossTop"); // Boss 牌：上方探出一点
-  bossC.style.setProperty("--rc","#ff5a5a");
+  bossC.style.setProperty("--rc","var(--red)");
   bossC.querySelector(".glyph").textContent="⛧";
 
   const me=makeCard(); me.classList.add("boss","chargeCard");    // 蓄力牌：下方变小待命
@@ -102,7 +102,7 @@ export function startBoss(){
       const r=bossC.getBoundingClientRect();
       const s=Math.min(innerWidth*0.74/r.width, innerHeight*0.62/r.height);
       const dx=innerWidth/2-(r.left+r.width/2), dy=innerHeight/2-(r.top+r.height/2);
-      bossC.style.transition="transform .65s cubic-bezier(.2,.8,.2,1)";
+      bossC.style.transition="transform .65s var(--ease-out)";
       bossC.style.transform=`translate(${dx}px,${dy}px) scale(${s})`;
       bossC.style.zIndex="6";
     },700);
