@@ -54,10 +54,12 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
   const fh=first.querySelector(".chint"); if(fh) fh.textContent+=" ✦"; }
 function openingHook(){ const h=T().openHook;            // 命运宣告：片头字幕屏幕正中逐行 → 闪白开局
   const ins=document.getElementById("insight"); ins.classList.add("cinema");
-  h.forEach((t,i)=>setTimeout(()=>showInsight(t), i*2100));
+  // 按行长配速：短句快切（三连"关于"打出节奏），长句给足阅读时间
+  let at=0; const dur=t=>[...t].length<=7?1300:2100;
+  h.forEach(t=>{ setTimeout(()=>showInsight(t), at); at+=dur(t); });
   setTimeout(()=>{ hideInsight(); ins.classList.remove("cinema");
     import("./dom.js").then(d=>d.flashWhite());
     setTimeout(()=>{ S.beatIdx=0; applyBeat(); }, 320);
-  }, h.length*2100);
+  }, at);
   // 趁开场白预热前几张卡面，开局零白图
   import("./pool.js").then(m=>{ for(let i=0;i<6;i++){ const a=m.pickArt(null); if(a){ const im=new Image(); im.src=a.img; } } }); }
