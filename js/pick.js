@@ -11,6 +11,20 @@ import { enterOutro } from "./flow.js";
 
 const touchEl = () => document.getElementById("touchlayer");
 
+// 选中牌放大居中鉴赏，其余淡出隐去（多选揭示的统一收尾）
+function zoomChosen(wrap, i){
+  [...wrap.children].forEach(h=>h.style.animation="none");   // cardin 动画 fill:both 会压过 inline transform，先摘掉
+  [...wrap.children].forEach((h,j)=>{ if(j===i) return;
+    h.style.transition="opacity .5s,transform .5s"; h.style.opacity="0"; h.style.transform="scale(.92)";
+    h.style.pointerEvents="none"; });
+  const holder=wrap.children[i], r=holder.getBoundingClientRect(), st=els.stage.getBoundingClientRect();
+  const sc=Math.min(2.1, (st.width*0.62)/r.width);
+  const dx=(st.left+st.width/2)-(r.left+r.width/2), dy=(st.top+st.height/2)-(r.top+r.height/2);
+  holder.style.zIndex="5";
+  holder.style.transition="transform .7s cubic-bezier(.2,.8,.2,1)";
+  holder.style.transform=`translate(${dx}px,${dy}px) scale(${sc})`;
+}
+
 function fillFront(c, rar, art){
   c.dataset.r = rar; c.style.setProperty("--rc", RC[rar]);
   c.classList.add("r-on","s-frame","s-corners","s-foil");
@@ -74,13 +88,16 @@ export function startPick(n, rig){
     if(F.score){ const add=hit?80:15; S.score+=add; bumpScore(add); }
     S.actCount++; S.doneActions++; updateGoal();
     const last = S.actCount>=needOf(BEATS[S.beatIdx]);
-    if(last){                                                 // 最后一轮牌留台上陪洞见（空屏听揭穿=没画面感）
-      setTimeout(()=>{ touchEl().style.pointerEvents=""; enterOutro(); }, rig?2200:1800);
+    // 全亮后停留品味（near-miss 多看一眼隔壁的金）→ 选中牌放大居中，其余隐去
+    const zoomAt = rig ? 2400 : 1900;
+    setTimeout(()=>zoomChosen(wrap, i), zoomAt);
+    if(last){                                                 // 最后一轮放大的牌留台上陪洞见（空屏听揭穿=没画面感）
+      setTimeout(()=>{ touchEl().style.pointerEvents=""; enterOutro(); }, zoomAt+1100);
       return;                                                 // wrap 不删，下一拍 applyBeat 清场
     }
     setTimeout(()=>{
       wrap.style.transition="opacity .5s"; wrap.style.opacity="0";
       setTimeout(()=>{ wrap.remove(); startPick(n, rig); },500);
-    }, 2000);
+    }, zoomAt+1300);
   }
 }

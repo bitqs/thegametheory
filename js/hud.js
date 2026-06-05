@@ -16,12 +16,26 @@ export function renderEnergy(){ const w=$("energyDots");
   [...w.children].forEach((d,i)=>d.classList.toggle("spent", i>=S.energy)); }
 export function scheduleRegen(){ if(S.energyTimer) return; S.energyTimer=setInterval(()=>{ if(!F.energy){ clearInterval(S.energyTimer); S.energyTimer=null; return; }
   if(S.energy<TUNE.energyMax){ S.energy++; renderEnergy(); if(S.energy>1) dangerOff(); } },TUNE.energyRegen); }
+// 升级递进进度条：Ⅰ-Ⅳ 四段，每满一段升阶重填（新起点效应 ×4）；
+// goalreveal 揭穿后切回总进度——"你以为升级重置了？其实一直是同一条线。"
+const TIERS=["Ⅰ","Ⅱ","Ⅲ","Ⅳ"];
 export function updateGoal(){ const pct=Math.min(100, Math.round(S.doneActions/TARGET*100));
-  $("goalFill").style.width=pct+"%"; $("goalPct").textContent=pct+"%";
   if(pct>=55) els.app.classList.add("warm"); if(pct>=85) els.app.classList.add("hot");
   els.top.classList.toggle("gg", pct>=70 && pct<100);     // 目标梯度：末段视觉加速
-  if(F.bar){ for(const m of [25,50,75]){                       // 进度里程碑：跨线即喜报（空进度条也要庆祝，本身就是讽刺）
-    if(pct>=m && !S.goalMarks.has(m)){ S.goalMarks.add(m);
-      import("./dom.js").then(d=>d.flashGo(false));
-      import("./narration.js").then(n=>n.quip(TXT().goalMilestone(m))); } } } }
+  if(F.goalreveal){ $("goalFill").style.width=pct+"%"; $("goalPct").textContent=pct+"%"; return; }
+  const tier=Math.min(3, Math.floor(S.doneActions/TARGET*4));
+  const lo=tier*TARGET/4, tpct=Math.min(100, Math.round((S.doneActions-lo)/(TARGET/4)*100));
+  if(tier>S.goalTier){ S.goalTier=tier;                   // 升阶时刻：满条金闪 → 快照重填新段
+    const f=$("goalFill"); f.style.width="100%"; $("goalPct").textContent="100%";
+    els.top.classList.add("tierup");
+    import("./dom.js").then(d=>d.flashGo(false));
+    import("./audio.js").then(a=>a.lvlSnd());
+    if(F.bar) import("./narration.js").then(n=>n.quip(TXT().goalTier(TIERS[tier])));
+    setTimeout(()=>{ els.top.classList.remove("tierup");
+      f.style.transition="none"; f.style.width=tpct+"%";
+      requestAnimationFrame(()=>{ f.style.transition=""; });
+      $("goalName").textContent=TXT().goalName+" · "+TIERS[tier];
+      $("goalPct").textContent=tpct+"%"; },650);
+    return; }
+  $("goalFill").style.width=tpct+"%"; $("goalPct").textContent=tpct+"%"; }
 let TXT; import("./i18n.js").then(m=>{ TXT=m.T; });            // 防环：i18n 动态引入

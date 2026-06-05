@@ -384,6 +384,7 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 .chooseWrap.n2 .card .serial{font-size:8px}
 .chooseWrap .card .meta,.chooseWrap .card .tagline{text-align:center}  /* 选牌小卡介绍仍居中 */
 /* 目标梯度：进度 ≥70% 末段视觉加速（更亮+脉冲+填充提速感） */
+#top.tierup #goalFill{filter:brightness(1.7) drop-shadow(0 0 12px var(--gold))}
 #top.gg #goalFill{filter:brightness(1.25) drop-shadow(0 0 6px var(--gold));
   animation:ggpulse 1s ease-in-out infinite;transition:width .25s ease-out}
 @keyframes ggpulse{0%,100%{opacity:1}50%{opacity:.82}}

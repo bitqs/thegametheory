@@ -19,7 +19,7 @@ const BEATMATCH = {
   random:["可变奖励","开箱","VARIABLE REWARD","LOOT BOX"],
   rarity:["稀有度","稀缺","RARITY","SCARCITY"],
   bar:["进度条","禀赋进度","PROGRESS BAR","ENDOWED PROGRESS"],
-  score:["分数","暴击","POINTS","CRIT"],
+  score:["金币","暴击","COINS","CRIT"],
   level:["升级","里程碑","LEVELS","MILESTONE"],
   collect:["收集欲","成就","彩蛋","COLLECTION","ACHIEVEMENT","EASTER EGG"],
   energy:["体力","每日任务","签到","ENERGY","DAILY QUEST","CHECK-IN"],

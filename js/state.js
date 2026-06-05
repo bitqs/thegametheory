@@ -15,7 +15,7 @@ export const S = {
   shown:null, card:null, doneActions:2,   // 预填 2 格=天赋进度效应（结局点名拆穿）
   muted:false, ac:null,
   philoStep:0, philoLines:null,
-  POOL:[], deck:"art", goalMarks:new Set(), firstSSR:false, t0:Date.now(),
+  POOL:[], deck:"art", goalTier:0, firstSSR:false, t0:Date.now(),
   usedW:new Set(), usedWR:new Set(), usedArt:new Set(),   // 去重：原则词/深层原则/画作（耗尽重洗）
 
 };
