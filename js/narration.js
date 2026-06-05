@@ -26,16 +26,39 @@ function decorate(t){
     .replace(/(\d+(?:\.\d+)?\s*(?:%|格|次|分钟|minutes?|times?)?)/g,'<em class="k">$1</em>')
     .replace(/\b(near-miss|SSS|SR)\b/g,'<em class="k">$1</em>');
 }
+// 旧句退场：逐字破碎飘散（每字随机位移/旋转/模糊，错峰起飞），整行同时上移
+function shatter(el){
+  const wrapChars=node=>{ [...node.childNodes].forEach(ch=>{
+    if(ch.nodeType===3){ const frag=document.createDocumentFragment();
+      [...ch.textContent].forEach(c=>{ const s=document.createElement("span"); s.className="chx";
+        s.textContent=c;
+        s.style.setProperty("--dx",(Math.random()*36-18).toFixed(0)+"px");
+        s.style.setProperty("--dy",(-(14+Math.random()*30)).toFixed(0)+"px");
+        s.style.setProperty("--rt",(Math.random()*28-14).toFixed(0)+"deg");
+        frag.appendChild(s); });
+      node.replaceChild(frag,ch); }
+    else wrapChars(ch); }); };
+  wrapChars(el);
+  [...el.querySelectorAll(".chx")].forEach((s,i)=>s.style.animationDelay=(i*14)+"ms");
+  el.classList.add("sh");
+  setTimeout(()=>el.remove(), 1100);
+}
 export function showInsight(t){
   const ins=els.insight, txt=ins.querySelector(".txt");
   const empty=!document.querySelector("#stage .card");
   ins.classList.toggle("cinema", empty);                     // 没牌→屏幕正中，电影字幕感
+  const old=txt.querySelector(".iline.cur");
+  if(old){ old.classList.remove("cur"); shatter(old); }      // 前一句：上移渐隐+逐字破碎
   const n=[...t].length;
-  txt.style.fontSize = empty ? (n<=18?"26px":n<=40?"22px":"18px")
-                             : (n<=40?"19px":"16px");
-  txt.innerHTML=decorate(t);
-  ins.classList.remove("show"); void ins.offsetWidth; ins.classList.add("show");
+  const d=document.createElement("div"); d.className="iline cur";
+  d.style.fontSize = empty ? (n<=18?"26px":n<=40?"22px":"18px")
+                           : (n<=40?"19px":"16px");
+  d.innerHTML=decorate(t);
+  txt.appendChild(d); requestAnimationFrame(()=>d.classList.add("on"));   // 新句：渐入升起
+  ins.classList.add("show");
 }
-export function hideInsight(){ els.insight.classList.remove("show","cinema"); }
+export function hideInsight(){ const ins=els.insight;
+  ins.classList.remove("show","cinema");
+  setTimeout(()=>{ ins.querySelectorAll(".iline").forEach(e=>e.remove()); }, 650); }
 export function setHint(g){ els.hint.innerHTML=`<span class="arr">${T().hints[g]||""}</span>`; els.hint.classList.add("show"); }
 export function nudgeHint(){ els.hint.innerHTML=`<span class="arr">${T().hints.cont}</span>`; els.hint.classList.add("show"); }
