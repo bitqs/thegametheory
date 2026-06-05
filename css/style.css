@@ -511,3 +511,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 :lang(en) .front .tagline,:lang(en) .front .pline,:lang(en) .deadveil .ds,
 :lang(en) .card.sss .ytag,:lang(en) #say .line.dim,:lang(en) #insight .txt,
 :lang(en) #end .card-final .el{font-style:italic}
+
+/* 开场金粒：缓升微光（宣告氛围，结束移除） */
+.floatdot{position:fixed;bottom:-3vh;width:4px;height:4px;border-radius:50%;z-index:24;
+  background:var(--gold);box-shadow:0 0 8px rgba(255,211,77,.55);opacity:0;
+  pointer-events:none;transition:opacity 1.2s;animation:floatup 12s linear infinite}
+@keyframes floatup{0%{transform:translateY(0);opacity:0}12%{opacity:.5}
+  85%{opacity:.35}100%{transform:translateY(-108vh);opacity:0}}

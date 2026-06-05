@@ -8,6 +8,7 @@ import { flipCard, swapCard } from "./cards.js";
 import { nextBeat, philoNext, chooseEnding, startPhilo } from "./flow.js";
 import { drawShare, openShareEnergy, grantEnergy, saveShareImage } from "./share.js";
 import { startFinale } from "./finale.js";
+import { openingNext } from "./lang.js";
 
 export function handleGesture(type){
   if(window.AudioContext||window.webkitAudioContext){ actx(); startBgm(); }   // 首次触摸解锁音频 + 起背景乐
@@ -20,7 +21,8 @@ export function handleGesture(type){
     else if(type==="down"){ quipWrong(); }
   } else if(S.phase==="outro"){
     if(type==="up"||type==="tap") nextBeat();
-  } else if(S.phase==="philo"){ philoNext(); }
+  } else if(S.phase==="opening"){ openingNext(); }   // 宣告期轻触快进
+  else if(S.phase==="philo"){ philoNext(); }
   else if(S.phase==="choice"){ chooseEnding(type); }   // 三向选择不受手势解锁限制（down 已退役但此处仍收）
 }
 // quip 在 narration，但避免环：动态引用

@@ -10,6 +10,7 @@ renderEnergy();
   let done=0; const TOTAL=9;                                // 5 json + 4 预热图
   const tick=()=>{ done++; fill.style.width=Math.round(done/TOTAL*100)+"%"; };
   await loadPool(tick);
+  fetch("audio/bgm.mp3").catch(()=>{});                     // BGM 预热缓存（首手势播放零等待）
   // 预热语言/卡组选择会用到的卡面，开屏即清晰
   await Promise.all([0,1,2,3].map(i=>warm(deckSample(i%2?"games":"art")).then(tick)));
   fill.style.width="100%";

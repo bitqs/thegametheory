@@ -52,14 +52,30 @@ function buildDeckPick(){ S.phase="deckpick"; const t=T();
   const first=cw.querySelector(".ccard");                         // 引导首选游戏卡（在返回的 wrap 上查，挂载是异步的）
   first.classList.add("nudge-pick");
   const fh=first.querySelector(".chint"); if(fh) fh.textContent+=" ✦"; }
-function openingHook(){ const h=T().openHook;            // 命运宣告：片头字幕屏幕正中逐行 → 闪白开局
+// 命运宣告：逐行片头字幕，自动配速 + 轻触快进（节奏交给玩家）→ 闪白开局
+let advOpening=null;
+export function openingNext(){ if(advOpening) advOpening(); }
+function openingHook(){ const h=T().openHook;
+  S.phase="opening";
   const ins=document.getElementById("insight"); ins.classList.add("cinema");
-  // 按行长配速：短句快切（三连"关于"打出节奏），长句给足阅读时间
-  let at=0; const dur=t=>[...t].length<=7?1300:2100;
-  h.forEach(t=>{ setTimeout(()=>showInsight(t), at); at+=dur(t); });
-  setTimeout(()=>{ hideInsight(); ins.classList.remove("cinema");
+  // 开场金粒：缓缓上升的微光，给宣告一点仪式氛围
+  const dots=[];
+  for(let i=0;i<7;i++){ const d=document.createElement("i"); d.className="floatdot";
+    d.style.left=(8+Math.random()*84)+"vw"; d.style.animationDelay=(Math.random()*6)+"s";
+    d.style.animationDuration=(9+Math.random()*7)+"s";
+    document.body.appendChild(d); dots.push(d); }
+  let i=0, timer=null;
+  const dur=t=>[...t].length<=7?1300:2100;
+  const finish=()=>{ advOpening=null; clearTimeout(timer);
+    hideInsight(); ins.classList.remove("cinema");
+    dots.forEach(d=>{ d.style.opacity="0"; setTimeout(()=>d.remove(),1200); });
     import("./dom.js").then(d=>d.flashWhite());
-    setTimeout(()=>{ S.beatIdx=0; applyBeat(); }, 320);
-  }, at);
+    setTimeout(()=>{ S.beatIdx=0; applyBeat(); }, 320); };
+  const next=()=>{ clearTimeout(timer);
+    if(i>=h.length){ finish(); return; }
+    const t=h[i++]; showInsight(t);
+    timer=setTimeout(next, dur(t)); };
+  advOpening=next;                                   // 轻触=立刻下一行（input phase==="opening" 接入）
+  next();
   // 趁开场白预热前几张卡面，开局零白图
   import("./pool.js").then(m=>{ for(let i=0;i<6;i++){ const a=m.pickArt(null); if(a){ const im=new Image(); im.src=a.img; } } }); }
