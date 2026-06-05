@@ -54,7 +54,7 @@ export const I18N = {
     beats:[
       { say:["第一张牌，是我替你翻的。"], done:"命运选中你？我编的。但迈出这一步的，是你。" },
       { say:["那声“叮”——你的大脑刚刚奖励了你。"], done:"即时反馈。第一个钩子，钉进去了。" },
-      { say:["我往牌堆里，混了点东西。","下一张会亮吗？——你猜。"], done:"不确定——才是你停不下来的真正原因。" },
+      { say:["我往牌堆里，混了点东西。","下一张会亮吗？——你猜。"], done:"翻牌＝即时反馈＋随机奖励。这台机器，最精简的版本——而你已经停不下来了。" },
       { say:["发光的牌，出现了。","金色的那张，只等你亲手翻开。"], done:"稀缺，凭空造出了渴望。" },
       { say:["抬头。那条线，你已经想填满了。"], done:"一条空进度条，就能指挥你的手。" },
       { say:["金币！谁不喜欢呢？"], done:"获得感——哪怕得到的是零。" },
@@ -146,7 +146,7 @@ export const I18N = {
     beats:[
       { say:["I flipped the first card for you."], done:"Chosen by fate? I made that up. But the step was yours." },
       { say:["That 'ding' — your brain just rewarded you."], done:"Instant feedback. The first hook, set." },
-      { say:["I slipped something into the deck.","Will the next one glow? — Guess."], done:"Uncertainty — the real reason you can't stop." },
+      { say:["I slipped something into the deck.","Will the next one glow? — Guess."], done:"One flip = instant feedback + variable reward. This whole machine, at its smallest — and you already can't stop." },
       { say:["The glowing cards are here.","The gold one waits for your hand alone."], done:"Scarcity, conjuring desire from nothing." },
       { say:["Look up. You already want that line full."], done:"An empty bar, and it commands your hand." },
       { say:["Coins! Who doesn't love coins?"], done:"The thrill of gain — even when you gain zero." },

@@ -326,8 +326,10 @@ html,body{height:100%;overflow:hidden;background:var(--bg0);color:var(--ink);
 /* ── 哲学 / 结局覆盖层 ── */
 .veil{position:fixed;inset:0;z-index:50;display:none;flex-direction:column;
   align-items:center;justify-content:center;text-align:center;padding:40px 32px;
-  background:radial-gradient(120% 90% at 50% 40%,#0c0a16,#050509)}
+  background:radial-gradient(120% 90% at 50% 40%,#0c0a16,#050509);
+  pointer-events:none}                       /* veil 在 touchlayer(z40) 之上：放行触摸给手势层，按钮单独收 */
 .veil.show{display:flex}
+.veil .ebtn,.veil .author,.veil .ccard{pointer-events:auto}
 #philo .pl{font-size:20px;line-height:2;color:var(--ink);opacity:0;
   transform:translateY(10px);transition:opacity 1s,transform 1s;max-width:22em}
 #philo .pl.show{opacity:1;transform:none}

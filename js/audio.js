@@ -6,14 +6,14 @@ export function actx(){ if(S.muted) return null;
   try{ S.ac = S.ac || new (window.AudioContext||window.webkitAudioContext)(); return S.ac; }catch{ return null; } }
 
 /* ── Web Audio 合成（回退）── */
-function synth(f,d=.12,type="sine",v=.16){ const c=actx(); if(!c) return;
+function synth(f,d=.12,type="sine",v=.22){ const c=actx(); if(!c) return;
   const o=c.createOscillator(),g=c.createGain(); o.type=type; o.frequency.value=f;
   g.gain.setValueAtTime(v,c.currentTime); g.gain.exponentialRampToValueAtTime(.0008,c.currentTime+d);
   o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime+d); }
-function synthTick(){ synth(660,.07,"triangle",.12); }
-function synthLand(big){ synth(big?880:560,.15,"triangle",.15); if(big) setTimeout(()=>synth(1320,.18,"sine",.12),55); }
-function synthChord(){ [784,988,1175,1568].forEach((f,i)=>setTimeout(()=>synth(f,.22,"sine",.14),i*70)); }
-function synthLvl(){ [523,659,784].forEach((f,i)=>setTimeout(()=>synth(f,.16,"sine",.13),i*55)); }
+function synthTick(){ synth(660,.07,"triangle",.17); }
+function synthLand(big){ synth(big?880:560,.15,"triangle",.21); if(big) setTimeout(()=>synth(1320,.18,"sine",.17),55); }
+function synthChord(){ [784,988,1175,1568].forEach((f,i)=>setTimeout(()=>synth(f,.22,"sine",.19),i*70)); }
+function synthLvl(){ [523,659,784].forEach((f,i)=>setTimeout(()=>synth(f,.16,"sine",.18),i*55)); }
 function synthRiser(ms){ const c=actx(); if(!c) return;          // 五声琶音上行：音乐感蓄力（替换刺耳锯齿扫频）
   const SCALE=[220,261.6,293.7,329.6,392,440,523.3,587.3];
   const n=Math.max(4, Math.min(8, Math.round(ms/280)));
@@ -43,11 +43,11 @@ function playSfx(name, vol=.5){ const c=actx(); if(!c) return false;
 
 /* ── 对外 API：名字不变，内部择优 ── */
 export function blip(f,d,type,v){ synth(f,d,type,v); }   // 杂用提示音保持合成
-export function tick(){ if(!playSfx("tap",.4)) synthTick(); }
-export function land(big){ if(!playSfx(big?"revealBig":"reveal",.55)) synthLand(big); }
-export function chord(){ if(!playSfx("jackpot",.6)) synthChord(); }
-export function lvlSnd(){ if(!playSfx("levelup",.5)) synthLvl(); }
-export function riser(ms){ if(!playSfx("charge",.5)) synthRiser(ms); }
+export function tick(){ if(!playSfx("tap",.55)) synthTick(); }
+export function land(big){ if(!playSfx(big?"revealBig":"reveal",.7)) synthLand(big); }
+export function chord(){ if(!playSfx("jackpot",.75)) synthChord(); }
+export function lvlSnd(){ if(!playSfx("levelup",.65)) synthLvl(); }
+export function riser(ms){ if(!playSfx("charge",.65)) synthRiser(ms); }
 
 /* ── 背景乐：低音量循环，首个手势启动，静音停。
    有 audio/bgm.mp3 用文件；缺文件回退生成式暗环境垫（零素材零版权） ── */
@@ -60,8 +60,8 @@ function synthBgm(){ const c=actx(); if(!c||bgmGain) return;
     const g=c.createGain(); g.gain.value=f<150?.42:.22; o.connect(g); g.connect(lp); o.start(); });
   const lfo=c.createOscillator(); lfo.frequency.value=.05;
   const lg=c.createGain(); lg.gain.value=110; lfo.connect(lg); lg.connect(lp.frequency); lfo.start();
-  // 淡入到 0.10（垫底，不抢 SFX）
-  bgmGain.gain.linearRampToValueAtTime(.10, c.currentTime+6);
+  // 淡入到 0.07（垫底，不抢 SFX）
+  bgmGain.gain.linearRampToValueAtTime(.07, c.currentTime+6);
   // 稀疏泛音拨弦：A 小调五声，6-12s 一粒，远而轻
   const SCALE=[220,261.6,293.7,329.6,392,440];
   const pluck=()=>{ if(S.muted||!bgmGain) return;
@@ -74,10 +74,16 @@ function synthBgm(){ const c=actx(); if(!c||bgmGain) return;
 }
 export function startBgm(){ if(bgmStarted||S.muted) return; bgmStarted=true;
   try{ bgmEl=new Audio("audio/bgm.mp3"); bgmEl.loop=true; bgmEl.volume=0;
-    bgmEl.play().then(()=>{ let v=0; const id=setInterval(()=>{ v=Math.min(.32,v+.02); if(bgmEl) bgmEl.volume=v; if(v>=.32) clearInterval(id); },120); })
+    bgmEl.play().then(()=>{ let v=0; const id=setInterval(()=>{ v=Math.min(.20,v+.02); if(bgmEl) bgmEl.volume=v; if(v>=.20) clearInterval(id); },120); })
       .catch(()=>{ bgmEl=null; synthBgm(); });   // 无文件/被拦：合成垫顶上
   }catch{ bgmEl=null; synthBgm(); } }
 export function setMuted(m){ S.muted=m;
   if(bgmEl){ if(m) bgmEl.pause(); else bgmEl.play().catch(()=>{}); }
   if(bgmGain){ const c=actx()||bgmGain.context;
-    bgmGain.gain.linearRampToValueAtTime(m?0:.10, c.currentTime+ .6); } }
+    bgmGain.gain.linearRampToValueAtTime(m?0:.07, c.currentTime+ .6); } }
+
+// 切后台/锁屏自动停乐，回前台续播（手机离开画面音乐不该继续）
+document.addEventListener("visibilitychange",()=>{ const hid=document.hidden;
+  if(bgmEl){ if(hid) bgmEl.pause(); else if(!S.muted) bgmEl.play().catch(()=>{}); }
+  if(S.ac){ if(hid) S.ac.suspend?.(); else if(!S.muted) S.ac.resume?.(); }
+});
