@@ -13,6 +13,7 @@ export const I18N = {
     backhint:{tap:"点击翻牌",up:"上滑",down:"下滑蓄力"},
     goalName:"PROGRESS", goalFinal:"终极目标",
     rlabel:{N:"普通",R:"稀有",SR:"史诗",SSR:"传世"},
+    wordFirst:{t:"使命感",s:"命运没选你，是我选的。"},
     words:[
       {t:"即时反馈",s:"每一下都有回应——第一个钩子。"},
       {t:"可变奖励",s:"不确定的奖励，最让人上头。"},
@@ -105,6 +106,7 @@ export const I18N = {
     backhint:{tap:"tap to flip",up:"swipe up",down:"swipe to charge"},
     goalName:"PROGRESS", goalFinal:"ULTIMATE GOAL",
     rlabel:{N:"COMMON",R:"RARE",SR:"EPIC",SSR:"LEGEND"},
+    wordFirst:{t:"DESTINY",s:"Fate didn't pick you. I did."},
     words:[
       {t:"FEEDBACK",s:"Every tap answers back — hook one."},
       {t:"VARIABLE REWARD",s:"Uncertain prizes grip hardest."},

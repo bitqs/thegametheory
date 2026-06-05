@@ -32,6 +32,7 @@ const BEATMATCH = {
 };
 // 抽设计原则：先掉当前 beat 呼应的（未用过的），否则全池去重；耗尽重洗
 export function drawPrinciple(big2){
+  if(!S.collected.length && !big2) return T().wordFirst;   // 第一张固定「使命感」：开场白刚喊完命运，当场招供
   const pool = big2 ? T().wordsRare : T().words;
   const used = big2 ? S.usedWR : S.usedW;
   const match = BEATMATCH[BEATS[S.beatIdx]?.on[0]] || [];
