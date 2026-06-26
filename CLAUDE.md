@@ -3,7 +3,7 @@
 极简但有深度、有设计感的游戏系列。第一性原理探索"最小逻辑产生游戏感"：
 compulsion 是引擎（可变奖励+保底+juice），内容是皮。分享的目的是"让大家夸夸我"，不是增长漏斗。
 品牌：**THE GAME THEORY · 游戏论**（中文名避开"博弈论"；№ 编号已退役）。
-GitHub：`bitqs/thegametheory`（source of truth）。本地：`~/Projects/thegametheory`（2026-06-05 迁出 iCloud，旧目录废弃勿碰）。线上 https://thegametheory.pages.dev。
+GitHub：`bitqs/thegametheory`（source of truth）。本地：`~/Projects/games/thegametheory`（2026-06-05 迁出 iCloud；2026-06-26 归入 games/ 分类）。线上 https://thegametheory.pages.dev。
 
 **游戏的诞生**（根目录）：边玩边拆穿自己的元游戏。命运神选体开场（"命运之神选中了你！"
 →闪白入局），设计师宣告腔装机制、坦白腔拆台。终极目标揭穿为空 → 黑镜终幕（奖励=你自己）
